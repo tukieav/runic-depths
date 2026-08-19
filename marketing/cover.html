@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Runic Depths — Cover</title>
+<style>html,body{margin:0;padding:0;overflow:hidden;background:#000}canvas{display:block}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const q = new URLSearchParams(location.search);
+const W = parseInt(q.get('w') || '1920', 10);
+const H = parseInt(q.get('h') || '1080', 10);
+const portrait = W < H;
+const c = document.getElementById('c');
+c.width = W; c.height = H;
+const ctx = c.getContext('2d');
+
+// backdrop: deep dungeon gradient
+const bg = ctx.createLinearGradient(0, 0, 0, H);
+bg.addColorStop(0, '#171226');
+bg.addColorStop(0.6, '#0d0a18');
+bg.addColorStop(1, '#070510');
+ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+// stone tile floor perspective at bottom
+const T = Math.max(48, W / 18);
+for (let y = H * 0.55; y < H; y += T * 0.6) {
+  for (let x = -T; x < W + T; x += T) {
+    const sh = (Math.sin(x * 12.7 + y * 31.1) * 43758.5) % 1;
+    const g = 26 + Math.abs(sh) * 20 + (y / H) * 14;
+    ctx.fillStyle = Math.abs(sh) > 0.8 ? `rgb(${g*0.7|0},${g*1.2|0},${g*0.6|0})` : `rgb(${g|0},${g|0},${g+9|0})`;
+    ctx.fillRect(x + (y % (T*1.2) > T*0.6 ? T/2 : 0), y, T - 3, T * 0.6 - 3);
+  }
+}
+ctx.fillStyle = 'rgba(7,5,16,0.45)'; ctx.fillRect(0, H*0.55, W, H*0.45);
+
+// torches
+function torch(x, y, s) {
+  const grd = ctx.createRadialGradient(x, y, s*0.1, x, y, s*3);
+  grd.addColorStop(0, 'rgba(255,190,80,0.85)');
+  grd.addColorStop(1, 'rgba(255,120,20,0)');
+  ctx.fillStyle = grd; ctx.fillRect(x-s*3, y-s*3, s*6, s*6);
+  ctx.fillStyle = '#5a4028'; ctx.fillRect(x-s*0.12, y, s*0.24, s*0.9);
+  ctx.fillStyle = '#ffb84c';
+  ctx.beginPath(); ctx.ellipse(x, y-s*0.15, s*0.28, s*0.45, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#fff0a0';
+  ctx.beginPath(); ctx.ellipse(x, y-s*0.05, s*0.14, s*0.24, 0, 0, 7); ctx.fill();
+}
+const ts = Math.min(W, H) * 0.06;
+torch(W * 0.12, H * 0.32, ts);
+torch(W * 0.88, H * 0.32, ts);
+if (!portrait) { torch(W * 0.30, H * 0.22, ts * 0.7); torch(W * 0.70, H * 0.22, ts * 0.7); }
+
+// hero (big, center-left)
+function hero(x, y, s) {
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.beginPath(); ctx.ellipse(x, y + s*1.05, s*1.1, s*0.32, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#3a6ea8';
+  ctx.beginPath(); ctx.arc(x, y, s, 0, 7); ctx.fill();
+  ctx.strokeStyle = '#5cc8ff'; ctx.lineWidth = s*0.16; ctx.stroke();
+  ctx.fillStyle = '#e8c49a';
+  ctx.beginPath(); ctx.arc(x, y - s*0.8, s*0.55, 0, 7); ctx.fill();
+  // sword raised — runeblade glow
+  ctx.strokeStyle = '#5cc8ff'; ctx.lineWidth = s*0.22; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(x + s*0.8, y + s*0.2); ctx.lineTo(x + s*1.9, y - s*1.6); ctx.stroke();
+  ctx.strokeStyle = 'rgba(92,200,255,0.35)'; ctx.lineWidth = s*0.5;
+  ctx.beginPath(); ctx.moveTo(x + s*0.8, y + s*0.2); ctx.lineTo(x + s*1.9, y - s*1.6); ctx.stroke();
+  ctx.strokeStyle = '#c8ccd4'; ctx.lineWidth = s*0.16;
+  ctx.beginPath(); ctx.moveTo(x + s*0.62, y + s*0.5); ctx.lineTo(x + s*1.1, y - s*0.1); ctx.stroke();
+}
+// monsters
+function blob(x, y, s, col, boss) {
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.beginPath(); ctx.ellipse(x, y + s*0.9, s*0.95, s*0.3, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = col;
+  ctx.beginPath(); ctx.arc(x, y, s, 0, 7); ctx.fill();
+  if (boss) { ctx.strokeStyle = '#ffd76a'; ctx.lineWidth = s*0.1; ctx.stroke(); }
+  ctx.fillStyle = boss ? '#fff05c' : '#1a0a0a';
+  ctx.beginPath(); ctx.arc(x - s*0.35, y - s*0.2, s*0.16, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(x + s*0.35, y - s*0.2, s*0.16, 0, 7); ctx.fill();
+}
+const hs = Math.min(W, H) * (portrait ? 0.1 : 0.11);
+if (portrait) {
+  hero(W * 0.38, H * 0.62, hs);
+  blob(W * 0.72, H * 0.66, hs * 0.75, '#5cb85c');
+  blob(W * 0.78, H * 0.56, hs * 0.95, '#e04c6a', true);
+  blob(W * 0.2, H * 0.72, hs * 0.6, '#d8d8cc');
+} else {
+  hero(W * 0.32, H * 0.62, hs);
+  blob(W * 0.62, H * 0.66, hs * 0.75, '#5cb85c');
+  blob(W * 0.74, H * 0.58, hs * 1.05, '#e04c6a', true);
+  blob(W * 0.55, H * 0.75, hs * 0.6, '#d8d8cc');
+}
+
+// chest with gold glow
+function chest(x, y, s) {
+  const grd = ctx.createRadialGradient(x, y, s*0.2, x, y, s*2.2);
+  grd.addColorStop(0, 'rgba(255,215,106,0.5)');
+  grd.addColorStop(1, 'rgba(255,215,106,0)');
+  ctx.fillStyle = grd; ctx.fillRect(x-s*2.2, y-s*2.2, s*4.4, s*4.4);
+  ctx.fillStyle = '#8a5c2c'; ctx.fillRect(x - s, y - s*0.4, s*2, s*1.1);
+  ctx.fillStyle = '#a5713c'; ctx.fillRect(x - s, y - s*0.75, s*2, s*0.45);
+  ctx.fillStyle = '#ffd76a'; ctx.fillRect(x - s*0.15, y - s*0.45, s*0.3, s*0.45);
+}
+chest(portrait ? W * 0.62 : W * 0.87, portrait ? H * 0.75 : H * 0.74, Math.min(W,H)*0.045);
+
+// title with gradient — scale from WIDTH, wrap on portrait
+ctx.textAlign = 'center';
+const base = Math.min(H * 0.16, W * 0.115);
+ctx.font = `bold ${base}px Georgia, serif`;
+const tg = ctx.createLinearGradient(0, H*0.1, 0, H*0.4);
+tg.addColorStop(0, '#ffe9a0'); tg.addColorStop(0.5, '#ffd76a'); tg.addColorStop(1, '#b06a28');
+ctx.shadowColor = '#000'; ctx.shadowBlur = base * 0.2; ctx.shadowOffsetY = base * 0.06;
+if (portrait) {
+  ctx.fillStyle = tg;
+  ctx.fillText('RUNIC', W / 2, H * 0.16);
+  ctx.fillText('DEPTHS', W / 2, H * 0.16 + base * 1.05);
+} else {
+  ctx.fillStyle = tg;
+  ctx.fillText('RUNIC DEPTHS', W / 2, H * 0.22);
+}
+ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+ctx.font = `600 ${Math.min(H*0.035, W*0.032)}px system-ui, sans-serif`;
+ctx.fillStyle = '#b8aed6';
+ctx.fillText('TURN-BASED DUNGEON CRAWLER', W / 2, portrait ? H * 0.16 + base * 1.7 : H * 0.29);
+</script>
+</body>
+</html>
