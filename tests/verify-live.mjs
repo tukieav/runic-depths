@@ -16,6 +16,11 @@ for (let i = 0; i < 8; i++) {
 }
 const st2 = await page.evaluate(() => window.__astro.getState());
 console.log('after moves:', JSON.stringify({ state: st2.state, x: st2.heroX, y: st2.heroY, depth: st2.depth }));
+const metaOk = await page.evaluate(() => {
+  const s = window.__astro.getState();
+  return typeof s.souls === 'number' && typeof s.streak === 'number' && Array.isArray(s.classes) && s.classes.includes('knight');
+});
+console.log('META_SYSTEMS=' + metaOk);
 const bright = await page.evaluate(() => {
   const c = document.getElementById('game');
   const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
@@ -27,4 +32,4 @@ const realErrors = errors.filter(e => !e.toLowerCase().includes('sdk'));
 console.log('BRIGHT_SAMPLES=' + bright);
 console.log('ERRORS=' + realErrors.length, realErrors.slice(0,3).join(' | '));
 await browser.close();
-process.exit(bright > 0 && st2.state === 'playing' && realErrors.length === 0 ? 0 : 1);
+process.exit(bright > 0 && st2.state === 'playing' && metaOk && realErrors.length === 0 ? 0 : 1);
