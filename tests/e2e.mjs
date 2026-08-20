@@ -1,7 +1,7 @@
 // Runic Depths — E2E tests via Playwright + system Chrome
 import { chromium } from 'playwright';
 
-const URL = 'http://localhost:8516/?debug=1';
+const URL = 'http://localhost:8521/?debug=1';
 const results = [];
 let errors = [];
 
