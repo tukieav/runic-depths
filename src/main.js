@@ -1,6 +1,7 @@
 // Runic Depths — turn-based dungeon crawler mini-cRPG for CrazyGames
 import { initSDK, loadingStart, loadingStop, gameplayStart, gameplayStop, happytime, requestAd, getMuteSetting, onSettingsChange, loadBest, saveBest } from './sdk.js';
 import * as sfx from './audio.js';
+import { meta, loadMeta, saveMeta, CLASSES, UPGRADES, BESTIARY_INFO, upgradeCost, canBuyUpgrade, buyUpgrade, canBuyClass, buyClass, selectClass, addSouls, recordKill, recordRun, checkDailyStreak, startingHero, goldMult } from './meta.js';
 
 const GAME_W = 960, GAME_H = 640;
 const TILE = 40;
@@ -36,16 +37,22 @@ const ARMORS = [
 ];
 const MONSTER_TYPES = {
   goblin:   { name: 'Goblin',   hp: 8,  atk: 3,  def: 0, xp: 5,  color: '#5cb85c', size: 0.32, slow: false },
+  bat:      { name: 'Cave Bat', hp: 5,  atk: 2,  def: 0, xp: 4,  color: '#9a7ad0', size: 0.26, slow: false, erratic: true },
   skeleton: { name: 'Skeleton', hp: 14, atk: 5,  def: 1, xp: 10, color: '#d8d8cc', size: 0.36, slow: false },
+  cultist:  { name: 'Cultist',  hp: 12, atk: 4,  def: 0, xp: 14, color: '#d05ca8', size: 0.34, slow: false, ranged: true },
   ogre:     { name: 'Ogre',     hp: 28, atk: 9,  def: 2, xp: 22, color: '#b06a3c', size: 0.44, slow: true },
+  wraith:   { name: 'Wraith',   hp: 18, atk: 7,  def: 1, xp: 26, color: '#6ad0d0', size: 0.38, slow: false, phasing: true },
   boss:     { name: 'Depth Lord', hp: 60, atk: 12, def: 3, xp: 60, color: '#e04c6a', size: 0.5, slow: false, boss: true },
 };
 
 // ---------- state ----------
-let state = 'boot'; // boot, menu, playing, levelup, gameover
+let state = 'boot'; // boot, menu, shop, bestiary, playing, levelup, gameover
 let map, explored, visible, rooms;
-let hero, monsters, chests, potionsOnFloor, goldPiles, stairs;
+let hero, monsters, chests, potionsOnFloor, goldPiles, soulGems, altars, stairs;
 let depth, gold, score, best = 0;
+let runSouls = 0, soulsDoubled = false, soulsBanked = 0;
+let dailyBonus = 0;
+let shopTab = 'upgrades'; // upgrades | classes
 let turnCount = 0;
 let floaters = [], particles = [];
 let shake = 0, shakeT = 0;
@@ -103,44 +110,75 @@ function genDungeon(d) {
   stairs = { x: far.cx, y: far.cy };
 
   // populate
-  monsters = []; chests = []; potionsOnFloor = []; goldPiles = [];
+  monsters = []; chests = []; potionsOnFloor = []; goldPiles = []; soulGems = []; altars = [];
   const isBossDepth = d % 3 === 0;
+  // special rooms: pick 1-2 non-start, non-stairs rooms
+  const specials = [];
+  const candidates = rooms.slice(1).filter(r => r !== far);
+  shuffle(candidates);
+  if (d >= 2 && candidates.length > 0) specials.push({ room: candidates[0], kind: 'vault' });    // guarded treasure vault
+  if (d >= 3 && candidates.length > 1 && Math.random() < 0.6) specials.push({ room: candidates[1], kind: 'altar' }); // risk/reward altar
   for (let i = 1; i < rooms.length; i++) {
     const r = rooms[i];
+    const special = specials.find(s => s.room === r);
     const spots = [];
     for (let yy = r.y; yy < r.y + r.h; yy++) for (let xx = r.x; xx < r.x + r.w; xx++) {
       if (!(xx === stairs.x && yy === stairs.y)) spots.push({ x: xx, y: yy });
     }
     shuffle(spots);
     let si = 0;
-    const nMon = 1 + (Math.random() * Math.min(3, 1 + d * 0.5) | 0);
+    if (special && special.kind === 'vault') {
+      // treasure vault: 2 chests + gold, guarded by 2 tough monsters
+      for (let c = 0; c < 2 && si < spots.length; c++) { chests.push({ x: spots[si].x, y: spots[si].y, opened: false }); si++; }
+      if (si < spots.length) { goldPiles.push({ x: spots[si].x, y: spots[si].y, amt: 20 + (Math.random() * 15 * d | 0) }); si++; }
+      for (let m = 0; m < 2 && si < spots.length; m++) {
+        spawnMonster(d >= 4 && m === 0 ? 'wraith' : d >= 2 ? 'ogre' : 'skeleton', spots[si].x, spots[si].y, d);
+        si++;
+      }
+      continue;
+    }
+    if (special && special.kind === 'altar') {
+      if (si < spots.length) { altars.push({ x: spots[si].x, y: spots[si].y, used: false }); si++; }
+    }
+    // difficulty curve: gentle at depth 1-2, ramps after
+    const monCap = d <= 1 ? 2 : d === 2 ? 2 : 3;
+    const nMon = (d <= 1 ? 0 : 1) + (Math.random() * Math.min(monCap, 1 + d * 0.45) | 0);
     for (let m = 0; m < nMon && si < spots.length; m++) {
-      const roll = Math.random();
-      let type = roll < 0.5 ? 'goblin' : roll < 0.85 ? 'skeleton' : 'ogre';
-      if (d < 2 && type === 'ogre') type = 'skeleton';
-      spawnMonster(type, spots[si].x, spots[si].y, d);
+      spawnMonster(rollMonsterType(d), spots[si].x, spots[si].y, d);
       si++;
     }
     if (Math.random() < 0.55 && si < spots.length) { chests.push({ x: spots[si].x, y: spots[si].y, opened: false }); si++; }
     if (Math.random() < 0.3 && si < spots.length) { potionsOnFloor.push({ x: spots[si].x, y: spots[si].y }); si++; }
     if (Math.random() < 0.4 && si < spots.length) { goldPiles.push({ x: spots[si].x, y: spots[si].y, amt: 5 + (Math.random() * 10 * d | 0) }); si++; }
+    if (Math.random() < 0.25 && si < spots.length) { soulGems.push({ x: spots[si].x, y: spots[si].y, amt: 1 + (Math.random() * (1 + d * 0.4) | 0) }); si++; }
   }
   if (isBossDepth) {
     // boss guards the stairs room
     spawnMonster('boss', far.cx + (far.w > 2 ? 1 : 0), far.cy, d);
+    // boss floors always drop a soul gem cluster near stairs
+    soulGems.push({ x: far.cx - 1, y: far.cy, amt: 3 + d });
   }
   updateVisibility();
 }
 
+function rollMonsterType(d) {
+  const roll = Math.random();
+  if (d <= 1) return roll < 0.7 ? 'goblin' : 'bat';
+  if (d === 2) return roll < 0.4 ? 'goblin' : roll < 0.6 ? 'bat' : roll < 0.9 ? 'skeleton' : 'cultist';
+  if (d <= 4) return roll < 0.25 ? 'goblin' : roll < 0.4 ? 'bat' : roll < 0.65 ? 'skeleton' : roll < 0.82 ? 'cultist' : 'ogre';
+  return roll < 0.15 ? 'goblin' : roll < 0.3 ? 'bat' : roll < 0.5 ? 'skeleton' : roll < 0.68 ? 'cultist' : roll < 0.86 ? 'ogre' : 'wraith';
+}
+
 function spawnMonster(type, x, y, d) {
   const t = MONSTER_TYPES[type];
-  const scale = 1 + (d - 1) * 0.18;
+  const scale = 1 + (d - 1) * (d <= 2 ? 0.12 : 0.18);
   monsters.push({
     type, x, y,
     hp: Math.round(t.hp * scale), maxHp: Math.round(t.hp * scale),
     atk: Math.round(t.atk * scale), def: t.def + ((d / 3) | 0),
     xp: Math.round(t.xp * scale),
-    slow: t.slow, boss: !!t.boss, bump: 0, bumpDx: 0, bumpDy: 0,
+    slow: t.slow, boss: !!t.boss, erratic: !!t.erratic, ranged: !!t.ranged, phasing: !!t.phasing,
+    bump: 0, bumpDx: 0, bumpDy: 0,
   });
 }
 
@@ -175,12 +213,15 @@ function updateVisibility() {
 
 // ---------- hero / run ----------
 function newRun() {
+  const s = startingHero();
   hero = {
-    x: 0, y: 0, hp: 40, maxHp: 40, baseAtk: 4, baseDef: 0,
-    lvl: 1, xp: 0, weapon: 0, armor: 0, potions: 1,
+    x: 0, y: 0, hp: s.maxHp, maxHp: s.maxHp, baseAtk: s.baseAtk, baseDef: s.baseDef,
+    lvl: 1, xp: 0, weapon: 0, armor: 0, potions: s.potions,
+    crit: s.crit, healAmt: s.heal, tint: s.tint, cursed: 0, blessed: 0,
     bump: 0, bumpDx: 0, bumpDy: 0,
   };
   depth = 1; gold = 0; score = 0; turnCount = 0;
+  runSouls = 0; soulsDoubled = false; soulsBanked = 0;
   resurrectUsed = false;
   floaters = []; particles = []; msgLog = [];
   genDungeon(depth);
@@ -197,8 +238,9 @@ function tryMove(dx, dy) {
   if (state !== 'playing' || adBusy) return;
   if (dx === 0 && dy === 0) return;
   const nx = hero.x + dx, ny = hero.y + dy;
-  if (nx < 0 || ny < 0 || nx >= MAP_W || ny >= MAP_H || map[ny][nx] !== 0) return;
+  if (nx < 0 || ny < 0 || nx >= MAP_W || ny >= MAP_H) return;
   const mon = monsters.find(m => m.x === nx && m.y === ny);
+  if (!mon && map[ny][nx] !== 0) return;
   if (mon) {
     attackMonster(mon, dx, dy);
   } else {
@@ -217,7 +259,48 @@ function pickupAt(x, y) {
   const pi = potionsOnFloor.findIndex(p => p.x === x && p.y === y);
   if (pi >= 0) { potionsOnFloor.splice(pi, 1); hero.potions++; sfx.potionSound(); logMsg('Found a potion!', '#ff7ab0'); addFloater(x, y, '+potion', '#ff7ab0'); }
   const gi = goldPiles.findIndex(g => g.x === x && g.y === y);
-  if (gi >= 0) { const g = goldPiles.splice(gi, 1)[0]; gold += g.amt; sfx.chestSound(); addFloater(x, y, '+' + g.amt + 'g', '#ffd76a'); }
+  if (gi >= 0) { const g = goldPiles.splice(gi, 1)[0]; const amt = Math.round(g.amt * goldMult()); gold += amt; sfx.chestSound(); addFloater(x, y, '+' + amt + 'g', '#ffd76a'); }
+  const si = soulGems.findIndex(s => s.x === x && s.y === y);
+  if (si >= 0) {
+    const s = soulGems.splice(si, 1)[0];
+    runSouls += s.amt;
+    sfx.magicSound();
+    addFloater(x, y, '+' + s.amt + ' ♦', '#8ad0ff');
+    logMsg('Soul gem! +' + s.amt + ' souls', '#8ad0ff');
+    burstParticles(x, y, '#8ad0ff', 10);
+  }
+  const al = altars.find(a => a.x === x && a.y === y && !a.used);
+  if (al) { useAltar(al); }
+}
+
+function useAltar(al) {
+  al.used = true;
+  sfx.magicSound();
+  doShake(4);
+  burstParticles(al.x, al.y, '#c05cff', 20);
+  const roll = Math.random();
+  if (roll < 0.45) {
+    // blessing: permanent (this run) stat boost
+    const which = Math.random();
+    if (which < 0.4) { hero.baseAtk += 2; logMsg('The altar blesses your blade! +2 ATK', '#c88aff'); addFloater(al.x, al.y, '+2 ATK', '#c88aff'); }
+    else if (which < 0.7) { hero.maxHp += 10; hero.hp += 10; logMsg('The altar strengthens you! +10 Max HP', '#c88aff'); addFloater(al.x, al.y, '+10 HP', '#c88aff'); }
+    else { hero.baseDef += 1; logMsg('The altar hardens your skin! +1 DEF', '#c88aff'); addFloater(al.x, al.y, '+1 DEF', '#c88aff'); }
+    happytime();
+  } else if (roll < 0.7) {
+    const amt = 3 + (Math.random() * 3 * depth | 0);
+    runSouls += amt;
+    logMsg('The altar yields ' + amt + ' souls!', '#8ad0ff');
+    addFloater(al.x, al.y, '+' + amt + ' ♦', '#8ad0ff');
+  } else {
+    // curse: damage + summon
+    const dmg = Math.max(3, Math.round(hero.maxHp * 0.2));
+    hero.hp -= dmg;
+    sfx.hurtSound();
+    doShake(8);
+    logMsg('The altar CURSES you! -' + dmg + ' HP', '#e04c6a');
+    addFloater(al.x, al.y, '-' + dmg, '#ff5c5c');
+    if (hero.hp <= 0) die();
+  }
 }
 
 function openChest(ch) {
@@ -226,7 +309,7 @@ function openChest(ch) {
   burstParticles(ch.x, ch.y, '#ffd76a', 14);
   const roll = Math.random();
   if (roll < 0.32) {
-    const amt = 10 + (Math.random() * 15 * depth | 0);
+    const amt = Math.round((10 + (Math.random() * 15 * depth | 0)) * goldMult());
     gold += amt; addFloater(ch.x, ch.y, '+' + amt + ' gold', '#ffd76a'); logMsg('Chest: ' + amt + ' gold!', '#ffd76a');
   } else if (roll < 0.55) {
     hero.potions++; addFloater(ch.x, ch.y, '+potion', '#ff7ab0'); logMsg('Chest: HP potion!', '#ff7ab0');
@@ -246,26 +329,33 @@ function openChest(ch) {
 function attackMonster(mon, dx, dy) {
   hero.bump = 1; hero.bumpDx = dx * 0.6; hero.bumpDy = dy * 0.6;
   const variance = (Math.random() * 3 | 0) - 1;
-  const dmg = Math.max(1, heroAtk() + variance - mon.def);
+  const isCrit = hero.crit > 0 && Math.random() < hero.crit;
+  let dmg = Math.max(1, heroAtk() + variance - mon.def);
+  if (isCrit) dmg = Math.round(dmg * 2);
   mon.hp -= dmg;
   sfx.swordSound();
-  addFloater(mon.x, mon.y, '-' + dmg, '#ffea70');
-  burstParticles(mon.x, mon.y, MONSTER_TYPES[mon.type].color, 8);
-  doShake(3);
+  addFloater(mon.x, mon.y, (isCrit ? 'CRIT -' : '-') + dmg, isCrit ? '#ff9a3c' : '#ffea70');
+  burstParticles(mon.x, mon.y, MONSTER_TYPES[mon.type].color, isCrit ? 14 : 8);
+  doShake(isCrit ? 5 : 3);
   if (mon.hp <= 0) {
     monsters.splice(monsters.indexOf(mon), 1);
     sfx.monsterDieSound();
     burstParticles(mon.x, mon.y, MONSTER_TYPES[mon.type].color, 18);
     addFloater(mon.x, mon.y, '+' + mon.xp + ' XP', '#7ad0ff');
+    recordKill(mon.type);
     gainXp(mon.xp);
     if (mon.boss) {
       happytime();
-      gold += 50 * depth;
-      logMsg('DEPTH LORD SLAIN! +' + 50 * depth + ' gold', '#e04c6a');
+      const bg = Math.round(50 * depth * goldMult());
+      gold += bg;
+      const bs = 5 + depth * 2;
+      runSouls += bs;
+      logMsg('DEPTH LORD SLAIN! +' + bg + ' gold, +' + bs + ' souls', '#e04c6a');
       doShake(10);
       sfx.magicSound();
     } else {
       logMsg(MONSTER_TYPES[mon.type].name + ' slain!', '#9fdc7a');
+      if (Math.random() < 0.08) { runSouls += 1; addFloater(mon.x, mon.y, '+1 ♦', '#8ad0ff'); }
     }
   }
 }
@@ -303,7 +393,7 @@ function pickCard(c) {
 function usePotion() {
   if (state !== 'playing' || hero.potions <= 0 || hero.hp >= hero.maxHp) return;
   hero.potions--;
-  const heal = 30;
+  const heal = hero.healAmt || 30;
   hero.hp = Math.min(hero.maxHp, hero.hp + heal);
   sfx.potionSound();
   addFloater(hero.x, hero.y, '+' + heal + ' HP', '#ff7ab0');
@@ -344,8 +434,25 @@ function monstersAct() {
       doShake(4 + (m.boss ? 4 : 0));
       continue;
     }
+    // cultist: ranged dark bolt within 4 tiles + LOS, every other turn
+    if (m.ranged && dist <= 4 && losClear(m.x, m.y, hero.x, hero.y) && turnCount % 2 === 1) {
+      const dmg = Math.max(1, Math.round(m.atk * 0.7) - heroDef());
+      hero.hp -= dmg;
+      m.bump = 1; m.bumpDx = Math.sign(dx) * 0.3; m.bumpDy = Math.sign(dy) * 0.3;
+      sfx.hurtSound();
+      addFloater(hero.x, hero.y, '-' + dmg, '#d05ca8');
+      burstParticles(hero.x, hero.y, '#d05ca8', 6);
+      doShake(3);
+      continue;
+    }
     if (dist > 9) {
       if (Math.random() < 0.3) stepMonster(m, [(Math.random() * 3 | 0) - 1, 0][0], 0);
+      continue;
+    }
+    // bat: erratic — 40% random direction instead of chasing
+    if (m.erratic && Math.random() < 0.4) {
+      const dirs = shuffle([[1, 0], [-1, 0], [0, 1], [0, -1]]);
+      for (const [ox, oy] of dirs) { if (stepMonster(m, ox, oy)) break; }
       continue;
     }
     // chase: prefer axis with bigger delta
@@ -361,7 +468,8 @@ function monstersAct() {
 
 function stepMonster(m, dx, dy) {
   const nx = m.x + dx, ny = m.y + dy;
-  if (nx < 0 || ny < 0 || nx >= MAP_W || ny >= MAP_H || map[ny][nx] !== 0) return false;
+  if (nx < 1 || ny < 1 || nx >= MAP_W - 1 || ny >= MAP_H - 1) return false;
+  if (map[ny][nx] !== 0 && !m.phasing) return false;
   if (nx === hero.x && ny === hero.y) return false;
   if (monsters.some(o => o !== m && o.x === nx && o.y === ny)) return false;
   m.x = nx; m.y = ny; m.bump = 1; m.bumpDx = dx; m.bumpDy = dy;
@@ -376,6 +484,31 @@ function die() {
   gameplayStop();
   score = calcScore();
   if (score > best) { best = score; saveBest(best); }
+  // bank souls: gems collected + depth bonus (only the unbanked delta, resurrect-safe)
+  runSouls += Math.max(0, (depth - 1) * 2);
+  const delta = runSouls - soulsBanked;
+  if (delta > 0) addSouls(delta);
+  soulsBanked = runSouls;
+  const newRecord = recordRun(depth);
+  if (newRecord) happytime();
+}
+
+async function doubleSouls() {
+  if (soulsDoubled || adBusy || runSouls <= 0) return;
+  adBusy = true;
+  const ok = await requestAd('rewarded', {
+    onStart: () => sfx.setMuted(true),
+    onFinish: () => sfx.setMuted(getMuteSetting()),
+  });
+  adBusy = false;
+  if (ok) {
+    soulsDoubled = true;
+    addSouls(runSouls); // second helping
+    runSouls *= 2;
+    soulsBanked = runSouls;
+    sfx.levelUpSound();
+    logMsg('Souls doubled!', '#8ad0ff');
+  }
 }
 
 async function resurrect() {
@@ -438,6 +571,7 @@ function doShake(n) { shake = Math.max(shake, n); shakeT = 0.25; }
 // ---------- input ----------
 window.addEventListener('keydown', (e) => {
   if (state === 'menu' && (e.key === ' ' || e.key === 'Enter')) { startGame(); return; }
+  if ((state === 'shop' || state === 'bestiary') && e.key === 'Escape') { state = 'menu'; return; }
   if (state === 'levelup') {
     if (e.key === '1') pickCard(levelCards[0]);
     if (e.key === '2') pickCard(levelCards[1]);
@@ -468,7 +602,22 @@ function handleTap(gx, gy) {
       if (btn.id === 'play') startGame();
       else if (btn.id === 'again') playAgain();
       else if (btn.id === 'resurrect') resurrect();
+      else if (btn.id === 'x2souls') doubleSouls();
       else if (btn.id === 'potion') usePotion();
+      else if (btn.id === 'shop') { state = 'shop'; shopTab = 'upgrades'; sfx.chestSound(); }
+      else if (btn.id === 'bestiary') { state = 'bestiary'; sfx.chestSound(); }
+      else if (btn.id === 'back') { state = 'menu'; sfx.stepSound(); }
+      else if (btn.id.startsWith('tab_')) { shopTab = btn.id.slice(4); sfx.stepSound(); }
+      else if (btn.id.startsWith('up_')) {
+        const id = btn.id.slice(3);
+        if (buyUpgrade(id)) { sfx.levelUpSound(); } else { sfx.hurtSound(); }
+      }
+      else if (btn.id.startsWith('cls_')) {
+        const id = btn.id.slice(4);
+        if (meta.classes.includes(id)) { selectClass(id); sfx.potionSound(); }
+        else if (buyClass(id)) { sfx.levelUpSound(); happytime(); }
+        else { sfx.hurtSound(); }
+      }
       else if (btn.id.startsWith('card')) pickCard(levelCards[parseInt(btn.id.slice(4), 10)]);
       return;
     }
@@ -508,6 +657,8 @@ function draw(dt) {
   ctx.fillRect(0, 0, GAME_W, GAME_H);
 
   if (state === 'menu' || state === 'boot') { drawMenu(); return; }
+  if (state === 'shop') { drawShop(); return; }
+  if (state === 'bestiary') { drawBestiary(); return; }
 
   ctx.save();
   ctx.translate(-camX + sx, -camY + sy);
@@ -588,6 +739,36 @@ function draw(dt) {
     ctx.fillStyle = '#ffd76a';
     ctx.fillRect(px + (TILE - 12) / 2 - 2, py + 2, 4, 6);
   }
+  // soul gems: pulsing cyan diamonds
+  for (const s of soulGems) if (visible[s.y][s.x]) {
+    const px = s.x * TILE + TILE / 2, py = s.y * TILE + TILE / 2;
+    const pulse = 0.75 + 0.25 * Math.sin(time * 5 + s.x);
+    const r = 8 * pulse;
+    ctx.fillStyle = 'rgba(138,208,255,0.25)';
+    ctx.beginPath(); ctx.arc(px, py, r + 6, 0, 7); ctx.fill();
+    ctx.fillStyle = '#8ad0ff';
+    ctx.beginPath();
+    ctx.moveTo(px, py - r); ctx.lineTo(px + r * 0.7, py); ctx.lineTo(px, py + r); ctx.lineTo(px - r * 0.7, py);
+    ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#d8f0ff'; ctx.lineWidth = 1.5; ctx.stroke();
+  }
+  // altars: purple obelisk with flame
+  for (const a of altars) if (visible[a.y][a.x] || (a.used && explored[a.y][a.x])) {
+    const px = a.x * TILE + TILE / 2, py = a.y * TILE + TILE / 2;
+    ctx.fillStyle = a.used ? '#4a3a5a' : '#6a4a9a';
+    ctx.fillRect(px - 8, py - 4, 16, 16);
+    ctx.fillRect(px - 11, py + 8, 22, 5);
+    if (!a.used) {
+      const fl = 0.7 + 0.3 * Math.sin(time * 7 + a.x);
+      const grd2 = ctx.createRadialGradient(px, py - 10, 1, px, py - 10, 14 * fl);
+      grd2.addColorStop(0, 'rgba(200,90,255,0.9)');
+      grd2.addColorStop(1, 'rgba(120,40,200,0)');
+      ctx.fillStyle = grd2;
+      ctx.fillRect(px - 16, py - 26, 32, 32);
+      ctx.fillStyle = '#c88aff';
+      ctx.beginPath(); ctx.arc(px, py - 10, 4 * fl + 1.5, 0, 7); ctx.fill();
+    }
+  }
 
   // monsters
   for (const m of monsters) {
@@ -621,8 +802,8 @@ function draw(dt) {
     const py = hero.y * TILE + TILE / 2 - hero.bumpDy * hero.bump * 12;
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
     ctx.beginPath(); ctx.ellipse(px, py + 12, 12, 5, 0, 0, 7); ctx.fill();
-    // body
-    ctx.fillStyle = '#3a6ea8';
+    // body (class tint)
+    ctx.fillStyle = hero.tint || '#3a6ea8';
     ctx.beginPath(); ctx.arc(px, py, 12, 0, 7); ctx.fill();
     ctx.strokeStyle = ARMORS[hero.armor].color; ctx.lineWidth = 3; ctx.stroke();
     // head
@@ -683,6 +864,8 @@ function drawHUD() {
   ctx.fillText(`LVL ${hero.lvl}  ATK ${heroAtk()}  DEF ${heroDef()}`, 16, 66);
   ctx.fillStyle = '#ffd76a';
   ctx.fillText(`Gold ${gold}   Depth ${depth}`, 16, 84);
+  ctx.fillStyle = '#8ad0ff';
+  ctx.fillText(`♦ ${runSouls}`, 200, 84);
   ctx.fillStyle = WEAPONS[hero.weapon].color;
   ctx.fillText(WEAPONS[hero.weapon].name, 16, 100);
   ctx.fillStyle = ARMORS[hero.armor].color;
@@ -742,14 +925,31 @@ function drawMenu() {
   }
   ctx.textAlign = 'center';
   ctx.font = 'bold 64px Georgia, serif';
-  const grd = ctx.createLinearGradient(0, 180, 0, 260);
+  const grd = ctx.createLinearGradient(0, 140, 0, 220);
   grd.addColorStop(0, '#ffd76a'); grd.addColorStop(1, '#c07830');
-  ctx.fillStyle = '#000'; ctx.fillText('RUNIC DEPTHS', GAME_W / 2 + 3, 223);
-  ctx.fillStyle = grd; ctx.fillText('RUNIC DEPTHS', GAME_W / 2, 220);
+  ctx.fillStyle = '#000'; ctx.fillText('RUNIC DEPTHS', GAME_W / 2 + 3, 183);
+  ctx.fillStyle = grd; ctx.fillText('RUNIC DEPTHS', GAME_W / 2, 180);
   ctx.font = '20px system-ui'; ctx.fillStyle = '#9f96b8';
-  ctx.fillText('Turn-based dungeon crawler — loot, level up, descend', GAME_W / 2, 262);
+  ctx.fillText('Turn-based dungeon crawler — loot, level up, descend', GAME_W / 2, 220);
 
-  const bw = 240, bh = 64, bx = GAME_W / 2 - bw / 2, by = 340;
+  // class + souls line
+  const cls = CLASSES[meta.selectedClass] || CLASSES.knight;
+  ctx.font = 'bold 17px system-ui'; ctx.fillStyle = '#8ad0ff';
+  ctx.fillText(`♦ ${meta.souls} souls`, GAME_W / 2 - 150, 262);
+  ctx.fillStyle = cls.tint;
+  ctx.fillText(`Class: ${cls.name}`, GAME_W / 2 + 60, 262);
+  if (meta.bestDepth > 0) {
+    ctx.fillStyle = '#ffd76a'; ctx.font = '15px system-ui';
+    ctx.fillText(`Deepest: ${meta.bestDepth}`, GAME_W / 2 + 240, 262);
+  }
+  if (dailyBonus > 0) {
+    const fl = 0.6 + 0.4 * Math.sin(time * 5);
+    ctx.font = 'bold 16px system-ui';
+    ctx.fillStyle = `rgba(138,208,255,${fl})`;
+    ctx.fillText(`DAILY BONUS +${dailyBonus} ♦ — day ${meta.streak.count} streak!`, GAME_W / 2, 292);
+  }
+
+  const bw = 240, bh = 64, bx = GAME_W / 2 - bw / 2, by = 320;
   buttons = [{ x: bx, y: by, w: bw, h: bh, id: 'play' }];
   const pulse = 0.85 + 0.15 * Math.sin(time * 4);
   ctx.fillStyle = `rgba(90,200,120,${pulse})`;
@@ -758,9 +958,182 @@ function drawMenu() {
   ctx.font = 'bold 30px system-ui'; ctx.fillStyle = '#08140c';
   ctx.fillText('PLAY', GAME_W / 2, by + 42);
 
+  // shop + bestiary buttons
+  const sw = 210, sh = 52;
+  const shopB = { x: GAME_W / 2 - sw - 12, y: by + 84, w: sw, h: sh, id: 'shop' };
+  const bestB = { x: GAME_W / 2 + 12, y: by + 84, w: sw, h: sh, id: 'bestiary' };
+  buttons.push(shopB, bestB);
+  ctx.fillStyle = 'rgba(138,208,255,0.18)';
+  ctx.fillRect(shopB.x, shopB.y, shopB.w, shopB.h);
+  ctx.strokeStyle = '#8ad0ff'; ctx.strokeRect(shopB.x + 0.5, shopB.y + 0.5, shopB.w - 1, shopB.h - 1);
+  ctx.font = 'bold 20px system-ui'; ctx.fillStyle = '#8ad0ff';
+  ctx.fillText('♦ SOUL SHOP', shopB.x + sw / 2, shopB.y + 33);
+  ctx.fillStyle = 'rgba(200,138,255,0.15)';
+  ctx.fillRect(bestB.x, bestB.y, bestB.w, bestB.h);
+  ctx.strokeStyle = '#c88aff'; ctx.strokeRect(bestB.x + 0.5, bestB.y + 0.5, bestB.w - 1, bestB.h - 1);
+  ctx.fillStyle = '#c88aff';
+  ctx.fillText('BESTIARY', bestB.x + sw / 2, bestB.y + 33);
+
   ctx.font = '15px system-ui'; ctx.fillStyle = '#8f889c';
-  ctx.fillText('WASD / arrows / tap to move · walk into monsters to attack · Q = potion', GAME_W / 2, 460);
-  if (best > 0) { ctx.fillStyle = '#ffd76a'; ctx.fillText(`Best score: ${best}`, GAME_W / 2, 490); }
+  ctx.fillText('WASD / arrows / tap to move · walk into monsters to attack · Q = potion', GAME_W / 2, 520);
+  if (best > 0) { ctx.fillStyle = '#ffd76a'; ctx.fillText(`Best score: ${best}`, GAME_W / 2, 548); }
+}
+
+function drawShop() {
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 40px Georgia, serif'; ctx.fillStyle = '#8ad0ff';
+  ctx.fillText('SOUL SHOP', GAME_W / 2, 62);
+  ctx.font = 'bold 20px system-ui';
+  ctx.fillText(`♦ ${meta.souls} souls`, GAME_W / 2, 94);
+  buttons = [];
+
+  // tabs
+  const tabs = [['upgrades', 'UPGRADES'], ['classes', 'CLASSES']];
+  tabs.forEach(([id, label], i) => {
+    const tx = GAME_W / 2 - 190 + i * 200, ty = 112, tw = 180, th = 40;
+    buttons.push({ x: tx, y: ty, w: tw, h: th, id: 'tab_' + id });
+    ctx.fillStyle = shopTab === id ? 'rgba(138,208,255,0.35)' : 'rgba(40,36,60,0.8)';
+    ctx.fillRect(tx, ty, tw, th);
+    ctx.strokeStyle = shopTab === id ? '#8ad0ff' : '#555';
+    ctx.strokeRect(tx + 0.5, ty + 0.5, tw - 1, th - 1);
+    ctx.font = 'bold 17px system-ui'; ctx.fillStyle = shopTab === id ? '#fff' : '#9f96b8';
+    ctx.fillText(label, tx + tw / 2, ty + 26);
+  });
+
+  if (shopTab === 'upgrades') {
+    const ids = Object.keys(UPGRADES);
+    ids.forEach((id, i) => {
+      const u = UPGRADES[id];
+      const lvl = meta.upgrades[id] || 0;
+      const maxed = lvl >= u.max;
+      const cost = maxed ? 0 : upgradeCost(id);
+      const affordable = !maxed && meta.souls >= cost;
+      const y = 178 + i * 92, x = GAME_W / 2 - 330, w = 660, h = 80;
+      buttons.push({ x, y, w, h, id: 'up_' + id });
+      ctx.fillStyle = maxed ? 'rgba(60,80,60,0.5)' : affordable ? 'rgba(138,208,255,0.14)' : 'rgba(40,36,60,0.7)';
+      ctx.fillRect(x, y, w, h);
+      ctx.strokeStyle = maxed ? '#6a9a6a' : affordable ? '#8ad0ff' : '#444';
+      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+      ctx.textAlign = 'left';
+      ctx.font = 'bold 21px system-ui'; ctx.fillStyle = '#fff';
+      ctx.fillText(u.name, x + 20, y + 32);
+      ctx.font = '15px system-ui'; ctx.fillStyle = '#9f96b8';
+      ctx.fillText(u.desc + ' per level', x + 20, y + 58);
+      // pips
+      for (let p = 0; p < u.max; p++) {
+        ctx.fillStyle = p < lvl ? '#8ad0ff' : '#333048';
+        ctx.fillRect(x + 250 + p * 22, y + 34, 16, 12);
+      }
+      ctx.textAlign = 'right';
+      ctx.font = 'bold 19px system-ui';
+      ctx.fillStyle = maxed ? '#9fdc7a' : affordable ? '#8ad0ff' : '#777';
+      ctx.fillText(maxed ? 'MAX' : `♦ ${cost}`, x + w - 20, y + 47);
+      ctx.textAlign = 'center';
+    });
+  } else {
+    const ids = Object.keys(CLASSES);
+    ids.forEach((id, i) => {
+      const c = CLASSES[id];
+      const owned = meta.classes.includes(id);
+      const selected = meta.selectedClass === id;
+      const affordable = !owned && meta.souls >= c.cost;
+      const y = 178 + i * 108, x = GAME_W / 2 - 330, w = 660, h = 96;
+      buttons.push({ x, y, w, h, id: 'cls_' + id });
+      ctx.fillStyle = selected ? 'rgba(90,200,120,0.2)' : owned ? 'rgba(138,208,255,0.1)' : affordable ? 'rgba(200,138,255,0.12)' : 'rgba(40,36,60,0.7)';
+      ctx.fillRect(x, y, w, h);
+      ctx.strokeStyle = selected ? '#5ac878' : owned ? '#8ad0ff' : affordable ? '#c88aff' : '#444';
+      ctx.lineWidth = selected ? 3 : 1;
+      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+      ctx.lineWidth = 1;
+      // class avatar
+      ctx.fillStyle = c.tint;
+      ctx.beginPath(); ctx.arc(x + 48, y + 48, 22, 0, 7); ctx.fill();
+      ctx.fillStyle = '#e8c49a';
+      ctx.beginPath(); ctx.arc(x + 48, y + 32, 12, 0, 7); ctx.fill();
+      ctx.textAlign = 'left';
+      ctx.font = 'bold 21px system-ui'; ctx.fillStyle = '#fff';
+      ctx.fillText(c.name, x + 92, y + 34);
+      ctx.font = '15px system-ui'; ctx.fillStyle = '#9f96b8';
+      ctx.fillText(c.desc, x + 92, y + 58);
+      ctx.fillStyle = '#cfc9b8';
+      ctx.fillText(`HP ${c.hp}  ATK ${c.atk}  Potions ${c.potions}${c.crit ? '  Crit ' + Math.round(c.crit * 100) + '%' : ''}`, x + 92, y + 80);
+      ctx.textAlign = 'right';
+      ctx.font = 'bold 19px system-ui';
+      ctx.fillStyle = selected ? '#5ac878' : owned ? '#8ad0ff' : affordable ? '#c88aff' : '#777';
+      ctx.fillText(selected ? 'SELECTED' : owned ? 'SELECT' : `♦ ${c.cost}`, x + w - 20, y + 55);
+      ctx.textAlign = 'center';
+    });
+  }
+
+  // back button
+  const bb = { x: GAME_W / 2 - 110, y: GAME_H - 66, w: 220, h: 50, id: 'back' };
+  buttons.push(bb);
+  ctx.fillStyle = 'rgba(90,200,120,0.85)';
+  ctx.fillRect(bb.x, bb.y, bb.w, bb.h);
+  ctx.font = 'bold 20px system-ui'; ctx.fillStyle = '#08140c';
+  ctx.fillText('BACK', GAME_W / 2, bb.y + 33);
+}
+
+function drawBestiary() {
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 40px Georgia, serif'; ctx.fillStyle = '#c88aff';
+  ctx.fillText('BESTIARY', GAME_W / 2, 62);
+  ctx.font = '16px system-ui'; ctx.fillStyle = '#9f96b8';
+  ctx.fillText(`Deepest depth: ${meta.bestDepth}   ·   Runs: ${meta.totalRuns}   ·   Total kills: ${meta.totalKills}`, GAME_W / 2, 96);
+  buttons = [];
+  const ids = Object.keys(MONSTER_TYPES);
+  ids.forEach((id, i) => {
+    const t = MONSTER_TYPES[id];
+    const kills = meta.bestiary[id] || 0;
+    const known = kills > 0;
+    const col = i % 2, row = (i / 2) | 0;
+    const x = GAME_W / 2 - 330 + col * 340, y = 124 + row * 102, w = 320, h = 92;
+    ctx.fillStyle = known ? 'rgba(30,26,48,0.9)' : 'rgba(20,18,30,0.9)';
+    ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = known ? t.color : '#333';
+    ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+    // portrait
+    ctx.fillStyle = known ? t.color : '#2a2638';
+    ctx.beginPath(); ctx.arc(x + 44, y + 46, t.size * 60, 0, 7); ctx.fill();
+    if (known) {
+      ctx.fillStyle = '#1a0a0a';
+      ctx.beginPath(); ctx.arc(x + 38, y + 40, 3, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(x + 50, y + 40, 3, 0, 7); ctx.fill();
+    } else {
+      ctx.font = 'bold 26px system-ui'; ctx.fillStyle = '#555';
+      ctx.fillText('?', x + 44, y + 55);
+    }
+    ctx.textAlign = 'left';
+    ctx.font = 'bold 18px system-ui'; ctx.fillStyle = known ? '#fff' : '#666';
+    ctx.fillText(known ? t.name : '???', x + 88, y + 30);
+    ctx.font = '13px system-ui'; ctx.fillStyle = '#9f96b8';
+    if (known) {
+      wrapText(BESTIARY_INFO[id] || '', x + 88, y + 50, w - 100, 15);
+      ctx.fillStyle = t.color;
+      ctx.fillText(`Slain: ${kills}`, x + 88, y + 82);
+    } else {
+      ctx.fillText('Encounter this creature to reveal it.', x + 88, y + 50);
+    }
+    ctx.textAlign = 'center';
+  });
+  const bb = { x: GAME_W / 2 - 110, y: GAME_H - 66, w: 220, h: 50, id: 'back' };
+  buttons.push(bb);
+  ctx.fillStyle = 'rgba(90,200,120,0.85)';
+  ctx.fillRect(bb.x, bb.y, bb.w, bb.h);
+  ctx.font = 'bold 20px system-ui'; ctx.fillStyle = '#08140c';
+  ctx.fillText('BACK', GAME_W / 2, bb.y + 33);
+}
+
+function wrapText(text, x, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '', yy = y;
+  for (const w of words) {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxW && line) {
+      ctx.fillText(line, x, yy); line = w; yy += lineH;
+    } else line = test;
+  }
+  if (line) ctx.fillText(line, x, yy);
 }
 
 function drawLevelUp() {
@@ -803,25 +1176,45 @@ function drawGameOver() {
   ctx.fillText(`Score: ${score}`, GAME_W / 2, 225);
   ctx.font = '18px system-ui'; ctx.fillStyle = '#ffd76a';
   ctx.fillText(`Depth ${depth} · Level ${hero.lvl} · ${gold} gold${score >= best ? '  —  NEW BEST!' : ''}`, GAME_W / 2, 258);
+  ctx.font = 'bold 20px system-ui'; ctx.fillStyle = '#8ad0ff';
+  ctx.fillText(`♦ +${runSouls} souls banked  (total ${meta.souls})`, GAME_W / 2, 292);
   buttons = [];
   let by = 320;
+  if (runSouls > 0 && !soulsDoubled) {
+    const bw = 320, bh = 52, bx = GAME_W / 2 - bw / 2;
+    buttons.push({ x: bx, y: by, w: bw, h: bh, id: 'x2souls' });
+    ctx.fillStyle = adBusy ? 'rgba(60,90,120,0.5)' : 'rgba(138,208,255,0.85)';
+    ctx.fillRect(bx, by, bw, bh);
+    ctx.strokeStyle = '#d8f0ff'; ctx.strokeRect(bx + 0.5, by + 0.5, bw - 1, bh - 1);
+    ctx.font = 'bold 20px system-ui'; ctx.fillStyle = '#04141f';
+    ctx.fillText('▶ x2 SOULS (watch ad)', GAME_W / 2, by + 34);
+    by += 68;
+  }
   if (!resurrectUsed) {
-    const bw = 320, bh = 60, bx = GAME_W / 2 - bw / 2;
+    const bw = 320, bh = 52, bx = GAME_W / 2 - bw / 2;
     buttons.push({ x: bx, y: by, w: bw, h: bh, id: 'resurrect' });
     ctx.fillStyle = adBusy ? 'rgba(120,100,40,0.5)' : 'rgba(255,215,106,0.9)';
     ctx.fillRect(bx, by, bw, bh);
     ctx.strokeStyle = '#fff0c0'; ctx.strokeRect(bx + 0.5, by + 0.5, bw - 1, bh - 1);
-    ctx.font = 'bold 22px system-ui'; ctx.fillStyle = '#241a04';
-    ctx.fillText('▶ RESURRECT (watch ad)', GAME_W / 2, by + 38);
-    by += 84;
+    ctx.font = 'bold 20px system-ui'; ctx.fillStyle = '#241a04';
+    ctx.fillText('▶ RESURRECT (watch ad)', GAME_W / 2, by + 34);
+    by += 68;
   }
-  const bw = 320, bh = 60, bx = GAME_W / 2 - bw / 2;
+  const bw = 320, bh = 56, bx = GAME_W / 2 - bw / 2;
   buttons.push({ x: bx, y: by, w: bw, h: bh, id: 'again' });
   ctx.fillStyle = adBusy ? 'rgba(50,100,60,0.5)' : 'rgba(90,200,120,0.9)';
   ctx.fillRect(bx, by, bw, bh);
   ctx.strokeStyle = '#d0ffdd'; ctx.strokeRect(bx + 0.5, by + 0.5, bw - 1, bh - 1);
   ctx.font = 'bold 24px system-ui'; ctx.fillStyle = '#08140c';
-  ctx.fillText('PLAY AGAIN', GAME_W / 2, by + 39);
+  ctx.fillText('PLAY AGAIN', GAME_W / 2, by + 37);
+  by += 72;
+  // soul shop shortcut from death screen
+  buttons.push({ x: GAME_W / 2 - 130, y: by, w: 260, h: 44, id: 'shop' });
+  ctx.fillStyle = 'rgba(138,208,255,0.16)';
+  ctx.fillRect(GAME_W / 2 - 130, by, 260, 44);
+  ctx.strokeStyle = '#8ad0ff'; ctx.strokeRect(GAME_W / 2 - 129.5, by + 0.5, 259, 43);
+  ctx.font = 'bold 17px system-ui'; ctx.fillStyle = '#8ad0ff';
+  ctx.fillText('♦ SPEND SOULS', GAME_W / 2, by + 29);
 }
 
 // ---------- debug hook ----------
@@ -864,6 +1257,11 @@ if (new URLSearchParams(location.search).has('debug')) {
         potions: hero ? hero.potions : 0,
         monstersNearby: near, stairsDir: sd,
         resurrectUsed,
+        runSouls, souls: meta.souls, selectedClass: meta.selectedClass,
+        classes: meta.classes.slice(), upgrades: Object.assign({}, meta.upgrades),
+        bestDepth: meta.bestDepth, streak: meta.streak.count, dailyBonus,
+        bestiaryCount: Object.keys(meta.bestiary).length,
+        altarCount: altars ? altars.length : 0, soulGemCount: soulGems ? soulGems.length : 0,
       };
     },
     move: (dx, dy) => tryMove(dx, dy),
@@ -872,6 +1270,16 @@ if (new URLSearchParams(location.search).has('debug')) {
     startGame: () => { if (state === 'menu') startGame(); },
     playAgain,
     resurrect,
+    doubleSouls,
+    openShop: () => { if (state === 'menu' || state === 'gameover') { state = 'shop'; shopTab = 'upgrades'; } },
+    openBestiary: () => { if (state === 'menu') state = 'bestiary'; },
+    closeOverlay: () => { if (state === 'shop' || state === 'bestiary') state = 'menu'; },
+    setShopTab: (t) => { shopTab = t; },
+    buyUpgrade: (id) => buyUpgrade(id),
+    buyClass: (id) => buyClass(id),
+    selectClass: (id) => selectClass(id),
+    addSouls: (n) => addSouls(n),
+    grantSouls: (n) => { runSouls += n; },
   };
 }
 
@@ -888,6 +1296,8 @@ function loop(t) {
   await initSDK();
   loadingStart();
   best = loadBest();
+  loadMeta();
+  dailyBonus = checkDailyStreak();
   sfx.setMuted(getMuteSetting());
   onSettingsChange((s) => { if (s && typeof s.muteAudio === 'boolean') sfx.setMuted(s.muteAudio); });
   hero = { x: 0, y: 0 }; // placeholder before first run
