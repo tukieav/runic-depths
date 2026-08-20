@@ -14,12 +14,16 @@ generated — rooms, corridors, flickering torches and secrets hidden in the fog
 
 **Features**
 - Turn-based tactics: every step you take, the monsters move too
-- Fight goblins, skeletons, ogres — and a Depth Lord boss every 3rd floor
+- 7 monster types: goblins, cave bats, skeletons, ranged cultists, ogres, wall-phasing wraiths — and a Depth Lord boss every 3rd floor
 - Loot chests for gold, HP potions and 5 tiers of weapons & armor
 - Level up and pick 1 of 3 upgrade cards (+HP / +ATK / +DEF) to shape your build
+- Special rooms: guarded treasure vaults and risk/reward dark altars
+- META-PROGRESSION: collect soul gems, spend them in the Soul Shop on permanent upgrades (Vitality, Might, Alchemist, Fortune) and unlock 3 playable classes (Knight, Rogue, Runemage)
+- Bestiary tracking every creature you slay + deepest-depth records
+- Daily login streak bonus (growing soul rewards)
 - Fog of war with memory — explored rooms stay on your minimap
 - Endless descent: the deeper you go, the deadlier it gets. Score = depth × 100 + gold + XP
-- Watch an ad to RESURRECT once per run and keep your streak alive
+- Watch an ad to RESURRECT once per run, or DOUBLE the souls you banked
 
 **How to play**
 - Move with WASD / arrow keys, or tap/click a tile next to your hero
@@ -35,11 +39,11 @@ Mouse / touch: tap adjacent tile to move/attack, tap buttons for potion/cards.
 - `SDK.init()` before boot (with timeout race for non-CG domains)
 - `game.loadingStart/loadingStop` around boot
 - `game.gameplayStart/gameplayStop` at play/restart/game-over/ads
-- Midgame ad on PLAY AGAIN; rewarded ad = RESURRECT (50% HP, once per run)
+- Midgame ad on PLAY AGAIN; rewarded ads = RESURRECT (50% HP, once per run) + x2 SOULS on death screen
 - Audio muted + game paused during ads (adStarted/adFinished callbacks)
 - Respects `game.settings.muteAudio` + addSettingsChangeListener
-- `game.happytime()` on level-up and boss kill
-- Best score via `data.setItem/getItem` with localStorage fallback
+- `game.happytime()` on level-up, boss kill, class unlock, depth record (client-side throttled)
+- Best score AND full meta-progression (souls, upgrades, classes, bestiary, streak) via `data.setItem/getItem` with localStorage fallback
 - Live demo: https://tukieav.github.io/runic-depths/
 
 ## Save progress answer
