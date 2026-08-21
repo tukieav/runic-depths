@@ -1883,6 +1883,7 @@ if (new URLSearchParams(location.search).has('debug')) {
     buyClass: (id) => buyClass(id),
     selectClass: (id) => selectClass(id),
     addSouls: (n) => addSouls(n),
+    grantXp: (n) => gainXp(Math.max(0, Number(n) || 0)),
     grantSouls: (n) => { runSouls += n; },
     timingProbe: (hz) => {
       let bump = 1, particleLife = 0.6, elapsed = 0;

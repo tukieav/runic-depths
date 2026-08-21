@@ -40,10 +40,12 @@ check('movement works', st.heroX !== before.x || st.heroY !== before.y, `${befor
 
 // A committed turn locks all actions until its response animation resolves.
 await page.evaluate(() => window.__astro.setHeroHp(10));
-const potionsBeforeResolve = st.potions;
-await page.evaluate(() => { const s = window.__astro.getState(); window.__astro.move(s.stairsDir.dx, s.stairsDir.dy); window.__astro.usePotion(); });
+await page.evaluate(() => { const s = window.__astro.getState(); window.__astro.move(s.stairsDir.dx, s.stairsDir.dy); });
 let resolving = await page.evaluate(() => window.__astro.getState());
-check('resolving turn blocks potion input', resolving.turnPhase === 'resolving' && resolving.potions === potionsBeforeResolve, resolving.turnPhase);
+const potionsDuringResolve = resolving.potions;
+await page.evaluate(() => window.__astro.usePotion());
+resolving = await page.evaluate(() => window.__astro.getState());
+check('resolving turn blocks potion input', resolving.turnPhase === 'resolving' && resolving.potions === potionsDuringResolve, `${resolving.turnPhase}; ${potionsDuringResolve}->${resolving.potions}`);
 await page.waitForTimeout(150);
 await page.evaluate(() => window.__astro.setHeroHp(999));
 st = await page.evaluate(() => window.__astro.getState());
@@ -87,7 +89,20 @@ for (let i = 0; i < 900; i++) {
 }
 check('combat happened', combatSeen);
 check('damage reduces monster hp', dmgDealt);
-check('level-up card flow', levelupSeen, levelupSeen ? '' : 'no level-up during run (may need more XP)');
+// The random floor may not contain enough XP before stairs. Exercise the real
+// gainXp -> showLevelCards path deterministically instead of making the gate flaky.
+if (!levelupSeen && st.state === 'playing') {
+  await page.evaluate(() => window.__astro.grantXp(999));
+  await page.waitForTimeout(60);
+  st = await page.evaluate(() => window.__astro.getState());
+  levelupSeen = st.state === 'levelup';
+  if (levelupSeen) {
+    await page.evaluate(() => window.__astro.pickCard(0));
+    await page.waitForTimeout(60);
+    st = await page.evaluate(() => window.__astro.getState());
+  }
+}
+check('level-up card flow', levelupSeen, levelupSeen ? '' : 'real gainXp path did not open level-up');
 check('reached depth 2 (stairs work)', reachedDepth2, 'depth=' + st.depth);
 
 // death test
