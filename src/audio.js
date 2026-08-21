@@ -20,6 +20,14 @@ export function setMuted(m) {
 
 export function unlockAudio() { ensureCtx(); }
 
+export function pauseAudio() {
+  if (ctx && ctx.state === 'running') ctx.suspend().catch(() => {});
+}
+
+export function resumeAudio() {
+  if (!muted && ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+}
+
 function tone(freq, dur, type, vol, delay = 0) {
   if (muted || !ctx) return;
   const t0 = ctx.currentTime + delay;

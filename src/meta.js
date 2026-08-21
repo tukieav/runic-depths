@@ -47,11 +47,20 @@ export function loadMeta() {
   if (raw) {
     try {
       const m = JSON.parse(raw);
+      if (!m || typeof m !== 'object' || Array.isArray(m)) throw new Error('invalid meta shape');
       meta = Object.assign(defaultMeta(), m);
       meta.upgrades = Object.assign(defaultMeta().upgrades, m.upgrades || {});
       meta.streak = Object.assign(defaultMeta().streak, m.streak || {});
+      meta.souls = Math.max(0, Number(meta.souls) || 0);
+      meta.bestDepth = Math.max(0, Number(meta.bestDepth) || 0);
+      meta.totalRuns = Math.max(0, Number(meta.totalRuns) || 0);
+      meta.totalKills = Math.max(0, Number(meta.totalKills) || 0);
+      meta.classes = Array.isArray(meta.classes) ? meta.classes.filter(id => CLASSES[id]) : ['knight'];
+      meta.bestiary = meta.bestiary && typeof meta.bestiary === 'object' ? meta.bestiary : {};
       if (!meta.classes.includes('knight')) meta.classes.push('knight');
       if (!meta.classes.includes(meta.selectedClass)) meta.selectedClass = 'knight';
+      // Persist normalized saves so older/incomplete records migrate on their next load.
+      saveMeta();
     } catch (e) { meta = defaultMeta(); }
   }
   return meta;
