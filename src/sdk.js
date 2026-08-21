@@ -1,6 +1,8 @@
 // CrazyGames SDK v3 wrapper — safe no-op fallbacks when SDK unavailable (local dev)
 let sdk = null;
 let inited = false;
+let gameplayActive = false;
+let lastGameplayBoundary = 0;
 
 export async function initSDK() {
   try {
@@ -23,10 +25,20 @@ export async function initSDK() {
 export function sdkAvailable() { return inited; }
 
 export function gameplayStart() {
+  if (gameplayActive) return;
+  gameplayActive = true;
+  const now = Date.now();
+  if (now - lastGameplayBoundary < 1000) return;
+  lastGameplayBoundary = now;
   try { if (sdk) sdk.game.gameplayStart(); } catch (e) {}
 }
 
 export function gameplayStop() {
+  if (!gameplayActive) return;
+  gameplayActive = false;
+  const now = Date.now();
+  if (now - lastGameplayBoundary < 1000) return;
+  lastGameplayBoundary = now;
   try { if (sdk) sdk.game.gameplayStop(); } catch (e) {}
 }
 
@@ -49,7 +61,9 @@ export function happytime() {
 // Returns a promise resolving to true if the ad finished (grant reward), false otherwise.
 export function requestAd(type, { onStart, onFinish } = {}) {
   return new Promise((resolve) => {
-    if (!sdk) { resolve(type !== 'rewarded'); return; } // local dev: midgame "succeeds", rewarded fails
+    // Local development has no ad surface. Resolve the callback path so QA can
+    // exercise rewarded recovery without making a real SDK request.
+    if (!sdk) { if (onStart) onStart(); if (onFinish) onFinish(); resolve(true); return; }
     const callbacks = {
       adStarted: () => { if (onStart) onStart(); },
       adFinished: () => { if (onFinish) onFinish(); resolve(true); },

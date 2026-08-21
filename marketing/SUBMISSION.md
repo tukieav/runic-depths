@@ -1,55 +1,44 @@
-# Runic Depths — CrazyGames Submission
+# Runic Depths — CrazyGames submission
 
-**Name:** Runic Depths
-**Category:** Adventure / RPG (Casual)
-**Tags:** dungeon, crawler, turn-based, rpg, roguelike, loot, pixel, casual
-**Age rating:** All ages (mild fantasy combat, no blood/gore)
+**Name:** Runic Depths  
+**Primary category:** Adventure (`/c/adventure`)  
+**Secondary discovery paths:** RPG, Roguelike  
+**Verified tags:** RPG, Roguelike, Turn-Based, Monster, Pixel, 2D, Magic, Deep Progress  
+**Age rating:** PEGI 12 (mild fantasy combat; no blood or gore)  
+**Live URL:** https://tukieav.github.io/runic-depths/
 
-## Short description (~140 chars)
-Descend into procedurally generated dungeons! Turn-based combat, epic loot, level-up builds and fog of war. How deep can you go?
+## Short description
 
-## Full description (EN)
-Runic Depths is a bite-sized turn-based dungeon crawler. Every floor is procedurally
-generated — rooms, corridors, flickering torches and secrets hidden in the fog of war.
+Explore torch-lit procedural dungeons, outsmart monsters in turn-based combat, and build a persistent hero across runs.
 
-**Features**
-- Turn-based tactics: every step you take, the monsters move too
-- 7 monster types: goblins, cave bats, skeletons, ranged cultists, ogres, wall-phasing wraiths — and a Depth Lord boss every 3rd floor
-- Loot chests for gold, HP potions and 5 tiers of weapons & armor
-- Level up and pick 1 of 3 upgrade cards (+HP / +ATK / +DEF) to shape your build
-- Special rooms: guarded treasure vaults and risk/reward dark altars
-- META-PROGRESSION: collect soul gems, spend them in the Soul Shop on permanent upgrades (Vitality, Might, Alchemist, Fortune) and unlock 3 playable classes (Knight, Rogue, Runemage)
-- Bestiary tracking every creature you slay + deepest-depth records
-- Daily login streak bonus (growing soul rewards)
-- Fog of war with memory — explored rooms stay on your minimap
-- Endless descent: the deeper you go, the deadlier it gets. Score = depth × 100 + gold + XP
-- Watch an ad to RESURRECT once per run, or DOUBLE the souls you banked
+## Full description
 
-**How to play**
-- Move with WASD / arrow keys, or tap/click a tile next to your hero
-- Walk into a monster to attack it
-- Q (or tap the potion button) drinks an HP potion
-- Find the glowing stairs to descend to the next floor
+Descend through procedurally generated ruins where every step advances the world. Read whose turn it is, inspect enemy move, melee, and ranged intents, and choose a safe route through limited vision. Loot equipment, find healing resources, break rune pillars to open a better position, and reach the glowing stairs before the dungeon closes in.
+
+Choose a class, discover monsters in the Bestiary, and carry Soul Gems into permanent upgrades between expeditions. Chests, vaults, altars, randomized level-up choices, evolving dungeon biomes, and a Depth Lord on every third floor keep each tactical descent different.
+
+## Features
+
+- Turn-based movement and bump-to-attack combat with a clear player/enemy resolving state
+- Enemy intent labels (MOVE, MELEE, BOLT), cyan selected-path feedback, and an in-world first-room hint
+- Destructible rune pillars that block routes for both heroes and monsters until broken
+- Procedural floors with fog of war, torches, chests, potions, gold, Soul Gems, vaults, altars, and boss floors
+- Seven monster types, persistent Bestiary, classes, Soul Shop upgrades, depth records, and daily streak rewards
+- Reduced-motion support, readable contrast, touch controls, and bounded effects for long sessions
 
 ## Controls
-Keyboard: WASD / arrows = move & attack, Q = potion, 1/2/3 = pick level-up card.
-Mouse / touch: tap adjacent tile to move/attack, tap buttons for potion/cards.
 
-## QA notes (SDK v3 Full Implementation)
-- `SDK.init()` before boot (with timeout race for non-CG domains)
-- `game.loadingStart/loadingStop` around boot
-- `game.gameplayStart/gameplayStop` at play/restart/game-over/ads
-- Midgame ad on PLAY AGAIN; rewarded ads = RESURRECT (50% HP, once per run) + x2 SOULS on death screen
-- Audio muted + game paused during ads (adStarted/adFinished callbacks)
-- Respects `game.settings.muteAudio` + addSettingsChangeListener
-- `game.happytime()` on level-up, boss kill, class unlock, depth record (client-side throttled)
-- Best score AND full meta-progression (souls, upgrades, classes, bestiary, streak) via `data.setItem/getItem` with localStorage fallback
-- Live demo: https://tukieav.github.io/runic-depths/
+Desktop: WASD or arrow keys move/attack; Q drinks a potion; 1/2/3 picks a level-up card; click an adjacent tile to move or attack.  
+Mobile: tap an adjacent tile to move or attack; tap the potion and level-up controls. Controls remain at least 44 CSS px where applicable.
 
-## Save progress answer
-"Yes, using the Data Module from the CrazyGames SDK"
+## SDK, data, and ad behavior
 
-## Game options
-- [x] supports mobile devices
-- [x] supports CrazyGames muting audio through SDK
-- [ ] online multiplayer
+- CrazyGames SDK v3 initializes with a safe timeout; loading starts after initialization.
+- `gameplayStart`/`gameplayStop` follow active play boundaries; visibility, focus, and ad events pause/resume input, simulation, and audio once.
+- CrazyGames mute settings are respected. `happytime` is throttled.
+- Save data includes score and meta-progression via the Data Module with localStorage fallback; malformed or older saves safely normalize or fall back.
+- A rewarded resurrection or Soul Gem multiplier may be offered after death. Restart is immediate and never requires an ad.
+
+## Quality-resubmission note
+
+This resubmission adds deterministic turn/animation gates, all required DPR=1 viewport checks, seeded first-floor safety tests, lifecycle handling, a 120-second accelerated soak gate, tactical intent UI, destructible rune-pillar routing, and refreshed gameplay media.

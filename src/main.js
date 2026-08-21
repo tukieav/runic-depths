@@ -15,6 +15,8 @@ const MIN_TILES_Y = 15.5; // vertical tiles always visible — horizontal grows 
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
+const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+const motionScale = () => reducedMotionQuery.matches ? 0.35 : 1;
 
 function fitCanvas() {
   const ww = Math.max(320, window.innerWidth), wh = Math.max(240, window.innerHeight);
@@ -66,7 +68,7 @@ const MONSTER_TYPES = {
 // ---------- state ----------
 let state = 'boot'; // boot, menu, shop, bestiary, playing, levelup, gameover
 let map, explored, visible, rooms;
-let hero, monsters, chests, potionsOnFloor, goldPiles, soulGems, altars, stairs;
+let hero, monsters, chests, potionsOnFloor, goldPiles, soulGems, altars, stairs, runePillars;
 let depth, gold, score, best = 0;
 let runSouls = 0, soulsDoubled = false, soulsBanked = 0;
 let dailyBonus = 0;
@@ -83,11 +85,25 @@ let msgLog = [];
 let torchList = []; // visible torch tiles for lighting
 let decos = []; // room decorations: {x,y,kind,v}
 let displayHp = 0, displayXp = 0; // animated bar drain
+let turnPhase = 'player'; // player | resolving | paused
+let resolvingTimer = null;
+let resolutionDelay = 120;
+let paused = false;
+let frameDt = 0;
+let selectedPath = null;
+let floorSeed = 0;
+const MAX_PARTICLES = 240, MAX_FLOATERS = 40, MAX_RINGS = 12;
+
+function seededRandom(seed) {
+  let v = (seed >>> 0) || 1;
+  return () => { v += 0x6D2B79F5; let t = v; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+}
 
 function logMsg(t, color) { msgLog.push({ t, color: color || '#cfc9b8', life: 4 }); if (msgLog.length > 4) msgLog.shift(); }
 
 // ---------- dungeon generation ----------
-function genDungeon(d) {
+function genDungeon(d, seed = Date.now()) {
+  const random = seededRandom(seed + d * 7919);
   map = [];
   for (let y = 0; y < MAP_H; y++) { map.push(new Array(MAP_W).fill(1)); } // 1 = wall
   rooms = [];
@@ -95,8 +111,8 @@ function genDungeon(d) {
   let tries = 0;
   while (rooms.length < nRooms && tries < 300) {
     tries++;
-    const w = 4 + (Math.random() * 6 | 0), h = 4 + (Math.random() * 5 | 0);
-    const x = 1 + (Math.random() * (MAP_W - w - 2) | 0), y = 1 + (Math.random() * (MAP_H - h - 2) | 0);
+    const w = 4 + (random() * 6 | 0), h = 4 + (random() * 5 | 0);
+    const x = 1 + (random() * (MAP_W - w - 2) | 0), y = 1 + (random() * (MAP_H - h - 2) | 0);
     let ok = true;
     for (const r of rooms) {
       if (x < r.x + r.w + 1 && x + w + 1 > r.x && y < r.y + r.h + 1 && y + h + 1 > r.y) { ok = false; break; }
@@ -116,7 +132,7 @@ function genDungeon(d) {
   // torches on wall tiles adjacent to floor — dense enough to light rooms every few tiles
   torchList = [];
   for (let y = 1; y < MAP_H - 1; y++) for (let x = 1; x < MAP_W - 1; x++) {
-    if (map[y][x] === 1 && map[y + 1][x] === 0 && Math.random() < 0.2) { map[y][x] = 2; torchList.push({ x, y }); }
+    if (map[y][x] === 1 && map[y + 1][x] === 0 && random() < 0.2) { map[y][x] = 2; torchList.push({ x, y }); }
   }
   // guarantee at least 2 torches per room (rooms must never be pitch dark)
   for (const r of rooms) {
@@ -124,7 +140,7 @@ function genDungeon(d) {
     for (const t of torchList) if (t.x >= r.x - 1 && t.x <= r.x + r.w && t.y >= r.y - 2 && t.y <= r.y + r.h) count++;
     let guard = 0;
     while (count < 2 && guard++ < 60) {
-      const x = r.x + (Math.random() * r.w | 0), y = r.y - 1 + (Math.random() * (r.h + 1) | 0);
+      const x = r.x + (random() * r.w | 0), y = r.y - 1 + (random() * (r.h + 1) | 0);
       if (y >= 1 && map[y][x] === 1 && map[y + 1] && map[y + 1][x] === 0) { map[y][x] = 2; torchList.push({ x, y }); count++; }
     }
   }
@@ -132,23 +148,23 @@ function genDungeon(d) {
   decos = [];
   const DECO_KINDS = ['rubble', 'bones', 'mushroom', 'crack', 'crate', 'web', 'puddle', 'skull', 'pillar'];
   for (const r of rooms) {
-    const n = 3 + (Math.random() * 5 | 0);
+    const n = 3 + (random() * 5 | 0);
     let placed = 0, guard = 0;
     while (placed < n && guard++ < 50) {
-      const x = r.x + (Math.random() * r.w | 0), y = r.y + (Math.random() * r.h | 0);
+      const x = r.x + (random() * r.w | 0), y = r.y + (random() * r.h | 0);
       if (map[y][x] !== 0) continue;
       if (decos.some(dd => dd.x === x && dd.y === y)) continue;
-      let kind = DECO_KINDS[Math.random() * DECO_KINDS.length | 0];
+      let kind = DECO_KINDS[random() * DECO_KINDS.length | 0];
       // pillars only in rooms >= 5x5 and away from edges
       if (kind === 'pillar' && (r.w < 5 || r.h < 5 || x <= r.x || x >= r.x + r.w - 1 || y <= r.y || y >= r.y + r.h - 1)) kind = 'rubble';
-      decos.push({ x, y, kind, v: Math.random() });
+      decos.push({ x, y, kind, v: random() });
       placed++;
     }
   }
   // corridor rubble sprinkles
   for (let y = 1; y < MAP_H - 1; y++) for (let x = 1; x < MAP_W - 1; x++) {
-    if (map[y][x] === 0 && Math.random() < 0.03 && !rooms.some(r => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h) && !decos.some(dd => dd.x === x && dd.y === y)) {
-      decos.push({ x, y, kind: Math.random() < 0.5 ? 'rubble' : 'crack', v: Math.random() });
+    if (map[y][x] === 0 && random() < 0.03 && !rooms.some(r => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h) && !decos.some(dd => dd.x === x && dd.y === y)) {
+      decos.push({ x, y, kind: random() < 0.5 ? 'rubble' : 'crack', v: random() });
     }
   }
   explored = [];
@@ -169,14 +185,14 @@ function genDungeon(d) {
   stairs = { x: far.cx, y: far.cy };
 
   // populate
-  monsters = []; chests = []; potionsOnFloor = []; goldPiles = []; soulGems = []; altars = [];
+  monsters = []; chests = []; potionsOnFloor = []; goldPiles = []; soulGems = []; altars = []; runePillars = [];
   const isBossDepth = d % 3 === 0;
   // special rooms: pick 1-2 non-start, non-stairs rooms
   const specials = [];
   const candidates = rooms.slice(1).filter(r => r !== far);
-  shuffle(candidates);
+  shuffle(candidates, random);
   if (d >= 2 && candidates.length > 0) specials.push({ room: candidates[0], kind: 'vault' });    // guarded treasure vault
-  if (d >= 3 && candidates.length > 1 && Math.random() < 0.6) specials.push({ room: candidates[1], kind: 'altar' }); // risk/reward altar
+  if (d >= 3 && candidates.length > 1 && random() < 0.6) specials.push({ room: candidates[1], kind: 'altar' }); // risk/reward altar
   for (let i = 1; i < rooms.length; i++) {
     const r = rooms[i];
     const special = specials.find(s => s.room === r);
@@ -184,12 +200,12 @@ function genDungeon(d) {
     for (let yy = r.y; yy < r.y + r.h; yy++) for (let xx = r.x; xx < r.x + r.w; xx++) {
       if (!(xx === stairs.x && yy === stairs.y)) spots.push({ x: xx, y: yy });
     }
-    shuffle(spots);
+    shuffle(spots, random);
     let si = 0;
     if (special && special.kind === 'vault') {
       // treasure vault: 2 chests + gold, guarded by 2 tough monsters
       for (let c = 0; c < 2 && si < spots.length; c++) { chests.push({ x: spots[si].x, y: spots[si].y, opened: false }); si++; }
-      if (si < spots.length) { goldPiles.push({ x: spots[si].x, y: spots[si].y, amt: 20 + (Math.random() * 15 * d | 0) }); si++; }
+      if (si < spots.length) { goldPiles.push({ x: spots[si].x, y: spots[si].y, amt: 20 + (random() * 15 * d | 0) }); si++; }
       for (let m = 0; m < 2 && si < spots.length; m++) {
         spawnMonster(d >= 4 && m === 0 ? 'wraith' : d >= 2 ? 'ogre' : 'skeleton', spots[si].x, spots[si].y, d);
         si++;
@@ -201,15 +217,15 @@ function genDungeon(d) {
     }
     // difficulty curve: gentle at depth 1-2, ramps after
     const monCap = d <= 1 ? 2 : d === 2 ? 2 : 3;
-    const nMon = (d <= 1 ? 0 : 1) + (Math.random() * Math.min(monCap, 1 + d * 0.45) | 0);
+    const nMon = (d <= 1 ? 0 : 1) + (random() * Math.min(monCap, 1 + d * 0.45) | 0);
     for (let m = 0; m < nMon && si < spots.length; m++) {
-      spawnMonster(rollMonsterType(d), spots[si].x, spots[si].y, d);
+      spawnMonster(rollMonsterType(d, random), spots[si].x, spots[si].y, d);
       si++;
     }
-    if (Math.random() < 0.55 && si < spots.length) { chests.push({ x: spots[si].x, y: spots[si].y, opened: false }); si++; }
-    if (Math.random() < 0.3 && si < spots.length) { potionsOnFloor.push({ x: spots[si].x, y: spots[si].y }); si++; }
-    if (Math.random() < 0.4 && si < spots.length) { goldPiles.push({ x: spots[si].x, y: spots[si].y, amt: 5 + (Math.random() * 10 * d | 0) }); si++; }
-    if (Math.random() < 0.25 && si < spots.length) { soulGems.push({ x: spots[si].x, y: spots[si].y, amt: 1 + (Math.random() * (1 + d * 0.4) | 0) }); si++; }
+    if (random() < 0.55 && si < spots.length) { chests.push({ x: spots[si].x, y: spots[si].y, opened: false }); si++; }
+    if (random() < 0.3 && si < spots.length) { potionsOnFloor.push({ x: spots[si].x, y: spots[si].y }); si++; }
+    if (random() < 0.4 && si < spots.length) { goldPiles.push({ x: spots[si].x, y: spots[si].y, amt: 5 + (random() * 10 * d | 0) }); si++; }
+    if (random() < 0.25 && si < spots.length) { soulGems.push({ x: spots[si].x, y: spots[si].y, amt: 1 + (random() * (1 + d * 0.4) | 0) }); si++; }
   }
   if (isBossDepth) {
     // boss guards the stairs room
@@ -217,6 +233,9 @@ function genDungeon(d) {
     // boss floors always drop a soul gem cluster near stairs
     soulGems.push({ x: far.cx - 1, y: far.cy, amt: 3 + d });
   }
+  // The opening cannot place a monster within four moves of the hero; the first
+  // room teaches reading intent and routes before it demands a fight.
+  if (d === 1) monsters = monsters.filter(m => Math.abs(m.x - hero.x) + Math.abs(m.y - hero.y) > 4);
   // rich first impression: the starting room always has visible loot
   {
     const spots = [];
@@ -226,16 +245,27 @@ function genDungeon(d) {
         spots.push({ x: xx, y: yy });
       }
     }
-    shuffle(spots);
+    shuffle(spots, random);
     if (spots[0] && !chests.some(c => c.x === spots[0].x && c.y === spots[0].y)) chests.push({ x: spots[0].x, y: spots[0].y, opened: false });
-    if (spots[1]) goldPiles.push({ x: spots[1].x, y: spots[1].y, amt: 6 + (Math.random() * 8 | 0) });
-    if (spots[2] && d === 1) soulGems.push({ x: spots[2].x, y: spots[2].y, amt: 1 });
+    if (spots[1]) goldPiles.push({ x: spots[1].x, y: spots[1].y, amt: 6 + (random() * 8 | 0) });
+    // Fair first floor: a reachable healing resource is always in the pre-explored start room.
+    if (spots[2] && d === 1) potionsOnFloor.push({ x: spots[2].x, y: spots[2].y });
+    if (spots[3] && d === 1) soulGems.push({ x: spots[3].x, y: spots[3].y, amt: 1 });
+  }
+  // A destructible rune pillar changes routing in a later room without sealing a corridor.
+  const pillarRoom = rooms.slice(1).find(r => r !== far && r.w >= 5 && r.h >= 5);
+  if (pillarRoom) {
+    const px = pillarRoom.cx, py = pillarRoom.cy;
+    if (map[py][px] === 0 && !monsters.some(m => m.x === px && m.y === py)) {
+      map[py][px] = 3;
+      runePillars.push({ x: px, y: py, hp: 2, maxHp: 2 });
+    }
   }
   updateVisibility();
 }
 
-function rollMonsterType(d) {
-  const roll = Math.random();
+function rollMonsterType(d, random = Math.random) {
+  const roll = random();
   if (d <= 1) return roll < 0.7 ? 'goblin' : 'bat';
   if (d === 2) return roll < 0.4 ? 'goblin' : roll < 0.6 ? 'bat' : roll < 0.9 ? 'skeleton' : 'cultist';
   if (d <= 4) return roll < 0.25 ? 'goblin' : roll < 0.4 ? 'bat' : roll < 0.65 ? 'skeleton' : roll < 0.82 ? 'cultist' : 'ogre';
@@ -255,7 +285,7 @@ function spawnMonster(type, x, y, d) {
   });
 }
 
-function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function shuffle(a, random = Math.random) { for (let i = a.length - 1; i > 0; i--) { const j = random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
 // ---------- visibility (fog of war) ----------
 function losClear(x0, y0, x1, y1) {
@@ -285,7 +315,7 @@ function updateVisibility() {
 }
 
 // ---------- hero / run ----------
-function newRun() {
+function newRun(seed = (Date.now() ^ (Math.random() * 0xffffffff)) >>> 0) {
   const s = startingHero();
   hero = {
     x: 0, y: 0, hp: s.maxHp, maxHp: s.maxHp, baseAtk: s.baseAtk, baseDef: s.baseDef,
@@ -297,9 +327,13 @@ function newRun() {
   depth = 1; gold = 0; score = 0; turnCount = 0;
   runSouls = 0; soulsDoubled = false; soulsBanked = 0;
   resurrectUsed = false;
+  turnPhase = 'player';
+  selectedPath = null;
+  floorSeed = seed >>> 0;
+  if (resolvingTimer) { clearTimeout(resolvingTimer); resolvingTimer = null; }
   floaters = []; particles = []; msgLog = [];
-  genDungeon(depth);
-  logMsg('Depth 1 — find the stairs!', '#ffd76a');
+  genDungeon(depth, floorSeed);
+  logMsg('Your turn — follow the cyan path. Enemy icons show their next action.', '#8ad0ff');
 }
 
 function heroAtk() { return hero.baseAtk + WEAPONS[hero.weapon].atk; }
@@ -309,11 +343,17 @@ function calcScore() { return depth * 100 + gold + hero.xp + (hero.lvl - 1) * 20
 
 // ---------- turn logic ----------
 function tryMove(dx, dy) {
-  if (state !== 'playing' || adBusy) return;
+  if (state !== 'playing' || adBusy || paused || turnPhase !== 'player') return;
   if (dx === 0 && dy === 0) return;
   const nx = hero.x + dx, ny = hero.y + dy;
   if (nx < 0 || ny < 0 || nx >= MAP_W || ny >= MAP_H) return;
   const mon = monsters.find(m => m.x === nx && m.y === ny);
+  const pillar = runePillars && runePillars.find(p => p.x === nx && p.y === ny);
+  if (pillar) {
+    attackPillar(pillar, dx, dy);
+    endPlayerTurn();
+    return;
+  }
   if (!mon && map[ny][nx] !== 0) return;
   if (mon) {
     if (dx !== 0) hero.face = Math.sign(dx);
@@ -327,6 +367,20 @@ function tryMove(dx, dy) {
     if (nx === stairs.x && ny === stairs.y) { descend(); return; }
   }
   endPlayerTurn();
+}
+
+function attackPillar(pillar, dx, dy) {
+  pillar.hp--;
+  hero.bump = 1; hero.bumpDx = dx * 0.5; hero.bumpDy = dy * 0.5;
+  sfx.swordSound();
+  burstSparks(pillar.x, pillar.y, 8);
+  addFloater(pillar.x, pillar.y, pillar.hp > 0 ? 'RUNE CRACKS' : 'PATH OPEN', '#c88aff');
+  if (pillar.hp <= 0) {
+    map[pillar.y][pillar.x] = 0;
+    runePillars.splice(runePillars.indexOf(pillar), 1);
+    burstParticles(pillar.x, pillar.y, '#c88aff', 20);
+    logMsg('Rune pillar shattered — a new route opens.', '#c88aff');
+  } else logMsg('Rune pillar: one strike remains.', '#c88aff');
 }
 
 function pickupAt(x, y) {
@@ -469,7 +523,7 @@ function pickCard(c) {
 }
 
 function usePotion() {
-  if (state !== 'playing' || hero.potions <= 0 || hero.hp >= hero.maxHp) return;
+  if (state !== 'playing' || paused || turnPhase !== 'player' || hero.potions <= 0 || hero.hp >= hero.maxHp) return;
   hero.potions--;
   const heal = hero.healAmt || 30;
   hero.hp = Math.min(hero.maxHp, hero.hp + heal);
@@ -483,17 +537,40 @@ function descend() {
   sfx.stairsSound();
   score = calcScore();
   logMsg('Depth ' + depth + ' — deeper and deadlier...', '#ffd76a');
-  genDungeon(depth);
+  floorSeed = (floorSeed + 0x9e3779b9) >>> 0;
+  genDungeon(depth, floorSeed);
   doShake(5);
   endPlayerTurn(true);
 }
 
 function endPlayerTurn(skipMonsters) {
-  turnCount++;
+  turnPhase = 'resolving';
   score = calcScore();
-  if (!skipMonsters) monstersAct();
-  updateVisibility();
-  if (hero.hp <= 0) die();
+  // Keep the committed hit, loot, and move readable before the enemy response.
+  resolvingTimer = setTimeout(() => {
+    resolvingTimer = null;
+    if (paused || state !== 'playing') return;
+    turnCount++;
+    if (!skipMonsters) monstersAct();
+    updateVisibility();
+    if (hero.hp <= 0) { die(); return; }
+    turnPhase = 'player';
+  }, resolutionDelay);
+}
+
+function pauseRun() {
+  if (paused) return;
+  paused = true;
+  if (resolvingTimer) { clearTimeout(resolvingTimer); resolvingTimer = null; }
+  if (state === 'playing') { turnPhase = 'paused'; gameplayStop(); }
+  sfx.pauseAudio();
+}
+
+function resumeRun() {
+  if (!paused) return;
+  paused = false;
+  sfx.resumeAudio();
+  if (state === 'playing') { turnPhase = 'player'; gameplayStart(); }
 }
 
 function monstersAct() {
@@ -557,6 +634,13 @@ function stepMonster(m, dx, dy) {
   return true;
 }
 
+function monsterIntent(m) {
+  const dist = Math.abs(hero.x - m.x) + Math.abs(hero.y - m.y);
+  if (dist === 1) return { id: 'melee', label: 'MELEE', color: '#ff8a70' };
+  if (m.ranged && dist <= 4 && losClear(m.x, m.y, hero.x, hero.y) && (turnCount + 1) % 2 === 1) return { id: 'ranged', label: 'BOLT', color: '#e890d4' };
+  return { id: 'move', label: 'MOVE', color: '#9fdc7a' };
+}
+
 function die() {
   hero.hp = 0;
   state = 'gameover';
@@ -578,8 +662,8 @@ async function doubleSouls() {
   if (soulsDoubled || adBusy || runSouls <= 0) return;
   adBusy = true;
   const ok = await requestAd('rewarded', {
-    onStart: () => sfx.setMuted(true),
-    onFinish: () => sfx.setMuted(getMuteSetting()),
+    onStart: () => { pauseRun(); sfx.setMuted(true); },
+    onFinish: () => { sfx.setMuted(getMuteSetting()); resumeRun(); },
   });
   adBusy = false;
   if (ok) {
@@ -596,8 +680,8 @@ async function resurrect() {
   if (resurrectUsed || adBusy) return;
   adBusy = true;
   const ok = await requestAd('rewarded', {
-    onStart: () => sfx.setMuted(true),
-    onFinish: () => sfx.setMuted(getMuteSetting()),
+    onStart: () => { pauseRun(); sfx.setMuted(true); },
+    onFinish: () => { sfx.setMuted(getMuteSetting()); resumeRun(); },
   });
   adBusy = false;
   if (ok) {
@@ -618,36 +702,34 @@ async function resurrect() {
 }
 
 async function playAgain() {
-  if (adBusy) return;
-  adBusy = true;
-  await requestAd('midgame', {
-    onStart: () => sfx.setMuted(true),
-    onFinish: () => sfx.setMuted(getMuteSetting()),
-  });
-  adBusy = false;
   newRun();
   state = 'playing';
   gameplayStart();
 }
 
-function startGame() {
+function startGame(seed) {
   sfx.unlockAudio();
-  newRun();
+  newRun(seed);
   state = 'playing';
   gameplayStart();
 }
 
 // ---------- fx ----------
 function addFloater(tx, ty, text, color, big) {
+  if (floaters.length >= MAX_FLOATERS) floaters.splice(0, floaters.length - MAX_FLOATERS + 1);
   floaters.push({
     x: tx * TILE + TILE / 2 + (Math.random() - 0.5) * 8, y: ty * TILE,
     text, color, life: 1.25, vy: -70, vx: (Math.random() - 0.5) * 40, big: !!big,
   });
 }
+function addParticle(p) {
+  if (particles.length >= MAX_PARTICLES) particles.splice(0, particles.length - MAX_PARTICLES + 1);
+  particles.push(p);
+}
 function burstParticles(tx, ty, color, n) {
   for (let i = 0; i < n; i++) {
     const a = Math.random() * Math.PI * 2, s = 40 + Math.random() * 120;
-    particles.push({ x: tx * TILE + TILE / 2, y: ty * TILE + TILE / 2, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 0.4 + Math.random() * 0.4, color, r: 1.5 + Math.random() * 2.5 });
+    addParticle({ x: tx * TILE + TILE / 2, y: ty * TILE + TILE / 2, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 0.4 + Math.random() * 0.4, color, r: 1.5 + Math.random() * 2.5 });
   }
 }
 // combat sparks (PEGI-friendly: sparks/dust instead of blood)
@@ -655,7 +737,7 @@ function burstSparks(tx, ty, n) {
   const cx = tx * TILE + TILE / 2, cy = ty * TILE + TILE / 2;
   for (let i = 0; i < n; i++) {
     const a = Math.random() * Math.PI * 2, s = 90 + Math.random() * 200;
-    particles.push({
+    addParticle({
       x: cx, y: cy, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 40,
       life: 0.2 + Math.random() * 0.35,
       color: Math.random() < 0.5 ? '#ffe08a' : '#ff9a3c',
@@ -668,7 +750,7 @@ function deathBurst(tx, ty, color, n) {
   const cx = tx * TILE + TILE / 2, cy = ty * TILE + TILE / 2;
   for (let i = 0; i < n; i++) {
     const a = Math.random() * Math.PI * 2, s = 30 + Math.random() * 180;
-    particles.push({
+    addParticle({
       x: cx + (Math.random() - 0.5) * 16, y: cy + (Math.random() - 0.5) * 16,
       vx: Math.cos(a) * s, vy: Math.sin(a) * s - 60,
       life: 0.45 + Math.random() * 0.5,
@@ -683,11 +765,12 @@ function levelUpBurst(tx, ty) {
   const cx = tx * TILE + TILE / 2, cy = ty * TILE + TILE / 2;
   for (let i = 0; i < 34; i++) {
     const a = Math.random() * Math.PI * 2, s = 60 + Math.random() * 220;
-    particles.push({ x: cx, y: cy, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 80, life: 0.5 + Math.random() * 0.6, color: Math.random() < 0.6 ? '#ffd76a' : '#fff2c0', r: 1.5 + Math.random() * 2.5, spark: true });
+    addParticle({ x: cx, y: cy, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 80, life: 0.5 + Math.random() * 0.6, color: Math.random() < 0.6 ? '#ffd76a' : '#fff2c0', r: 1.5 + Math.random() * 2.5, spark: true });
   }
+  if (rings.length >= MAX_RINGS) rings.shift();
   rings.push({ x: cx, y: cy, r: 6, life: 0.6, color: '#ffd76a' });
 }
-function doShake(n) { shake = Math.max(shake, n); shakeT = 0.25; }
+function doShake(n) { shake = Math.max(shake, n * motionScale()); shakeT = 0.25 * motionScale(); }
 
 // ---------- input ----------
 window.addEventListener('keydown', (e) => {
@@ -755,6 +838,11 @@ function handleTap(gx, gy) {
 
 canvas.addEventListener('mousedown', (e) => { const p = gameCoords(e); handleTap(p.x, p.y); });
 canvas.addEventListener('touchstart', (e) => { e.preventDefault(); const p = gameCoords(e); handleTap(p.x, p.y); }, { passive: false });
+canvas.addEventListener('mousemove', (e) => {
+  if (state !== 'playing' || turnPhase !== 'player') return;
+  const p = gameCoords(e), tx = Math.floor((p.x + camX) / TILE), ty = Math.floor((p.y + camY) / TILE);
+  if (Math.abs(tx - hero.x) + Math.abs(ty - hero.y) === 1) selectedPath = { x: tx, y: ty };
+});
 
 // ---------- rendering ----------
 function tileShade(x, y) {
@@ -907,6 +995,7 @@ function drawDeco(dd) {
 
 function draw(dt) {
   time += dt;
+  frameDt = dt;
   // fullscreen: render in logical game space scaled to the real canvas
   ctx.setTransform(viewScale, 0, 0, viewScale, 0, 0);
   // camera
@@ -940,7 +1029,7 @@ function draw(dt) {
       const px = x * TILE, py = y * TILE;
       if (!explored[y][x]) { ctx.drawImage(gfx.voidTile, px, py); continue; }
       const sh = tileShade(x, y);
-      if (map[y][x] === 0) {
+      if (map[y][x] === 0 || map[y][x] === 3) {
         ctx.drawImage(gfx.floors[biome][(sh * 6) | 0], px, py);
       } else {
         ctx.drawImage(gfx.walls[biome][(sh * 4) | 0], px, py);
@@ -969,7 +1058,7 @@ function draw(dt) {
           ctx.beginPath(); ctx.ellipse(tx, ty - 4, 1.6, 3 * fl, 0, 0, 7); ctx.fill();
           // occasional ember particle
           if (Math.random() < dt * 6) {
-            particles.push({ x: tx + (Math.random() - 0.5) * 4, y: ty - 8, vx: (Math.random() - 0.5) * 14, vy: -24 - Math.random() * 26, life: 0.5 + Math.random() * 0.5, color: '#ffb85c', r: 1 + Math.random(), spark: true });
+            addParticle({ x: tx + (Math.random() - 0.5) * 4, y: ty - 8, vx: (Math.random() - 0.5) * 14, vy: -24 - Math.random() * 26, life: 0.5 + Math.random() * 0.5, color: '#ffb85c', r: 1 + Math.random(), spark: true });
           }
         }
       }
@@ -982,6 +1071,22 @@ function draw(dt) {
     if (dd.x < x0 - 1 || dd.x > x1 + 1 || dd.y < y0 - 1 || dd.y > y1 + 1) continue;
     if (dd.x === stairs.x && dd.y === stairs.y) continue;
     drawDeco(dd);
+  }
+  // Destructible pillars are real terrain: they block both player and monster pathing.
+  for (const p of runePillars || []) if (explored[p.y][p.x]) {
+    const px = p.x * TILE + TILE / 2, py = p.y * TILE + TILE / 2;
+    const pulse = 0.55 + 0.45 * Math.sin(time * 4 + p.x);
+    ctx.fillStyle = 'rgba(0,0,0,0.38)'; ctx.beginPath(); ctx.ellipse(px, py + 13, 13, 4, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#4d4166'; ctx.fillRect(px - 9, py - 15, 18, 28);
+    ctx.fillStyle = '#7d669d'; ctx.fillRect(px - 6, py - 13, 4, 23);
+    ctx.strokeStyle = `rgba(200,138,255,${pulse})`; ctx.lineWidth = 2; ctx.strokeRect(px - 6, py - 9, 12, 16);
+    ctx.fillStyle = '#e4bcff'; ctx.font = 'bold 13px Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText('ᚱ', px, py + 4);
+    ctx.font = 'bold 9px system-ui'; ctx.fillStyle = '#e8d8ff'; ctx.fillText(`RUNE ${p.hp}/2`, px, py - 20);
+  }
+  if (selectedPath && visible[selectedPath.y] && visible[selectedPath.y][selectedPath.x]) {
+    ctx.strokeStyle = '#8ad8ff'; ctx.lineWidth = 2.5; ctx.setLineDash([4, 3]);
+    ctx.strokeRect(selectedPath.x * TILE + 4, selectedPath.y * TILE + 4, TILE - 8, TILE - 8);
+    ctx.setLineDash([]);
   }
 
   // stairs — glowing rune portal
@@ -1115,7 +1220,7 @@ function draw(dt) {
       ctx.fillStyle = 'rgba(255,240,255,0.8)';
       ctx.beginPath(); ctx.ellipse(px, py - 10, 1.4, 2.6 * fl, 0, 0, 7); ctx.fill();
       if (Math.random() < dt * 4) {
-        particles.push({ x: px + (Math.random() - 0.5) * 6, y: py - 14, vx: (Math.random() - 0.5) * 10, vy: -18 - Math.random() * 20, life: 0.6, color: '#c88aff', r: 1.2, spark: true });
+        addParticle({ x: px + (Math.random() - 0.5) * 6, y: py - 14, vx: (Math.random() - 0.5) * 10, vy: -18 - Math.random() * 20, life: 0.6, color: '#c88aff', r: 1.2, spark: true });
       }
     }
   }
@@ -1150,6 +1255,10 @@ function draw(dt) {
     }
     const alpha = m.phasing ? 0.66 + 0.14 * Math.sin(time * 4 + m.x) : 1;
     drawSprite(spr, px, py + bob - 2, m.face, m.flash, alpha);
+    const intent = monsterIntent(m);
+    ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(9,7,15,0.85)'; ctx.fillRect(px - 19, py - r - 27, 38, 12);
+    ctx.fillStyle = intent.color; ctx.fillText(intent.label, px, py - r - 18);
     // hp bar
     if (m.hp < m.maxHp) {
       const bw = Math.max(r * 2, 26);
@@ -1234,7 +1343,7 @@ function draw(dt) {
 
   // hero hurt: red edge pulse
   if (hero.flash > 0) {
-    ctx.fillStyle = `rgba(200,30,40,${hero.flash * 1.4})`;
+    ctx.fillStyle = `rgba(200,30,40,${hero.flash * 1.4 * motionScale()})`;
     ctx.fillRect(0, 0, GAME_W, 6); ctx.fillRect(0, GAME_H - 6, GAME_W, 6);
     ctx.fillRect(0, 0, 6, GAME_H); ctx.fillRect(GAME_W - 6, 0, 6, GAME_H);
   }
@@ -1294,6 +1403,14 @@ function drawHUD(dt) {
   ctx.fillStyle = '#f0e8d0'; ctx.fillText(`SCORE ${score}`, GAME_W / 2, 26);
   ctx.font = '12px Georgia, serif'; ctx.fillStyle = '#9a92a8';
   ctx.fillText(`BEST ${best}`, GAME_W / 2, 43);
+  const phaseLabel = turnPhase === 'resolving' ? 'ENEMY TURN — RESOLVING' : 'YOUR TURN — SELECT A TILE';
+  ctx.font = 'bold 12px system-ui';
+  ctx.fillStyle = turnPhase === 'resolving' ? '#ff9a70' : '#8ad8ff';
+  ctx.fillText(phaseLabel, GAME_W / 2, 60);
+  if (depth === 1 && turnCount < 7) {
+    ctx.font = 'bold 12px system-ui'; ctx.fillStyle = '#fff0b8';
+    ctx.fillText('Cyan path · enemy labels = intent · purple rune pillars open routes', GAME_W / 2, 78);
+  }
 
   // potion button bottom-left
   const pb = { x: 14, y: GAME_H - 68, w: 126, h: 54, id: 'potion' };
@@ -1329,7 +1446,7 @@ function drawHUD(dt) {
   // message log bottom center
   ctx.textAlign = 'center'; ctx.font = 'bold 14px Georgia, serif';
   msgLog.forEach((m, i) => {
-    m.life -= 1 / 60;
+    m.life -= frameDt;
     ctx.globalAlpha = Math.max(0, Math.min(1, m.life));
     ctx.fillStyle = '#000'; ctx.fillText(m.t, GAME_W / 2 + 1, GAME_H - 70 + i * 18 + 1);
     ctx.fillStyle = m.color; ctx.fillText(m.t, GAME_W / 2, GAME_H - 70 + i * 18);
@@ -1377,14 +1494,14 @@ function drawMenuBackdrop() {
     ctx.beginPath(); ctx.ellipse(tx, ty - 8, 3, 7 * fl, 0, 0, 7); ctx.fill();
     // embers
     if (Math.random() < 0.3) {
-      particles.push({ x: tx + (Math.random() - 0.5) * 10, y: ty - 20, vx: (Math.random() - 0.5) * 16, vy: -30 - Math.random() * 30, life: 0.8, color: '#ffb85c', r: 1.2, spark: true });
+      addParticle({ x: tx + (Math.random() - 0.5) * 10, y: ty - 20, vx: (Math.random() - 0.5) * 16, vy: -30 - Math.random() * 30, life: 0.8, color: '#ffb85c', r: 1.2, spark: true });
     }
   }
   // menu particles (embers) — use particle array in screen space
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
-    p.life -= 0.016; if (p.life <= 0) { particles.splice(i, 1); continue; }
-    p.x += p.vx * 0.016; p.y += p.vy * 0.016;
+    p.life -= frameDt; if (p.life <= 0) { particles.splice(i, 1); continue; }
+    p.x += p.vx * frameDt; p.y += p.vy * frameDt;
     ctx.globalAlpha = Math.min(1, p.life * 2);
     ctx.fillStyle = p.color;
     ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill();
@@ -1708,7 +1825,7 @@ if (new URLSearchParams(location.search).has('debug')) {
         if (Math.abs(dx) <= 6 && Math.abs(dy) <= 6) near.push({ dx, dy, hp: m.hp });
       }
       // BFS next-step toward stairs
-      let sd = { dx: 0, dy: 0 };
+      let sd = { dx: 0, dy: 0 }, stairsReachable = false;
       if (map && stairs) {
         const q = [[hero.x, hero.y]];
         const prev = new Map(); prev.set(hero.x + ',' + hero.y, null);
@@ -1723,6 +1840,7 @@ if (new URLSearchParams(location.search).has('debug')) {
             q.push([nx, ny]);
           }
         }
+        stairsReachable = found;
         if (found) {
           let k = stairs.x + ',' + stairs.y, pk = prev.get(k);
           while (pk && pk !== hero.x + ',' + hero.y) { k = pk; pk = prev.get(k); }
@@ -1741,12 +1859,19 @@ if (new URLSearchParams(location.search).has('debug')) {
         bestDepth: meta.bestDepth, streak: meta.streak.count, dailyBonus,
         bestiaryCount: Object.keys(meta.bestiary).length,
         altarCount: altars ? altars.length : 0, soulGemCount: soulGems ? soulGems.length : 0,
+        turnPhase, paused, floorSeed, runePillarCount: runePillars ? runePillars.length : 0,
+        particleCount: particles.length, floaterCount: floaters.length, listenerCount: 8,
+        safeStart: monsters ? !monsters.some(m => Math.abs(m.x - hero.x) + Math.abs(m.y - hero.y) <= 4) : false,
+        firstFloorResource: potionsOnFloor ? potionsOnFloor.length > 0 : false,
+        stairsReachable,
       };
     },
     move: (dx, dy) => tryMove(dx, dy),
     pickCard: (i) => { if (state === 'levelup') pickCard(levelCards[i]); },
     usePotion,
     startGame: () => { if (state === 'menu') startGame(); },
+    startGameWithSeed: (seed) => { if (state === 'menu') startGame(seed); },
+    newRunWithSeed: (seed) => { newRun(seed); state = 'playing'; },
     playAgain,
     resurrect,
     doubleSouls,
@@ -1758,14 +1883,25 @@ if (new URLSearchParams(location.search).has('debug')) {
     buyClass: (id) => buyClass(id),
     selectClass: (id) => selectClass(id),
     addSouls: (n) => addSouls(n),
+    grantXp: (n) => gainXp(Math.max(0, Number(n) || 0)),
     grantSouls: (n) => { runSouls += n; },
+    timingProbe: (hz) => {
+      let bump = 1, particleLife = 0.6, elapsed = 0;
+      const dt = 1 / hz;
+      while (particleLife > 0) { bump = Math.max(0, bump - dt * 6); particleLife -= dt; elapsed += dt; }
+      return { score, heroX: hero.x, heroY: hero.y, spawnCount: monsters.length, difficulty: depth, visualSeconds: elapsed, bump };
+    },
+    setResolutionDelay: (ms) => { resolutionDelay = Math.max(1, Math.min(120, Number(ms) || 120)); },
+    setHeroHp: (hp) => { hero.hp = Math.max(1, Math.min(hero.maxHp, Number(hp) || hero.hp)); },
+    pauseRun,
+    resumeRun,
   };
 }
 
 // ---------- boot ----------
 let lastT = 0;
 function loop(t) {
-  const dt = Math.min(0.05, (t - lastT) / 1000 || 0.016);
+  const dt = paused ? 0 : Math.min(0.05, (t - lastT) / 1000 || 0.016);
   lastT = t;
   draw(dt);
   requestAnimationFrame(loop);
@@ -1780,6 +1916,9 @@ function loop(t) {
   dailyBonus = checkDailyStreak();
   sfx.setMuted(getMuteSetting());
   onSettingsChange((s) => { if (s && typeof s.muteAudio === 'boolean') sfx.setMuted(s.muteAudio); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) pauseRun(); else resumeRun(); });
+  window.addEventListener('blur', pauseRun);
+  window.addEventListener('focus', resumeRun);
   hero = { x: 0, y: 0 }; // placeholder before first run
   state = 'menu';
   loadingStop();

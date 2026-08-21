@@ -1,7 +1,7 @@
 // Runic Depths — E2E tests via Playwright + system Chrome
 import { chromium } from 'playwright';
 
-const URL = 'http://localhost:8531/?debug=1';
+const URL = `http://localhost:${process.env.PORT || 8531}/?debug=1`;
 const results = [];
 let errors = [];
 
@@ -38,6 +38,18 @@ await page.waitForTimeout(150);
 st = await page.evaluate(() => window.__astro.getState());
 check('movement works', st.heroX !== before.x || st.heroY !== before.y, `${before.x},${before.y} -> ${st.heroX},${st.heroY}`);
 
+// A committed turn locks all actions until its response animation resolves.
+await page.evaluate(() => window.__astro.setHeroHp(10));
+await page.evaluate(() => { const s = window.__astro.getState(); window.__astro.move(s.stairsDir.dx, s.stairsDir.dy); });
+let resolving = await page.evaluate(() => window.__astro.getState());
+const potionsDuringResolve = resolving.potions;
+await page.evaluate(() => window.__astro.usePotion());
+resolving = await page.evaluate(() => window.__astro.getState());
+check('resolving turn blocks potion input', resolving.turnPhase === 'resolving' && resolving.potions === potionsDuringResolve, `${resolving.turnPhase}; ${potionsDuringResolve}->${resolving.potions}`);
+await page.waitForTimeout(150);
+await page.evaluate(() => window.__astro.setHeroHp(999));
+st = await page.evaluate(() => window.__astro.getState());
+
 // keyboard movement
 const kb0 = { x: st.heroX, y: st.heroY };
 for (const k of ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd']) {
@@ -50,7 +62,7 @@ check('keyboard input accepted (no crash)', st.state === 'playing' || st.state =
 // Smart bot: walk toward stairs, fight monsters, level up, reach depth 2
 let combatSeen = false, dmgDealt = false, levelupSeen = false, reachedDepth2 = false;
 let prevMonHp = null;
-for (let i = 0; i < 600; i++) {
+for (let i = 0; i < 900; i++) {
   st = await page.evaluate(() => window.__astro.getState());
   if (st.state === 'gameover') break;
   if (st.state === 'levelup') {
@@ -77,7 +89,20 @@ for (let i = 0; i < 600; i++) {
 }
 check('combat happened', combatSeen);
 check('damage reduces monster hp', dmgDealt);
-check('level-up card flow', levelupSeen, levelupSeen ? '' : 'no level-up during run (may need more XP)');
+// The random floor may not contain enough XP before stairs. Exercise the real
+// gainXp -> showLevelCards path deterministically instead of making the gate flaky.
+if (!levelupSeen && st.state === 'playing') {
+  await page.evaluate(() => window.__astro.grantXp(999));
+  await page.waitForTimeout(60);
+  st = await page.evaluate(() => window.__astro.getState());
+  levelupSeen = st.state === 'levelup';
+  if (levelupSeen) {
+    await page.evaluate(() => window.__astro.pickCard(0));
+    await page.waitForTimeout(60);
+    st = await page.evaluate(() => window.__astro.getState());
+  }
+}
+check('level-up card flow', levelupSeen, levelupSeen ? '' : 'real gainXp path did not open level-up');
 check('reached depth 2 (stairs work)', reachedDepth2, 'depth=' + st.depth);
 
 // death test
