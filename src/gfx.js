@@ -161,14 +161,23 @@ function bakeWallFill(b, v) {
   return c;
 }
 
-// darkest unexplored rock (shared)
+// unexplored rock mass — textured dark cobble, never pure black
 export let voidTile;
 function bakeVoid() {
   const [c, g] = mkCanvas(TILE, TILE);
-  g.fillStyle = '#07060c';
+  g.fillStyle = '#211d30';
   g.fillRect(0, 0, TILE, TILE);
-  for (let i = 0; i < 12; i++) {
-    g.fillStyle = `rgba(${18 + noise(i, 1, 3) * 10 | 0},${16 + noise(i, 2, 5) * 8 | 0},${26 + noise(i, 3, 7) * 10 | 0},0.5)`;
+  // chunky rock cobbles
+  for (let i = 0; i < 8; i++) {
+    const cx = noise(i, 1, 71) * TILE, cy = noise(1, i, 73) * TILE;
+    const rr = 5 + noise(i, 2, 79) * 8;
+    const s = (noise(i, 3, 83) - 0.5) * 14;
+    g.fillStyle = `rgb(${40 + s | 0},${36 + s | 0},${54 + s | 0})`;
+    g.beginPath(); g.ellipse(cx, cy, rr, rr * 0.75, noise(i, 4, 89) * 3, 0, 7); g.fill();
+    g.strokeStyle = 'rgba(6,4,12,0.5)'; g.lineWidth = 1.5; g.stroke();
+  }
+  for (let i = 0; i < 14; i++) {
+    g.fillStyle = `rgba(${40 + noise(i, 1, 3) * 16 | 0},${36 + noise(i, 2, 5) * 12 | 0},${56 + noise(i, 3, 7) * 16 | 0},0.55)`;
     g.fillRect(noise(i, 4, 9) * TILE | 0, noise(i, 5, 11) * TILE | 0, 3, 3);
   }
   return c;
@@ -436,7 +445,6 @@ export function weaponSprite(icon, color) {
 
 // ---------------------------------------------------------------- LIGHTING
 let fogCanvas, fogCtx, fogData;
-let vignette;
 
 export function initGfx(mapW, mapH, gameW, gameH) {
   for (let b = 0; b < BIOMES.length; b++) {
@@ -457,37 +465,30 @@ export function initGfx(mapW, mapH, gameW, gameH) {
   const [fc, fg] = mkCanvas(mapW, mapH);
   fogCanvas = fc; fogCtx = fg;
   fogData = fg.createImageData(mapW, mapH);
-
-  // vignette (screen space, baked)
-  const [vc, vg] = mkCanvas(gameW, gameH);
-  const grd = vg.createRadialGradient(gameW / 2, gameH / 2, gameH * 0.42, gameW / 2, gameH / 2, gameH * 0.85);
-  grd.addColorStop(0, 'rgba(0,0,0,0)');
-  grd.addColorStop(1, 'rgba(0,0,0,0.55)');
-  vg.fillStyle = grd;
-  vg.fillRect(0, 0, gameW, gameH);
-  vignette = vc;
+  void gameW; void gameH;
 }
 
 // Smooth fog-of-war + light falloff. One pixel per tile, upscaled with smoothing.
 export function drawFog(ctx, opts) {
   const { mapW, mapH, explored, visible, map, heroX, heroY, torches, camX, camY, gameW, gameH, flicker } = opts;
   const d = fogData.data;
-  const R = 8.2 * flicker;
+  const R = 9.5 * flicker;
   for (let y = 0; y < mapH; y++) {
     for (let x = 0; x < mapW; x++) {
       const i = (y * mapW + x) * 4;
       let a;
-      if (!explored[y][x]) a = 252;
-      else if (!visible[y][x]) a = 172;
+      if (!explored[y][x]) a = 108; // unexplored rock: dim but textured, never black
+      else if (!visible[y][x]) a = 118; // explored memory: dimmed but clearly readable
       else {
         const dx = x - heroX, dy = y - heroY;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        a = Math.max(0, Math.min(190, ((dist / R) ** 2.4) * 200 - 8));
+        // gentle falloff, capped well below opaque — visible area stays bright
+        a = Math.max(0, Math.min(105, ((dist / R) ** 1.9) * 120 - 10));
         // torch light contribution
         for (let t = 0; t < torches.length; t++) {
           const tdx = x - torches[t].x, tdy = y - torches[t].y;
           const td = Math.sqrt(tdx * tdx + tdy * tdy);
-          if (td < 4) a = Math.min(a, 25 + td * 40);
+          if (td < 5) a = Math.min(a, 8 + td * 22);
         }
       }
       d[i] = 4; d[i + 1] = 2; d[i + 2] = 12; d[i + 3] = a;
@@ -507,17 +508,32 @@ export function drawFog(ctx, opts) {
 export function drawHeroLight(ctx, px, py, flicker) {
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';
-  const r = 240 * flicker;
-  const grd = ctx.createRadialGradient(px, py, 10, px, py, r);
-  grd.addColorStop(0, 'rgba(255,190,100,0.22)');
-  grd.addColorStop(0.45, 'rgba(255,150,66,0.10)');
+  const r = 320 * flicker;
+  const grd = ctx.createRadialGradient(px, py, 12, px, py, r);
+  grd.addColorStop(0, 'rgba(255,196,110,0.30)');
+  grd.addColorStop(0.45, 'rgba(255,155,70,0.13)');
   grd.addColorStop(1, 'rgba(255,120,40,0)');
   ctx.fillStyle = grd;
   ctx.fillRect(px - r, py - r, r * 2, r * 2);
   ctx.restore();
 }
 
-export function drawVignette(ctx) { ctx.drawImage(vignette, 0, 0); }
+// vignette: cached per canvas size (viewport is dynamic/fullscreen)
+let vigCache = null, vigW = 0, vigH = 0;
+export function drawVignette(ctx, w, h) {
+  const gw = Math.ceil(w || vigW || 1280), gh = Math.ceil(h || vigH || 720);
+  if (!vigCache || vigW !== gw || vigH !== gh) {
+    vigW = gw; vigH = gh;
+    const [vc, vg] = mkCanvas(gw, gh);
+    const grd = vg.createRadialGradient(gw / 2, gh / 2, gh * 0.48, gw / 2, gh / 2, gh * 0.95);
+    grd.addColorStop(0, 'rgba(0,0,0,0)');
+    grd.addColorStop(1, 'rgba(0,0,0,0.42)');
+    vg.fillStyle = grd;
+    vg.fillRect(0, 0, gw, gh);
+    vigCache = vc;
+  }
+  ctx.drawImage(vigCache, 0, 0, gw, gh);
+}
 
 // ---------------------------------------------------------------- UI CHROME
 export function drawPanel(ctx, x, y, w, h, opts = {}) {

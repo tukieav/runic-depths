@@ -4,20 +4,37 @@ import * as sfx from './audio.js';
 import { meta, loadMeta, saveMeta, CLASSES, UPGRADES, BESTIARY_INFO, upgradeCost, canBuyUpgrade, buyUpgrade, canBuyClass, buyClass, selectClass, addSouls, recordKill, recordRun, checkDailyStreak, startingHero, goldMult } from './meta.js';
 import * as gfx from './gfx.js';
 
-const GAME_W = 960, GAME_H = 640;
+// Desktop-first fullscreen viewport: canvas fills 100% of the browser window.
+// GAME_W/GAME_H are the logical game-space size (wider window = more dungeon visible).
+let GAME_W = 1280, GAME_H = 720;
+let viewScale = 1, dpr = 1;
 const TILE = 40;
 const MAP_W = 44, MAP_H = 34;
-const VIEW_RADIUS = 8;
+const VIEW_RADIUS = 9;
+const MIN_TILES_Y = 15.5; // vertical tiles always visible — horizontal grows with aspect
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
-canvas.width = GAME_W; canvas.height = GAME_H;
 
 function fitCanvas() {
-  const ww = window.innerWidth, wh = window.innerHeight;
-  const s = Math.min(ww / GAME_W, wh / GAME_H);
-  canvas.style.width = (GAME_W * s) + 'px';
-  canvas.style.height = (GAME_H * s) + 'px';
+  const ww = Math.max(320, window.innerWidth), wh = Math.max(240, window.innerHeight);
+  dpr = Math.min(2, window.devicePixelRatio || 1);
+  canvas.width = Math.round(ww * dpr);
+  canvas.height = Math.round(wh * dpr);
+  canvas.style.width = ww + 'px';
+  canvas.style.height = wh + 'px';
+  const aspect = ww / wh;
+  if (aspect >= 1.15) {
+    // landscape/desktop: fixed vertical tiles, width follows aspect (wider = more dungeon)
+    GAME_H = MIN_TILES_Y * TILE;
+    GAME_W = GAME_H * aspect;
+    viewScale = (wh * dpr) / GAME_H;
+  } else {
+    // portrait/square: fixed logical width so UI panels always fit
+    GAME_W = 720;
+    GAME_H = GAME_W / aspect;
+    viewScale = (ww * dpr) / GAME_W;
+  }
 }
 window.addEventListener('resize', fitCanvas); fitCanvas();
 
@@ -64,6 +81,7 @@ let buttons = []; // {x,y,w,h,id}
 let time = 0;
 let msgLog = [];
 let torchList = []; // visible torch tiles for lighting
+let decos = []; // room decorations: {x,y,kind,v}
 let displayHp = 0, displayXp = 0; // animated bar drain
 
 function logMsg(t, color) { msgLog.push({ t, color: color || '#cfc9b8', life: 4 }); if (msgLog.length > 4) msgLog.shift(); }
@@ -95,13 +113,50 @@ function genDungeon(d) {
     while (y !== b.cy) { map[y][x] = 0; y += Math.sign(b.cy - y); }
     map[y][x] = 0;
   }
-  // torches on some wall tiles adjacent to floor
+  // torches on wall tiles adjacent to floor — dense enough to light rooms every few tiles
   torchList = [];
   for (let y = 1; y < MAP_H - 1; y++) for (let x = 1; x < MAP_W - 1; x++) {
-    if (map[y][x] === 1 && map[y + 1][x] === 0 && Math.random() < 0.09) { map[y][x] = 2; torchList.push({ x, y }); }
+    if (map[y][x] === 1 && map[y + 1][x] === 0 && Math.random() < 0.2) { map[y][x] = 2; torchList.push({ x, y }); }
+  }
+  // guarantee at least 2 torches per room (rooms must never be pitch dark)
+  for (const r of rooms) {
+    let count = 0;
+    for (const t of torchList) if (t.x >= r.x - 1 && t.x <= r.x + r.w && t.y >= r.y - 2 && t.y <= r.y + r.h) count++;
+    let guard = 0;
+    while (count < 2 && guard++ < 60) {
+      const x = r.x + (Math.random() * r.w | 0), y = r.y - 1 + (Math.random() * (r.h + 1) | 0);
+      if (y >= 1 && map[y][x] === 1 && map[y + 1] && map[y + 1][x] === 0) { map[y][x] = 2; torchList.push({ x, y }); count++; }
+    }
+  }
+  // decorations: every room gets 3-7 floor props (bones, rubble, mushrooms, crates, webs, pillars, puddles)
+  decos = [];
+  const DECO_KINDS = ['rubble', 'bones', 'mushroom', 'crack', 'crate', 'web', 'puddle', 'skull', 'pillar'];
+  for (const r of rooms) {
+    const n = 3 + (Math.random() * 5 | 0);
+    let placed = 0, guard = 0;
+    while (placed < n && guard++ < 50) {
+      const x = r.x + (Math.random() * r.w | 0), y = r.y + (Math.random() * r.h | 0);
+      if (map[y][x] !== 0) continue;
+      if (decos.some(dd => dd.x === x && dd.y === y)) continue;
+      let kind = DECO_KINDS[Math.random() * DECO_KINDS.length | 0];
+      // pillars only in rooms >= 5x5 and away from edges
+      if (kind === 'pillar' && (r.w < 5 || r.h < 5 || x <= r.x || x >= r.x + r.w - 1 || y <= r.y || y >= r.y + r.h - 1)) kind = 'rubble';
+      decos.push({ x, y, kind, v: Math.random() });
+      placed++;
+    }
+  }
+  // corridor rubble sprinkles
+  for (let y = 1; y < MAP_H - 1; y++) for (let x = 1; x < MAP_W - 1; x++) {
+    if (map[y][x] === 0 && Math.random() < 0.03 && !rooms.some(r => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h) && !decos.some(dd => dd.x === x && dd.y === y)) {
+      decos.push({ x, y, kind: Math.random() < 0.5 ? 'rubble' : 'crack', v: Math.random() });
+    }
   }
   explored = [];
   for (let y = 0; y < MAP_H; y++) explored.push(new Array(MAP_W).fill(false));
+  // first frame richness: start room (+wall border) is pre-explored
+  for (let y = Math.max(0, rooms[0].y - 1); y <= Math.min(MAP_H - 1, rooms[0].y + rooms[0].h); y++)
+    for (let x = Math.max(0, rooms[0].x - 1); x <= Math.min(MAP_W - 1, rooms[0].x + rooms[0].w); x++)
+      explored[y][x] = true;
 
   // hero start = first room, stairs = farthest room
   const start = rooms[0];
@@ -161,6 +216,20 @@ function genDungeon(d) {
     spawnMonster('boss', far.cx + (far.w > 2 ? 1 : 0), far.cy, d);
     // boss floors always drop a soul gem cluster near stairs
     soulGems.push({ x: far.cx - 1, y: far.cy, amt: 3 + d });
+  }
+  // rich first impression: the starting room always has visible loot
+  {
+    const spots = [];
+    for (let yy = start.y; yy < start.y + start.h; yy++) for (let xx = start.x; xx < start.x + start.w; xx++) {
+      if ((xx !== hero.x || yy !== hero.y) && map[yy][xx] === 0 &&
+          !chests.some(c => c.x === xx && c.y === yy) && !goldPiles.some(g => g.x === xx && g.y === yy)) {
+        spots.push({ x: xx, y: yy });
+      }
+    }
+    shuffle(spots);
+    if (spots[0] && !chests.some(c => c.x === spots[0].x && c.y === spots[0].y)) chests.push({ x: spots[0].x, y: spots[0].y, opened: false });
+    if (spots[1]) goldPiles.push({ x: spots[1].x, y: spots[1].y, amt: 6 + (Math.random() * 8 | 0) });
+    if (spots[2] && d === 1) soulGems.push({ x: spots[2].x, y: spots[2].y, amt: 1 });
   }
   updateVisibility();
 }
@@ -706,8 +775,140 @@ function drawSprite(spr, px, py, face, flash, alpha) {
   ctx.restore();
 }
 
+function drawDeco(dd) {
+  const px = dd.x * TILE, py = dd.y * TILE, cx = px + TILE / 2, cy = py + TILE / 2;
+  const v = dd.v;
+  switch (dd.kind) {
+    case 'rubble': {
+      for (let i = 0; i < 5; i++) {
+        const rx = cx + Math.sin(v * 40 + i * 2.3) * 12, ry = cy + Math.cos(v * 31 + i * 1.7) * 10;
+        const rr = 2 + ((v * 17 + i) % 1) * 3;
+        ctx.fillStyle = i % 2 ? '#565064' : '#464050';
+        ctx.beginPath(); ctx.ellipse(rx, ry, rr, rr * 0.7, v * 6 + i, 0, 7); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.07)';
+        ctx.fillRect(rx - rr * 0.5, ry - rr * 0.6, rr, 1.5);
+      }
+      break;
+    }
+    case 'bones': {
+      ctx.strokeStyle = '#c8c4b0'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(cx - 9, cy - 4 + v * 4); ctx.lineTo(cx + 7, cy + 3);
+      ctx.moveTo(cx - 4, cy + 7); ctx.lineTo(cx + 9, cy - 5 + v * 3);
+      ctx.stroke();
+      ctx.fillStyle = '#d8d4c0';
+      for (const [ex, ey] of [[cx - 9, cy - 4 + v * 4], [cx + 7, cy + 3], [cx - 4, cy + 7], [cx + 9, cy - 5 + v * 3]]) {
+        ctx.beginPath(); ctx.arc(ex, ey, 2.6, 0, 7); ctx.fill();
+      }
+      ctx.lineCap = 'butt';
+      break;
+    }
+    case 'skull': {
+      ctx.fillStyle = '#d0ccb8';
+      ctx.beginPath(); ctx.arc(cx, cy + 2, 6.5, 0, 7); ctx.fill();
+      ctx.fillRect(cx - 4.5, cy + 4, 9, 6);
+      ctx.fillStyle = '#14101c';
+      ctx.beginPath(); ctx.arc(cx - 2.6, cy + 1.5, 1.9, 0, 7); ctx.arc(cx + 2.6, cy + 1.5, 1.9, 0, 7); ctx.fill();
+      ctx.fillRect(cx - 3.4, cy + 6.5, 1.4, 3); ctx.fillRect(cx - 0.7, cy + 6.5, 1.4, 3); ctx.fillRect(cx + 2, cy + 6.5, 1.4, 3);
+      ctx.fillStyle = 'rgba(255,255,255,0.25)';
+      ctx.beginPath(); ctx.arc(cx - 2, cy - 2.5, 2, 0, 7); ctx.fill();
+      break;
+    }
+    case 'mushroom': {
+      const glow = 0.55 + 0.45 * Math.sin(time * 2.5 + v * 20);
+      const col = v < 0.5 ? '90,220,180' : '140,170,255';
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      const g = ctx.createRadialGradient(cx, cy, 1, cx, cy, 16);
+      g.addColorStop(0, `rgba(${col},${0.22 * glow})`);
+      g.addColorStop(1, `rgba(${col},0)`);
+      ctx.fillStyle = g; ctx.fillRect(cx - 16, cy - 16, 32, 32);
+      ctx.restore();
+      for (let i = 0; i < 3; i++) {
+        const mx = cx - 8 + i * 8 + Math.sin(v * 30 + i) * 3, my = cy + 4 + Math.cos(v * 20 + i * 2) * 4;
+        const s = 3 + (i === 1 ? 2 : 0);
+        ctx.fillStyle = '#b8ae9a'; ctx.fillRect(mx - 1.2, my - s, 2.4, s + 2);
+        ctx.fillStyle = `rgba(${col},${0.75 + 0.25 * glow})`;
+        ctx.beginPath(); ctx.ellipse(mx, my - s, s + 1.5, s, 0, Math.PI, 0); ctx.fill();
+      }
+      break;
+    }
+    case 'crack': {
+      ctx.strokeStyle = 'rgba(8,6,14,0.6)'; ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(px + 6 + v * 8, py + 5);
+      ctx.lineTo(px + 14 + v * 6, py + 16); ctx.lineTo(px + 10, py + 26); ctx.lineTo(px + 20 + v * 8, py + 35);
+      ctx.moveTo(px + 14 + v * 6, py + 16); ctx.lineTo(px + 26, py + 20 + v * 6);
+      ctx.stroke();
+      break;
+    }
+    case 'crate': {
+      const s = 11 + v * 3;
+      ctx.fillStyle = 'rgba(0,0,0,0.3)';
+      ctx.beginPath(); ctx.ellipse(cx, cy + s * 0.75, s, 3.5, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#7a5c34';
+      ctx.fillRect(cx - s / 2, cy - s / 2, s, s);
+      ctx.strokeStyle = '#54401f'; ctx.lineWidth = 1.6;
+      ctx.strokeRect(cx - s / 2 + 1, cy - s / 2 + 1, s - 2, s - 2);
+      ctx.beginPath();
+      ctx.moveTo(cx - s / 2, cy - s / 2); ctx.lineTo(cx + s / 2, cy + s / 2);
+      ctx.moveTo(cx + s / 2, cy - s / 2); ctx.lineTo(cx - s / 2, cy + s / 2);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.09)';
+      ctx.fillRect(cx - s / 2, cy - s / 2, s, 2.5);
+      break;
+    }
+    case 'web': {
+      ctx.strokeStyle = 'rgba(220,220,235,0.35)'; ctx.lineWidth = 1;
+      const wx = px + (v < 0.5 ? 4 : TILE - 4), wy = py + 4;
+      const dir = v < 0.5 ? 1 : -1;
+      ctx.beginPath();
+      for (let i = 1; i <= 3; i++) {
+        ctx.moveTo(wx, wy);
+        ctx.lineTo(wx + dir * i * 5, wy + (4 - i) * 5);
+      }
+      for (let i = 1; i <= 3; i++) {
+        ctx.moveTo(wx + dir * i * 3, wy + i * 2.6);
+        ctx.quadraticCurveTo(wx + dir * i * 5.4, wy + i * 4.4, wx + dir * i * 3.4, wy + i * 6.4);
+      }
+      ctx.stroke();
+      break;
+    }
+    case 'puddle': {
+      const shimmer = 0.5 + 0.5 * Math.sin(time * 1.8 + v * 25);
+      ctx.fillStyle = 'rgba(30,50,80,0.45)';
+      ctx.beginPath(); ctx.ellipse(cx, cy + 4, 11 + v * 4, 6 + v * 2, v, 0, 7); ctx.fill();
+      ctx.fillStyle = `rgba(120,170,230,${0.10 + 0.10 * shimmer})`;
+      ctx.beginPath(); ctx.ellipse(cx - 2, cy + 3, 7 + v * 3, 3.6, v, 0, 7); ctx.fill();
+      ctx.fillStyle = `rgba(200,230,255,${0.18 * shimmer})`;
+      ctx.fillRect(cx - 4 + v * 4, cy + 2, 4, 1.2);
+      break;
+    }
+    case 'pillar': {
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.beginPath(); ctx.ellipse(cx, cy + 12, 12, 4, 0, 0, 7); ctx.fill();
+      const g = ctx.createLinearGradient(cx - 9, 0, cx + 9, 0);
+      g.addColorStop(0, '#4e4860'); g.addColorStop(0.5, '#6e6884'); g.addColorStop(1, '#443e54');
+      ctx.fillStyle = g;
+      ctx.fillRect(cx - 9, cy - 14, 18, 26);
+      // broken top
+      ctx.fillStyle = '#7a7492';
+      ctx.beginPath();
+      ctx.moveTo(cx - 9, cy - 14); ctx.lineTo(cx - 3, cy - 19 - v * 3); ctx.lineTo(cx + 3, cy - 13); ctx.lineTo(cx + 9, cy - 17); ctx.lineTo(cx + 9, cy - 14);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,0.25)';
+      ctx.fillRect(cx - 9, cy + 6, 18, 6);
+      ctx.fillStyle = 'rgba(255,255,255,0.08)';
+      ctx.fillRect(cx - 7, cy - 12, 3, 22);
+      break;
+    }
+  }
+}
+
 function draw(dt) {
   time += dt;
+  // fullscreen: render in logical game space scaled to the real canvas
+  ctx.setTransform(viewScale, 0, 0, viewScale, 0, 0);
   // camera
   camX = hero.x * TILE + TILE / 2 - GAME_W / 2;
   camY = hero.y * TILE + TILE / 2 - GAME_H / 2;
@@ -718,7 +919,7 @@ function draw(dt) {
   if (shakeT > 0) { shakeT -= dt; sx = (Math.random() - 0.5) * shake * 2; sy = (Math.random() - 0.5) * shake * 2; if (shakeT <= 0) shake = 0; }
 
   ctx.fillStyle = '#07060c';
-  ctx.fillRect(0, 0, GAME_W, GAME_H);
+  ctx.fillRect(-2, -2, GAME_W + 4, GAME_H + 4);
 
   if (state === 'menu' || state === 'boot') { drawMenu(); return; }
   if (state === 'shop') { drawShop(); return; }
@@ -773,6 +974,14 @@ function draw(dt) {
         }
       }
     }
+  }
+
+  // --- room decorations (props on explored floor) ---
+  for (const dd of decos) {
+    if (!explored[dd.y][dd.x]) continue;
+    if (dd.x < x0 - 1 || dd.x > x1 + 1 || dd.y < y0 - 1 || dd.y > y1 + 1) continue;
+    if (dd.x === stairs.x && dd.y === stairs.y) continue;
+    drawDeco(dd);
   }
 
   // stairs — glowing rune portal
@@ -1030,7 +1239,7 @@ function draw(dt) {
     ctx.fillRect(0, 0, 6, GAME_H); ctx.fillRect(GAME_W - 6, 0, 6, GAME_H);
   }
 
-  gfx.drawVignette(ctx);
+  gfx.drawVignette(ctx, GAME_W, GAME_H);
   drawHUD(dt);
   if (state === 'levelup') drawLevelUp();
   if (state === 'gameover') drawGameOver();
@@ -1255,7 +1464,7 @@ function drawMenu() {
   ctx.font = '15px Georgia, serif'; ctx.fillStyle = '#8f889c';
   ctx.fillText('WASD / arrows / tap to move · walk into monsters to attack · Q = potion', GAME_W / 2, 545);
   if (best > 0) { ctx.fillStyle = '#ffd76a'; ctx.fillText(`Best score: ${best}`, GAME_W / 2, 572); }
-  gfx.drawVignette(ctx);
+  gfx.drawVignette(ctx, GAME_W, GAME_H);
 }
 
 function drawShop() {

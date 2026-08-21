@@ -8,7 +8,7 @@ const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 const errors = [];
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
 page.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
-await page.goto('http://localhost:8521/?debug=1', { waitUntil: 'networkidle' });
+await page.goto('http://localhost:8531/?debug=1', { waitUntil: 'networkidle' });
 await page.waitForTimeout(2000);
 await page.screenshot({ path: `qa/${prefix}-menu.png` });
 await page.evaluate(() => window.__astro.startGame());

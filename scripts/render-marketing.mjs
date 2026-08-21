@@ -18,7 +18,7 @@ for (const cv of covers) {
 
 // gameplay screenshots 1920x1080
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
-await page.goto('http://localhost:8521/?debug=1', { waitUntil: 'networkidle' });
+await page.goto('http://localhost:8531/?debug=1', { waitUntil: 'networkidle' });
 await page.waitForTimeout(1200);
 await page.screenshot({ path: 'marketing/screenshot-menu.png' });
 console.log('rendered menu screenshot');

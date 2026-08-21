@@ -9,7 +9,7 @@ const dir = 'marketing/rec-' + mode;
 const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true });
 const ctx = await browser.newContext({ viewport: size, recordVideo: { dir, size } });
 const page = await ctx.newPage();
-await page.goto('http://localhost:8521/?debug=1', { waitUntil: 'networkidle' });
+await page.goto('http://localhost:8531/?debug=1', { waitUntil: 'networkidle' });
 await page.waitForTimeout(800);
 
 // start game immediately
