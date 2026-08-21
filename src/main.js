@@ -523,7 +523,7 @@ function pickCard(c) {
 }
 
 function usePotion() {
-  if (state !== 'playing' || hero.potions <= 0 || hero.hp >= hero.maxHp) return;
+  if (state !== 'playing' || paused || turnPhase !== 'player' || hero.potions <= 0 || hero.hp >= hero.maxHp) return;
   hero.potions--;
   const heal = hero.healAmt || 30;
   hero.hp = Math.min(hero.maxHp, hero.hp + heal);
@@ -1891,6 +1891,7 @@ if (new URLSearchParams(location.search).has('debug')) {
       return { score, heroX: hero.x, heroY: hero.y, spawnCount: monsters.length, difficulty: depth, visualSeconds: elapsed, bump };
     },
     setResolutionDelay: (ms) => { resolutionDelay = Math.max(1, Math.min(120, Number(ms) || 120)); },
+    setHeroHp: (hp) => { hero.hp = Math.max(1, Math.min(hero.maxHp, Number(hp) || hero.hp)); },
     pauseRun,
     resumeRun,
   };

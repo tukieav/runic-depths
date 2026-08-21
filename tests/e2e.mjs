@@ -38,6 +38,16 @@ await page.waitForTimeout(150);
 st = await page.evaluate(() => window.__astro.getState());
 check('movement works', st.heroX !== before.x || st.heroY !== before.y, `${before.x},${before.y} -> ${st.heroX},${st.heroY}`);
 
+// A committed turn locks all actions until its response animation resolves.
+await page.evaluate(() => window.__astro.setHeroHp(10));
+const potionsBeforeResolve = st.potions;
+await page.evaluate(() => { const s = window.__astro.getState(); window.__astro.move(s.stairsDir.dx, s.stairsDir.dy); window.__astro.usePotion(); });
+let resolving = await page.evaluate(() => window.__astro.getState());
+check('resolving turn blocks potion input', resolving.turnPhase === 'resolving' && resolving.potions === potionsBeforeResolve, resolving.turnPhase);
+await page.waitForTimeout(150);
+await page.evaluate(() => window.__astro.setHeroHp(999));
+st = await page.evaluate(() => window.__astro.getState());
+
 // keyboard movement
 const kb0 = { x: st.heroX, y: st.heroY };
 for (const k of ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd']) {
@@ -50,7 +60,7 @@ check('keyboard input accepted (no crash)', st.state === 'playing' || st.state =
 // Smart bot: walk toward stairs, fight monsters, level up, reach depth 2
 let combatSeen = false, dmgDealt = false, levelupSeen = false, reachedDepth2 = false;
 let prevMonHp = null;
-for (let i = 0; i < 600; i++) {
+for (let i = 0; i < 900; i++) {
   st = await page.evaluate(() => window.__astro.getState());
   if (st.state === 'gameover') break;
   if (st.state === 'levelup') {
