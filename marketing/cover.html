@@ -1,90 +1,16 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><style>html,body{margin:0;padding:0;background:#000}</style></head>
-<body>
-<canvas id="cover"></canvas>
-<script>
-// Runic Depths cover: real gameplay screenshot as backdrop + atmospheric title.
-// ?w=&h=&sq=1
-const q = new URLSearchParams(location.search);
-const W = parseInt(q.get('w') || '1920', 10);
-const H = parseInt(q.get('h') || '1080', 10);
-const sq = q.get('sq') === '1';
-const canvas = document.getElementById('cover');
-canvas.width = W; canvas.height = H;
-const g = canvas.getContext('2d');
-
-function torch(x, y, s) {
-  const grd = g.createRadialGradient(x, y, 0, x, y, 120 * s);
-  grd.addColorStop(0, 'rgba(255,190,90,0.55)');
-  grd.addColorStop(0.4, 'rgba(255,140,40,0.25)');
-  grd.addColorStop(1, 'rgba(0,0,0,0)');
-  g.fillStyle = grd;
-  g.beginPath(); g.arc(x, y, 120 * s, 0, Math.PI * 2); g.fill();
-  g.fillStyle = '#3a2a1a'; g.fillRect(x - 3 * s, y, 6 * s, 26 * s);
-  g.fillStyle = '#ffb347';
-  g.beginPath(); g.ellipse(x, y - 6 * s, 7 * s, 12 * s, 0, 0, Math.PI * 2); g.fill();
-  g.fillStyle = '#ffe08a';
-  g.beginPath(); g.ellipse(x, y - 4 * s, 4 * s, 7 * s, 0, 0, Math.PI * 2); g.fill();
-}
-
-async function main() {
-  const S = H / 1080;
-  // Text-free, bespoke dungeon tableau: marketing covers never inherit UI or
-  // screenshot text, and title treatment remains the only typography.
-  g.fillStyle = '#090817'; g.fillRect(0, 0, W, H);
-  const tile = Math.max(32, Math.round(52 * S));
-  for (let y = 0; y < H; y += tile) for (let x = 0; x < W; x += tile) {
-    const n = (Math.sin(x * 0.031 + y * 0.047) + 1) * 0.5;
-    g.fillStyle = `rgb(${31 + n * 12 | 0},${28 + n * 10 | 0},${47 + n * 15 | 0})`;
-    g.fillRect(x + 1, y + 1, tile - 2, tile - 2);
-    g.fillStyle = 'rgba(0,0,0,0.22)'; g.fillRect(x, y + tile - 3, tile, 3);
-  }
-  // framed central passage, distant rune gate, and a tiny hero silhouette.
-  const cx = W / 2, gateY = H * 0.62, gateR = Math.min(W, H) * 0.18;
-  g.fillStyle = '#161226'; g.fillRect(cx - W * 0.20, H * 0.18, W * 0.40, H * 0.70);
-  g.strokeStyle = '#514862'; g.lineWidth = Math.max(5, 9 * S);
-  g.strokeRect(cx - W * 0.20, H * 0.18, W * 0.40, H * 0.70);
-  const runeGlow = g.createRadialGradient(cx, gateY, 5, cx, gateY, gateR * 1.35);
-  runeGlow.addColorStop(0, 'rgba(106,208,255,0.45)'); runeGlow.addColorStop(1, 'rgba(50,90,180,0)');
-  g.fillStyle = runeGlow; g.fillRect(cx - gateR * 1.4, gateY - gateR * 1.4, gateR * 2.8, gateR * 2.8);
-  g.strokeStyle = '#8ad0ff'; g.lineWidth = Math.max(3, 5 * S);
-  for (let i = 0; i < 3; i++) g.strokeRect(cx - gateR + i * gateR * 0.23, gateY - gateR + i * gateR * 0.23, gateR * 2 - i * gateR * 0.46, gateR * 2 - i * gateR * 0.46);
-  g.fillStyle = '#9db4d0'; g.fillRect(cx - 10 * S, H * 0.76, 20 * S, 38 * S);
-  g.fillStyle = '#e9d9ad'; g.fillRect(cx - 7 * S, H * 0.73, 14 * S, 14 * S);
-  g.fillStyle = '#c89a36'; g.fillRect(cx + 10 * S, H * 0.78, 26 * S, 4 * S);
-  // dark cinematic grade
-  const grade = g.createLinearGradient(0, 0, 0, H);
-  grade.addColorStop(0, 'rgba(8,6,20,0.88)');
-  grade.addColorStop(0.42, 'rgba(8,6,20,0.35)');
-  grade.addColorStop(1, 'rgba(8,6,20,0.72)');
-  g.fillStyle = grade; g.fillRect(0, 0, W, H);
-  // vignette
-  const v = g.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, H * 0.85);
-  v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,0.55)');
-  g.fillStyle = v; g.fillRect(0, 0, W, H);
-  // torches
-  torch(W * 0.12, H * 0.30, S); torch(W * 0.88, H * 0.30, S);
-  if (!sq) { torch(W * 0.30, H * 0.18, S * 0.8); torch(W * 0.70, H * 0.18, S * 0.8); }
-
-  // title
-  g.textAlign = 'center'; g.textBaseline = 'middle';
-  const fs = Math.min((sq ? 118 : 150) * S, W * (sq ? 0.16 : 0.115));
-  g.shadowColor = 'rgba(255,180,60,0.85)'; g.shadowBlur = 42 * S;
-  const gold = g.createLinearGradient(0, H * 0.16 - fs, 0, H * 0.16 + fs);
-  gold.addColorStop(0, '#ffe9a8'); gold.addColorStop(0.5, '#f5c542'); gold.addColorStop(1, '#b07818');
-  g.fillStyle = gold;
-  g.font = `900 ${fs}px Georgia, 'Times New Roman', serif`;
-  if (sq) {
-    g.fillText('RUNIC', W / 2, H * 0.13);
-    g.fillText('DEPTHS', W / 2, H * 0.13 + fs * 1.04);
-  } else {
-    g.fillText('RUNIC DEPTHS', W / 2, H * 0.18);
-  }
-  g.shadowBlur = 0;
-  document.title = 'ready';
-}
-main();
-</script>
-</body>
-</html>
+<html><head><meta charset="UTF-8"><style>html,body{margin:0;background:#1f4779;overflow:hidden}</style></head><body><canvas id="cover"></canvas><script>
+// Bright bespoke tableau. The title is intentionally the cover's only wording.
+const q=new URLSearchParams(location.search),W=parseInt(q.get('w')||'1920',10),H=parseInt(q.get('h')||'1080',10),M=Math.min(W,H),portrait=H>W*1.18;
+const canvas=document.getElementById('cover');canvas.width=W;canvas.height=H;const g=canvas.getContext('2d'),X=n=>n*W,Y=n=>n*H,S=n=>n*M;
+const ell=(x,y,rx,ry,fill,stroke,lw=1)=>{g.beginPath();g.ellipse(x,y,rx,ry,0,0,7);if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.strokeStyle=stroke;g.lineWidth=lw;g.stroke()}};
+const poly=(p,fill,stroke,lw=1)=>{g.beginPath();p.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.strokeStyle=stroke;g.lineWidth=lw;g.stroke()}};
+function cloud(x,y,s,a){const c=`rgba(255,247,214,${a})`;ell(x,y,s*.54,s*.19,c);ell(x-s*.34,y+s*.04,s*.29,s*.18,c);ell(x+s*.30,y+s*.01,s*.37,s*.22,c)}
+function spark(x,y,r,c){g.fillStyle=c;g.beginPath();g.moveTo(x,y-r);g.lineTo(x+r*.42,y);g.lineTo(x,y+r);g.lineTo(x-r*.42,y);g.closePath();g.fill()}
+function sword(cx,cy,len,a){g.save();g.translate(cx,cy);g.rotate(a);g.shadowColor='#67ecff';g.shadowBlur=S(.035);poly([[0,-len],[len*.12,-len*.05],[0,len*.17],[-len*.12,-len*.05]],'#dffaff','#147bb3',S(.008));poly([[0,-len*.88],[len*.055,-len*.08],[0,len*.03]],'#7bdcff');g.shadowBlur=0;g.strokeStyle='#ffd76b';g.lineWidth=S(.022);g.beginPath();g.moveTo(-len*.22,len*.13);g.lineTo(len*.22,len*.13);g.stroke();g.fillStyle='#7b4b24';g.fillRect(-S(.035),len*.12,S(.07),len*.23);ell(0,len*.38,S(.055),S(.04),'#ffc65d','#814718',S(.009));g.restore()}
+function hero(cx,cy,sc){g.save();g.translate(cx,cy);g.scale(sc,sc);ell(0,112,96,20,'rgba(46,42,85,.28)');poly([[-78,96],[-58,5],[-22,-12],[36,0],[77,100],[35,125],[-54,122]],'#40508e','#29345f',7);poly([[-54,17],[-38,-42],[22,-50],[58,15],[35,75],[-35,76]],'#5574b8','#263861',7);poly([[-45,23],[-30,-27],[-12,-48],[15,-42],[37,22],[15,42],[-20,42]],'#c2d6ef','#46628f',6);poly([[-36,-27],[-22,-83],[20,-89],[40,-25],[24,3],[-25,1]],'#e1c18a','#57442e',7);ell(1,-48,26,30,'#f2c996','#714d39',5);ell(-8,-51,5,5,'#26314c');ell(13,-51,5,5,'#26314c');g.strokeStyle='#7e4438';g.lineWidth=4;g.beginPath();g.arc(3,-38,10,.1,3.04);g.stroke();poly([[-42,-76],[-20,-113],[12,-120],[42,-84],[23,-91],[-18,-90]],'#526ead','#263861',7);poly([[-31,46],[-68,3],[-82,16],[-42,75]],'#c2d6ef','#46628f',6);poly([[25,44],[58,5],[74,17],[42,78]],'#c2d6ef','#46628f',6);poly([[-47,76],[-64,130],[-23,132],[-8,78]],'#344879','#263861',7);poly([[10,77],[21,132],[62,129],[48,72]],'#344879','#263861',7);g.fillStyle='rgba(255,255,255,.58)';g.fillRect(-24,7,18,8);g.fillRect(-43,88,17,7);sword(-67,-5,122,-.68);g.restore()}
+function monster(cx,cy,sc){g.save();g.translate(cx,cy);g.scale(sc,sc);ell(0,99,104,21,'rgba(50,36,76,.28)');g.shadowColor='#ffce63';g.shadowBlur=22;ell(0,20,86,81,'#9b5cc7','#553070',8);g.shadowBlur=0;poly([[-65,-34],[-94,-84],[-34,-57]],'#7250a3','#553070',7);poly([[43,-55],[94,-84],[66,-20]],'#7250a3','#553070',7);ell(-31,4,26,31,'#fff6dc','#553070',5);ell(31,4,26,31,'#fff6dc','#553070',5);ell(-25,10,10,15,'#283154');ell(25,10,10,15,'#283154');ell(-29,4,3,5,'#fff');ell(21,4,3,5,'#fff');g.strokeStyle='#4b235f';g.lineWidth=7;g.beginPath();g.arc(0,38,37,.12,3.02);g.stroke();poly([[-24,49],[-12,66],[0,50],[12,66],[25,47]],'#fff1d3','#7a426a',3);for(const d of[-1,1]){poly([[d*63,42],[d*116,71],[d*72,77]],'#7c47ac','#553070',7);poly([[d*78,69],[d*116,72],[d*91,87]],'#f0b1d6','#553070',4)}for(let i=0;i<4;i++)ell(-51+i*34,84+(i%2)*8,8,5,'#c983df');g.restore()}
+const bg=g.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#48c8f3');bg.addColorStop(.42,'#7086ed');bg.addColorStop(.72,'#a65ad2');bg.addColorStop(1,'#f08a4f');g.fillStyle=bg;g.fillRect(0,0,W,H);const beam=g.createRadialGradient(X(.51),Y(.46),S(.03),X(.51),Y(.46),S(.68));beam.addColorStop(0,'rgba(255,244,176,.82)');beam.addColorStop(.38,'rgba(255,201,103,.31)');beam.addColorStop(1,'rgba(255,153,83,0)');g.fillStyle=beam;g.fillRect(0,0,W,H);cloud(X(.14),Y(.18),S(.25),.55);cloud(X(.78),Y(.14),S(.31),.46);cloud(X(.88),Y(.51),S(.21),.26);cloud(X(.12),Y(.66),S(.22),.22);g.globalAlpha=.26;for(let i=0;i<9;i++){g.strokeStyle=i%2?'#fff1a6':'#d7f7ff';g.lineWidth=S(.012);g.beginPath();g.moveTo(X(.5),Y(.47));g.lineTo(X((i+.5)/9),Y(i%2?0:1));g.stroke()}g.globalAlpha=1;
+const gx=X(.52),gy=Y(portrait?.57:.54),gr=S(portrait?.34:.29);g.fillStyle='#5d4b94';g.beginPath();g.arc(gx,gy,gr,3.14,0);g.lineTo(gx+gr,H);g.lineTo(gx-gr,H);g.closePath();g.fill();const gate=g.createRadialGradient(gx,gy,S(.02),gx,gy,gr);gate.addColorStop(0,'#e8fdff');gate.addColorStop(.27,'#67e5ff');gate.addColorStop(.67,'#5c70d2');gate.addColorStop(1,'#3e3977');g.fillStyle=gate;g.beginPath();g.arc(gx,gy,gr*.8,3.14,0);g.lineTo(gx+gr*.8,H);g.lineTo(gx-gr*.8,H);g.closePath();g.fill();g.strokeStyle='#ffd776';g.lineWidth=S(.016);g.beginPath();g.arc(gx,gy,gr*.73,3.14,0);g.stroke();for(let i=0;i<18;i++)spark(X(.17)+((i*67)%Math.round(X(.7))),Y(.30)+((i*47)%Math.round(Y(.53))),S(.006+(i%3)*.003),i%2?'#fff4b5':'#baf6ff');poly([[0,Y(.77)],[X(.15),Y(.65)],[X(.34),Y(.78)],[X(.48),Y(.70)],[X(.67),Y(.82)],[X(.84),Y(.66)],[W,Y(.76)],[W,H],[0,H]],'#675291');hero(X(portrait?.36:.37),Y(portrait?.67:.67),S(1)/330*(portrait?1.35:1.18));monster(X(portrait?.71:.72),Y(portrait?.69:.70),S(1)/315*(portrait?1.2:1.04));
+const fs=Math.min(S(portrait?.116:.132),W*(portrait?.18:.105)),ty=Y(portrait?.12:.15);g.textAlign='center';g.textBaseline='middle';g.lineJoin='round';g.font=`900 ${fs}px Arial Black, Impact, sans-serif`;(portrait?['RUNIC','DEPTHS']:['RUNIC DEPTHS']).forEach((t,i)=>{const y=ty+i*fs*.92;g.shadowColor='rgba(65,33,105,.78)';g.shadowBlur=S(.024);g.shadowOffsetY=S(.022);g.strokeStyle='#3d246f';g.lineWidth=S(.027);g.strokeText(t,W/2,y);g.shadowBlur=0;g.shadowOffsetY=0;const tg=g.createLinearGradient(0,y-fs*.5,0,y+fs*.5);tg.addColorStop(0,'#fff8cb');tg.addColorStop(.42,'#ffdc62');tg.addColorStop(1,'#ff8a55');g.fillStyle=tg;g.fillText(t,W/2,y);g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=S(.005);g.strokeText(t,W/2,y)});document.title='ready';
+</script></body></html>
