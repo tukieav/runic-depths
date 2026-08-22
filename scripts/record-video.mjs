@@ -3,20 +3,20 @@ import { chromium } from 'playwright';
 import { renameSync, readdirSync } from 'node:fs';
 
 const mode = process.argv[2] || 'landscape';
-const size = mode === 'portrait' ? { width: 720, height: 1280 } : { width: 1280, height: 720 };
+const size = mode === 'portrait' ? { width: 800, height: 1200 } : { width: 1920, height: 1080 };
 const dir = 'marketing/rec-' + mode;
 
 const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true });
 const ctx = await browser.newContext({ viewport: size, recordVideo: { dir, size } });
 const page = await ctx.newPage();
 await page.goto(`http://localhost:${process.env.PORT || 8531}/?debug=1`, { waitUntil: 'networkidle' });
-await page.waitForTimeout(800);
-
-// start game immediately
+// Start before the capture window used by the composer: the preview never
+// contains the menu, and the raw first frames are trimmed before concatenation.
 await page.evaluate(() => window.__astro.startGame());
+await page.waitForTimeout(900);
 const t0 = Date.now();
-// Bot plays for ~16s, leaving encoder shutdown room under CrazyGames' 20s preview limit.
-while (Date.now() - t0 < 16500) {
+// Bot plays for ~17s; the composer takes a clean 15.8s gameplay segment.
+while (Date.now() - t0 < 17000) {
   const st = await page.evaluate(() => window.__astro.getState());
   if (st.state === 'levelup') { await page.waitForTimeout(900); await page.evaluate(() => window.__astro.pickCard(0)); continue; }
   if (st.state === 'gameover') {

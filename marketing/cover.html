@@ -30,15 +30,29 @@ function torch(x, y, s) {
 
 async function main() {
   const S = H / 1080;
-  // backdrop: real gameplay screenshot, cover-fit, slightly zoomed & darkened
-  const img = new Image();
-  await new Promise((res) => { img.onload = res; img.onerror = res; img.src = 'screenshot-gameplay.png'; });
-  g.fillStyle = '#0a0a14'; g.fillRect(0, 0, W, H);
-  if (img.width) {
-    const scale = Math.max(W / img.width, H / img.height) * 1.15;
-    const dw = img.width * scale, dh = img.height * scale;
-    g.drawImage(img, (W - dw) / 2, (H - dh) / 2 + H * 0.06, dw, dh);
+  // Text-free, bespoke dungeon tableau: marketing covers never inherit UI or
+  // screenshot text, and title treatment remains the only typography.
+  g.fillStyle = '#090817'; g.fillRect(0, 0, W, H);
+  const tile = Math.max(32, Math.round(52 * S));
+  for (let y = 0; y < H; y += tile) for (let x = 0; x < W; x += tile) {
+    const n = (Math.sin(x * 0.031 + y * 0.047) + 1) * 0.5;
+    g.fillStyle = `rgb(${31 + n * 12 | 0},${28 + n * 10 | 0},${47 + n * 15 | 0})`;
+    g.fillRect(x + 1, y + 1, tile - 2, tile - 2);
+    g.fillStyle = 'rgba(0,0,0,0.22)'; g.fillRect(x, y + tile - 3, tile, 3);
   }
+  // framed central passage, distant rune gate, and a tiny hero silhouette.
+  const cx = W / 2, gateY = H * 0.62, gateR = Math.min(W, H) * 0.18;
+  g.fillStyle = '#161226'; g.fillRect(cx - W * 0.20, H * 0.18, W * 0.40, H * 0.70);
+  g.strokeStyle = '#514862'; g.lineWidth = Math.max(5, 9 * S);
+  g.strokeRect(cx - W * 0.20, H * 0.18, W * 0.40, H * 0.70);
+  const runeGlow = g.createRadialGradient(cx, gateY, 5, cx, gateY, gateR * 1.35);
+  runeGlow.addColorStop(0, 'rgba(106,208,255,0.45)'); runeGlow.addColorStop(1, 'rgba(50,90,180,0)');
+  g.fillStyle = runeGlow; g.fillRect(cx - gateR * 1.4, gateY - gateR * 1.4, gateR * 2.8, gateR * 2.8);
+  g.strokeStyle = '#8ad0ff'; g.lineWidth = Math.max(3, 5 * S);
+  for (let i = 0; i < 3; i++) g.strokeRect(cx - gateR + i * gateR * 0.23, gateY - gateR + i * gateR * 0.23, gateR * 2 - i * gateR * 0.46, gateR * 2 - i * gateR * 0.46);
+  g.fillStyle = '#9db4d0'; g.fillRect(cx - 10 * S, H * 0.76, 20 * S, 38 * S);
+  g.fillStyle = '#e9d9ad'; g.fillRect(cx - 7 * S, H * 0.73, 14 * S, 14 * S);
+  g.fillStyle = '#c89a36'; g.fillRect(cx + 10 * S, H * 0.78, 26 * S, 4 * S);
   // dark cinematic grade
   const grade = g.createLinearGradient(0, 0, 0, H);
   grade.addColorStop(0, 'rgba(8,6,20,0.88)');
@@ -68,13 +82,6 @@ async function main() {
     g.fillText('RUNIC DEPTHS', W / 2, H * 0.18);
   }
   g.shadowBlur = 0;
-  g.fillStyle = 'rgba(210,200,255,0.92)';
-  g.font = `600 ${Math.min(40 * S, W * 0.045)}px Georgia, serif`;
-  g.fillText('TURN-BASED DUNGEON CRAWLER', W / 2, sq ? H * 0.13 + fs * 2.0 : H * 0.30);
-  // bottom tagline
-  g.fillStyle = 'rgba(245,197,66,0.95)';
-  g.font = `700 ${Math.min(34 * S, W * 0.04)}px Georgia, serif`;
-  g.fillText('DESCEND \u2022 FIGHT \u2022 LOOT \u2022 EVOLVE', W / 2, H * 0.93);
   document.title = 'ready';
 }
 main();
