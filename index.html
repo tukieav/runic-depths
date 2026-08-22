@@ -5,7 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Runic Depths</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230a0810'/%3E%3Ccircle cx='8' cy='8' r='5' fill='%23ffd76a'/%3E%3C/svg%3E">
-<script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>
+<script>
+  // The portal supplies this SDK on its own origin. Loading it dynamically on
+  // published builds keeps local/isolated QA deterministic when the CDN is
+  // unavailable, while the wrapper continues to use safe no-op fallbacks.
+  if (!['localhost', '127.0.0.1'].includes(location.hostname)) {
+    const sdk = document.createElement('script');
+    sdk.src = 'https://sdk.crazygames.com/crazygames-sdk-v3.js';
+    sdk.async = true;
+    document.head.appendChild(sdk);
+  }
+</script>
 <style>
   html, body {
     margin: 0; padding: 0; width: 100%; height: 100%;

@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 
 const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true });
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1 });
-await page.goto(`http://localhost:${process.env.PORT || 8531}/?debug=1`, { waitUntil: 'networkidle' });
+await page.goto(`http://127.0.0.1:${process.env.PORT || 8531}/?debug=1`, { waitUntil: 'domcontentloaded' });
 await page.evaluate(() => window.__astro.startGameWithSeed(424242));
 await page.waitForTimeout(80);
 const probes = await page.evaluate(() => [60, 144, 165].map(hz => ({ hz, ...window.__astro.timingProbe(hz) })));

@@ -1,7 +1,7 @@
 // Runic Depths — E2E tests via Playwright + system Chrome
 import { chromium } from 'playwright';
 
-const URL = `http://localhost:${process.env.PORT || 8531}/?debug=1`;
+const URL = `http://127.0.0.1:${process.env.PORT || 8531}/?debug=1`;
 const results = [];
 let errors = [];
 
@@ -15,7 +15,7 @@ const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
 page.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
 
-await page.goto(URL, { waitUntil: 'networkidle' });
+await page.goto(URL, { waitUntil: 'domcontentloaded' });
 await page.waitForTimeout(1500);
 
 const st0 = await page.evaluate(() => window.__astro.getState());

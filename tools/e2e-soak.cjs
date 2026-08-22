@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
-  await page.goto(`http://localhost:${process.env.PORT || 8531}/?debug=1`, { waitUntil: 'networkidle' });
+  await page.goto(`http://127.0.0.1:${process.env.PORT || 8531}/?debug=1`, { waitUntil: 'domcontentloaded' });
   await page.evaluate(() => { window.__astro.startGameWithSeed(9001); window.__astro.setResolutionDelay(1); });
   let simulatedSeconds = 0, maxParticles = 0, maxFloaters = 0, maxListeners = 0, restarts = 0, floors = 1;
   for (let i = 0; i < 720; i++) { // 120s of 6 turns/s accelerated play

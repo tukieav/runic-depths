@@ -13,9 +13,11 @@ Explore torch-lit procedural dungeons, outsmart monsters in turn-based combat, a
 
 ## Full description
 
-Descend through procedurally generated ruins where every step advances the world. Read whose turn it is, inspect enemy move, melee, and ranged intents, and choose a safe route through limited vision. Loot equipment, find healing resources, break rune pillars to open a better position, and reach the glowing stairs before the dungeon closes in.
+Every step matters in Runic Depths: move through torch-lit ruins, read a monster's next action, then commit to a turn.
 
-Choose a class, discover monsters in the Bestiary, and carry Soul Gems into permanent upgrades between expeditions. Chests, vaults, altars, randomized level-up choices, evolving dungeon biomes, and a Depth Lord on every third floor keep each tactical descent different.
+The core loop is a tactical descent. Explore a procedurally generated floor through fog of war, route around enemy MOVE, MELEE, BOLT, WAIT, and STUNNED telegraphs, and walk into a foe to attack. Find chests, gold, potions, Soul Gems, vaults, altars, and the stairs; a rune ward can be shattered to stagger nearby enemies and create a brief opening. Level-up cards, equipment, distinct dungeon biomes, and a Depth Lord on every third floor make later rooms ask for different choices without hiding information from the player.
+
+Runs feed a persistent layer: choose a class, fill out the Bestiary, bank Soul Gems after death, and spend them on permanent upgrades before the next expedition. A typical descent is 5–15 minutes, with the option to push deeper for records and boss floors.
 
 ## Features
 
@@ -28,7 +30,7 @@ Choose a class, discover monsters in the Bestiary, and carry Soul Gems into perm
 
 ## Controls
 
-Desktop: WASD or arrow keys move/attack; Q drinks a potion; 1/2/3 picks a level-up card; click an adjacent tile to move or attack.  
+Desktop: physical WASD or ZQSD (AZERTY) and arrow keys move/attack; Q drinks a potion; 1/2/3 picks a level-up card; click an adjacent tile to move or attack. Soul Shop and Bestiary have visible Back buttons and close with Backspace, their S/B toggle key, or Escape.  
 Mobile: tap an adjacent tile to move or attack; tap the potion and level-up controls. Controls remain at least 44 CSS px where applicable.
 
 ## SDK, data, and ad behavior

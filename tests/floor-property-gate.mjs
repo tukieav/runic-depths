@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 
 const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true });
 const page = await browser.newPage({ viewport: { width: 907, height: 510 }, deviceScaleFactor: 1 });
-await page.goto(`http://localhost:${process.env.PORT || 8531}/?debug=1`, { waitUntil: 'networkidle' });
+await page.goto(`http://127.0.0.1:${process.env.PORT || 8531}/?debug=1`, { waitUntil: 'domcontentloaded' });
 const failures = await page.evaluate(() => {
   const bad = [];
   for (let seed = 1; seed <= 250; seed++) {

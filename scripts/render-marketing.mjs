@@ -1,15 +1,17 @@
 // Render covers + gameplay screenshots
 import { chromium } from 'playwright';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true });
 
 const covers = [
   { w: 1920, h: 1080, out: 'marketing/cover-16x9.png' },
-  { w: 1080, h: 1080, out: 'marketing/cover-1x1.png' },
+  { w: 800, h: 800, out: 'marketing/cover-1x1.png' },
   { w: 800, h: 1200, out: 'marketing/cover-2x3.png' },
 ];
 for (const cv of covers) {
   const page = await browser.newPage({ viewport: { width: cv.w, height: cv.h } });
-  await page.goto(`file:///home/bartek/Projects/runic-depths/marketing/cover.html?w=${cv.w}&h=${cv.h}`);
+  await page.goto(`${pathToFileURL(resolve('marketing/cover.html')).href}?w=${cv.w}&h=${cv.h}`);
   await page.waitForTimeout(500);
   await page.screenshot({ path: cv.out, clip: { x: 0, y: 0, width: cv.w, height: cv.h } });
   await page.close();
