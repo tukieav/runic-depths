@@ -94,6 +94,18 @@ let frameDt = 0;
 let selectedPath = null;
 let floorSeed = 0;
 const MAX_PARTICLES = 240, MAX_FLOATERS = 40, MAX_RINGS = 12;
+const ONBOARDING_KEY = 'runic-depths-controls-seen';
+let onboardingActive = false;
+
+function loadOnboarding() {
+  try { return localStorage.getItem(ONBOARDING_KEY) !== '1'; }
+  catch { return false; }
+}
+function dismissOnboarding() {
+  if (!onboardingActive) return;
+  onboardingActive = false;
+  try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch { /* private browsing */ }
+}
 
 function seededRandom(seed) {
   let v = (seed >>> 0) || 1;
@@ -342,6 +354,7 @@ function newRun(seed = (Date.now() ^ (Math.random() * 0xffffffff)) >>> 0) {
   floorSeed = seed >>> 0;
   if (resolvingTimer) { clearTimeout(resolvingTimer); resolvingTimer = null; }
   floaters = []; particles = []; msgLog = [];
+  onboardingActive = loadOnboarding();
   genDungeon(depth, floorSeed);
   logMsg('Your turn — enemy icons show their next action.', '#8ad0ff');
 }
@@ -354,6 +367,7 @@ function calcScore() { return depth * 100 + gold + hero.xp + (hero.lvl - 1) * 20
 // ---------- turn logic ----------
 function tryMove(dx, dy) {
   if (state !== 'playing' || adBusy || paused || turnPhase !== 'player') return;
+  dismissOnboarding();
   if (dx === 0 && dy === 0) return;
   const nx = hero.x + dx, ny = hero.y + dy;
   if (nx < 0 || ny < 0 || nx >= MAP_W || ny >= MAP_H) return;
@@ -798,21 +812,24 @@ function doShake(n) { shake = Math.max(shake, n * motionScale()); shakeT = 0.25 
 
 // ---------- input ----------
 window.addEventListener('keydown', (e) => {
-  if (state === 'menu' && (e.key === ' ' || e.key === 'Enter')) { startGame(); return; }
-  if ((state === 'shop' || state === 'bestiary') && e.key === 'Escape') { state = 'menu'; return; }
+  const code = e.code;
+  if (state === 'menu' && (code === 'Space' || code === 'Enter')) { startGame(); return; }
+  if (state === 'menu' && code === 'KeyS') { state = 'shop'; shopTab = 'upgrades'; return; }
+  if (state === 'menu' && code === 'KeyB') { state = 'bestiary'; return; }
+  if (state === 'shop' && (code === 'Escape' || code === 'Backspace' || code === 'KeyS')) { state = 'menu'; return; }
+  if (state === 'bestiary' && (code === 'Escape' || code === 'Backspace' || code === 'KeyB')) { state = 'menu'; return; }
   if (state === 'levelup') {
-    if (e.key === '1') pickCard(levelCards[0]);
-    if (e.key === '2') pickCard(levelCards[1]);
-    if (e.key === '3') pickCard(levelCards[2]);
+    if (code === 'Digit1') pickCard(levelCards[0]);
+    if (code === 'Digit2') pickCard(levelCards[1]);
+    if (code === 'Digit3') pickCard(levelCards[2]);
     return;
   }
   if (state !== 'playing') return;
-  const k = e.key.toLowerCase();
-  if (k === 'arrowup' || k === 'w') { e.preventDefault(); tryMove(0, -1); }
-  else if (k === 'arrowdown' || k === 's') { e.preventDefault(); tryMove(0, 1); }
-  else if (k === 'arrowleft' || k === 'a') { e.preventDefault(); tryMove(-1, 0); }
-  else if (k === 'arrowright' || k === 'd') { e.preventDefault(); tryMove(1, 0); }
-  else if (k === 'q') usePotion();
+  if (code === 'KeyW' || code === 'ArrowUp') { e.preventDefault(); dismissOnboarding(); tryMove(0, -1); }
+  else if (code === 'KeyS' || code === 'ArrowDown') { e.preventDefault(); dismissOnboarding(); tryMove(0, 1); }
+  else if (code === 'KeyA' || code === 'ArrowLeft') { e.preventDefault(); dismissOnboarding(); tryMove(-1, 0); }
+  else if (code === 'KeyD' || code === 'ArrowRight') { e.preventDefault(); dismissOnboarding(); tryMove(1, 0); }
+  else if (code === 'KeyQ') { dismissOnboarding(); usePotion(); }
 });
 
 function gameCoords(e) {
@@ -835,6 +852,7 @@ function handleTap(gx, gy) {
       else if (btn.id === 'shop') { state = 'shop'; shopTab = 'upgrades'; sfx.chestSound(); }
       else if (btn.id === 'bestiary') { state = 'bestiary'; sfx.chestSound(); }
       else if (btn.id === 'back') { state = 'menu'; sfx.stepSound(); }
+      else if (btn.id === 'onboarding_skip') dismissOnboarding();
       else if (btn.id.startsWith('tab_')) { shopTab = btn.id.slice(4); sfx.stepSound(); }
       else if (btn.id.startsWith('up_')) {
         const id = btn.id.slice(3);
@@ -851,6 +869,7 @@ function handleTap(gx, gy) {
     }
   }
   if (state !== 'playing') return;
+  dismissOnboarding();
   // tap a tile: move one step toward it (adjacent = direct)
   const wx = gx + camX, wy = gy + camY;
   const tx = Math.floor(wx / TILE), ty = Math.floor(wy / TILE);
@@ -1375,6 +1394,7 @@ function draw(dt) {
 
   gfx.drawVignette(ctx, GAME_W, GAME_H);
   drawHUD(dt);
+  if (onboardingActive && state === 'playing') drawOnboarding();
   if (state === 'levelup') drawLevelUp();
   if (state === 'gameover') drawGameOver();
 }
@@ -1451,7 +1471,7 @@ function drawHUD(dt) {
   ctx.font = 'bold 16px Georgia, serif'; ctx.textAlign = 'left'; ctx.fillStyle = '#fff8e8';
   ctx.fillText(`x ${hero.potions}`, pb.x + 44, pb.y + 30);
   ctx.font = '11px system-ui'; ctx.fillStyle = '#9a92a8';
-  ctx.fillText('press Q', pb.x + 44, pb.y + 45);
+  ctx.fillText('Q = drink', pb.x + 44, pb.y + 45);
 
   // minimap top-right (framed panel)
   const mmW = 136, mmH = 106, mx = GAME_W - mmW - 12, my = 10;
@@ -1604,7 +1624,7 @@ function drawMenu() {
   gfx.drawButton(ctx, bestB.x, bestB.y, sw, shh, '📖 BESTIARY', '#5a3a80', { size: 19 });
 
   ctx.font = '15px Georgia, serif'; ctx.fillStyle = '#8f889c';
-  ctx.fillText('WASD / arrows / tap to move · walk into monsters to attack · Q = potion', GAME_W / 2, 545);
+  ctx.fillText('WASD / ZQSD / arrows / tap to move · Q = potion · S shop · B bestiary', GAME_W / 2, 545);
   if (best > 0) { ctx.fillStyle = '#ffd76a'; ctx.fillText(`Best score: ${best}`, GAME_W / 2, 572); }
   gfx.drawVignette(ctx, GAME_W, GAME_H);
 }
@@ -1763,6 +1783,36 @@ function wrapText(text, x, y, maxW, lineH) {
   if (line) ctx.fillText(line, x, yy);
 }
 
+function drawOnboarding() {
+  const w = 350, h = 204, x = GAME_W / 2 - w / 2, y = GAME_H / 2 - h / 2;
+  ctx.fillStyle = 'rgba(5, 4, 12, 0.58)';
+  ctx.fillRect(0, 0, GAME_W, GAME_H);
+  gfx.drawPanel(ctx, x, y, w, h, { glow: '#8ad8ff', light: true });
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 15px system-ui'; ctx.fillStyle = '#fff4c4';
+  ctx.fillText('MOVE / ATTACK', GAME_W / 2, y + 31);
+  const key = (label, kx, ky, active) => {
+    ctx.fillStyle = active ? '#355a76' : '#24213a';
+    ctx.fillRect(kx, ky, 38, 31);
+    ctx.strokeStyle = active ? '#8ad8ff' : '#5c5872'; ctx.lineWidth = 1.5;
+    ctx.strokeRect(kx + 0.5, ky + 0.5, 37, 30);
+    ctx.font = 'bold 14px system-ui'; ctx.fillStyle = '#f5f2e8';
+    ctx.fillText(label, kx + 19, ky + 21);
+  };
+  const kx = GAME_W / 2 - 77, ky = y + 50;
+  key('W', kx + 39, ky, true);
+  key('A', kx, ky + 35); key('S', kx + 39, ky + 35, true); key('D', kx + 78, ky + 35);
+  key('↑', kx + 158, ky); key('←', kx + 119, ky + 35); key('↓', kx + 158, ky + 35); key('→', kx + 197, ky + 35);
+  ctx.font = 'bold 13px system-ui'; ctx.fillStyle = '#a9cce8';
+  ctx.fillText('WASD / ZQSD (AZERTY) · ARROWS', GAME_W / 2, y + 137);
+  ctx.font = '13px system-ui'; ctx.fillStyle = '#d8c9e8';
+  ctx.fillText('Q DRINKS A POTION', GAME_W / 2, y + 161);
+  const skip = { x: GAME_W / 2 - 53, y: y + 172, w: 106, h: 24, id: 'onboarding_skip' };
+  buttons.push(skip);
+  ctx.font = 'bold 11px system-ui'; ctx.fillStyle = '#8ad8ff';
+  ctx.fillText('SKIP', GAME_W / 2, y + 189);
+}
+
 function drawLevelUp() {
   ctx.fillStyle = 'rgba(5,4,12,0.78)';
   ctx.fillRect(0, 0, GAME_W, GAME_H);
@@ -1884,7 +1934,7 @@ if (new URLSearchParams(location.search).has('debug')) {
         bestDepth: meta.bestDepth, streak: meta.streak.count, dailyBonus,
         bestiaryCount: Object.keys(meta.bestiary).length,
         altarCount: altars ? altars.length : 0, soulGemCount: soulGems ? soulGems.length : 0,
-        turnPhase, paused, floorSeed, runePillarCount: runePillars ? runePillars.length : 0,
+        turnPhase, paused, floorSeed, onboardingActive, runePillarCount: runePillars ? runePillars.length : 0,
         staggeredMonsterCount: monsters ? monsters.filter(m => m.staggered > 0).length : 0,
         particleCount: particles.length, floaterCount: floaters.length, listenerCount: 8,
         safeStart: monsters ? !monsters.some(m => Math.abs(m.x - hero.x) + Math.abs(m.y - hero.y) <= 4) : false,
@@ -1932,6 +1982,14 @@ if (new URLSearchParams(location.search).has('debug')) {
         spawnMonster('skeleton', hero.x + 3, py, Math.max(1, depth));
         turnCount = 0;
       }
+      updateVisibility();
+    },
+    setupCodeInputProof: () => {
+      newRun(73); state = 'playing'; monsters = [];
+      map[hero.y - 1][hero.x] = 0;
+      map[hero.y + 1][hero.x] = 0;
+      map[hero.y][hero.x - 1] = 0;
+      map[hero.y][hero.x + 1] = 0;
       updateVisibility();
     },
     pauseRun,

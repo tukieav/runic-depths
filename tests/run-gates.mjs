@@ -16,7 +16,7 @@ const server = http.createServer((req, res) => {
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const port = server.address().port;
 const env = { ...process.env, PORT: String(port) };
-const gates = ['tests/e2e.mjs', 'tests/final-polish-gate.mjs', 'tests/floor-property-gate.mjs', 'tests/viewport-gate.mjs', 'tests/refresh-rate-gate.mjs', 'tools/e2e-soak.cjs'];
+const gates = ['tests/e2e.mjs', 'tests/final-polish-gate.mjs', 'tests/round3-compliance-gate.mjs', 'tests/floor-property-gate.mjs', 'tests/viewport-gate.mjs', 'tests/refresh-rate-gate.mjs', 'tools/e2e-soak.cjs'];
 let status = 0;
 for (const gate of gates) {
   const result = spawnSync(process.execPath, [gate], { stdio: 'inherit', env });
