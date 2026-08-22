@@ -88,6 +88,7 @@ let displayHp = 0, displayXp = 0; // animated bar drain
 let turnPhase = 'player'; // player | resolving | paused
 let resolvingTimer = null;
 let resolutionDelay = 120;
+let pendingEnemyTurn = false;
 let paused = false;
 let frameDt = 0;
 let selectedPath = null;
@@ -252,11 +253,19 @@ function genDungeon(d, seed = Date.now()) {
     if (spots[2] && d === 1) potionsOnFloor.push({ x: spots[2].x, y: spots[2].y });
     if (spots[3] && d === 1) soulGems.push({ x: spots[3].x, y: spots[3].y, amt: 1 });
   }
-  // A destructible rune pillar changes routing in a later room without sealing a corridor.
-  const pillarRoom = rooms.slice(1).find(r => r !== far && r.w >= 5 && r.h >= 5);
+  // Rune wards belong to a live encounter: they block bolts until shattered,
+  // then pulse to buy a short, deliberate window against that room's enemies.
+  const pillarRoom = rooms.slice(1).find(r => r !== far && r.w >= 5 && r.h >= 5 &&
+    monsters.some(m => m.x >= r.x && m.x < r.x + r.w && m.y >= r.y && m.y < r.y + r.h));
   if (pillarRoom) {
-    const px = pillarRoom.cx, py = pillarRoom.cy;
-    if (map[py][px] === 0 && !monsters.some(m => m.x === px && m.y === py)) {
+    const wardSpots = [[pillarRoom.cx, pillarRoom.cy], [pillarRoom.cx - 1, pillarRoom.cy], [pillarRoom.cx + 1, pillarRoom.cy], [pillarRoom.cx, pillarRoom.cy - 1], [pillarRoom.cx, pillarRoom.cy + 1]];
+    const spot = wardSpots.find(([x, y]) => map[y][x] === 0 &&
+      !monsters.some(m => m.x === x && m.y === y) &&
+      !chests.some(c => c.x === x && c.y === y) && !potionsOnFloor.some(p => p.x === x && p.y === y) &&
+      !goldPiles.some(g => g.x === x && g.y === y) && !soulGems.some(s => s.x === x && s.y === y) &&
+      !altars.some(a => a.x === x && a.y === y) && !(stairs.x === x && stairs.y === y));
+    if (spot) {
+      const [px, py] = spot;
       map[py][px] = 3;
       runePillars.push({ x: px, y: py, hp: 2, maxHp: 2 });
     }
@@ -281,7 +290,7 @@ function spawnMonster(type, x, y, d) {
     atk: Math.round(t.atk * scale), def: t.def + ((d / 3) | 0),
     xp: Math.round(t.xp * scale),
     slow: t.slow, boss: !!t.boss, erratic: !!t.erratic, ranged: !!t.ranged, phasing: !!t.phasing,
-    bump: 0, bumpDx: 0, bumpDy: 0, flash: 0, kbX: 0, kbY: 0, face: 1,
+    bump: 0, bumpDx: 0, bumpDy: 0, flash: 0, kbX: 0, kbY: 0, face: 1, staggered: 0,
   });
 }
 
@@ -328,12 +337,13 @@ function newRun(seed = (Date.now() ^ (Math.random() * 0xffffffff)) >>> 0) {
   runSouls = 0; soulsDoubled = false; soulsBanked = 0;
   resurrectUsed = false;
   turnPhase = 'player';
+  pendingEnemyTurn = false;
   selectedPath = null;
   floorSeed = seed >>> 0;
   if (resolvingTimer) { clearTimeout(resolvingTimer); resolvingTimer = null; }
   floaters = []; particles = []; msgLog = [];
   genDungeon(depth, floorSeed);
-  logMsg('Your turn — follow the cyan path. Enemy icons show their next action.', '#8ad0ff');
+  logMsg('Your turn — enemy icons show their next action.', '#8ad0ff');
 }
 
 function heroAtk() { return hero.baseAtk + WEAPONS[hero.weapon].atk; }
@@ -374,13 +384,15 @@ function attackPillar(pillar, dx, dy) {
   hero.bump = 1; hero.bumpDx = dx * 0.5; hero.bumpDy = dy * 0.5;
   sfx.swordSound();
   burstSparks(pillar.x, pillar.y, 8);
-  addFloater(pillar.x, pillar.y, pillar.hp > 0 ? 'RUNE CRACKS' : 'PATH OPEN', '#c88aff');
+  addFloater(pillar.x, pillar.y, pillar.hp > 0 ? 'WARD CRACKS' : 'RUNE PULSE', '#c88aff');
   if (pillar.hp <= 0) {
     map[pillar.y][pillar.x] = 0;
     runePillars.splice(runePillars.indexOf(pillar), 1);
     burstParticles(pillar.x, pillar.y, '#c88aff', 20);
-    logMsg('Rune pillar shattered — a new route opens.', '#c88aff');
-  } else logMsg('Rune pillar: one strike remains.', '#c88aff');
+    const affected = monsters.filter(m => Math.abs(m.x - pillar.x) + Math.abs(m.y - pillar.y) <= 3);
+    for (const m of affected) m.staggered = Math.max(m.staggered || 0, 2);
+    logMsg(`Rune pulse staggers ${affected.length} ${affected.length === 1 ? 'enemy' : 'enemies'}!`, '#c88aff');
+  } else logMsg('Rune ward: one strike remains.', '#c88aff');
 }
 
 function pickupAt(x, y) {
@@ -520,6 +532,10 @@ function pickCard(c) {
   logMsg('Level ' + hero.lvl + '! ' + c.title, '#ffd76a');
   levelUpBurst(hero.x, hero.y);
   state = 'playing';
+  if (pendingEnemyTurn) {
+    pendingEnemyTurn = false;
+    endPlayerTurn();
+  } else turnPhase = 'player';
 }
 
 function usePotion() {
@@ -544,6 +560,11 @@ function descend() {
 }
 
 function endPlayerTurn(skipMonsters) {
+  if (state === 'levelup') {
+    pendingEnemyTurn = !skipMonsters;
+    turnPhase = 'levelup';
+    return;
+  }
   turnPhase = 'resolving';
   score = calcScore();
   // Keep the committed hit, loot, and move readable before the enemy response.
@@ -575,6 +596,7 @@ function resumeRun() {
 
 function monstersAct() {
   for (const m of monsters) {
+    if (m.staggered > 0) { m.staggered--; continue; }
     if (m.slow && turnCount % 2 === 0) continue;
     const dx = hero.x - m.x, dy = hero.y - m.y;
     const dist = Math.abs(dx) + Math.abs(dy);
@@ -635,6 +657,8 @@ function stepMonster(m, dx, dy) {
 }
 
 function monsterIntent(m) {
+  if (m.staggered > 0) return { id: 'stunned', label: 'STUNNED', color: '#c88aff' };
+  if (m.slow && (turnCount + 1) % 2 === 0) return { id: 'wait', label: 'WAIT', color: '#8eb4d4' };
   const dist = Math.abs(hero.x - m.x) + Math.abs(hero.y - m.y);
   if (dist === 1) return { id: 'melee', label: 'MELEE', color: '#ff8a70' };
   if (m.ranged && dist <= 4 && losClear(m.x, m.y, hero.x, hero.y) && (turnCount + 1) % 2 === 1) return { id: 'ranged', label: 'BOLT', color: '#e890d4' };
@@ -1081,7 +1105,7 @@ function draw(dt) {
     ctx.fillStyle = '#7d669d'; ctx.fillRect(px - 6, py - 13, 4, 23);
     ctx.strokeStyle = `rgba(200,138,255,${pulse})`; ctx.lineWidth = 2; ctx.strokeRect(px - 6, py - 9, 12, 16);
     ctx.fillStyle = '#e4bcff'; ctx.font = 'bold 13px Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText('ᚱ', px, py + 4);
-    ctx.font = 'bold 9px system-ui'; ctx.fillStyle = '#e8d8ff'; ctx.fillText(`RUNE ${p.hp}/2`, px, py - 20);
+    ctx.font = 'bold 9px system-ui'; ctx.fillStyle = '#e8d8ff'; ctx.fillText(`WARD ${p.hp}/2`, px, py - 20);
   }
   if (selectedPath && visible[selectedPath.y] && visible[selectedPath.y][selectedPath.x]) {
     ctx.strokeStyle = '#8ad8ff'; ctx.lineWidth = 2.5; ctx.setLineDash([4, 3]);
@@ -1257,7 +1281,8 @@ function draw(dt) {
     drawSprite(spr, px, py + bob - 2, m.face, m.flash, alpha);
     const intent = monsterIntent(m);
     ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(9,7,15,0.85)'; ctx.fillRect(px - 19, py - r - 27, 38, 12);
+    const intentW = intent.label === 'STUNNED' ? 50 : 38;
+    ctx.fillStyle = 'rgba(9,7,15,0.85)'; ctx.fillRect(px - intentW / 2, py - r - 27, intentW, 12);
     ctx.fillStyle = intent.color; ctx.fillText(intent.label, px, py - r - 18);
     // hp bar
     if (m.hp < m.maxHp) {
@@ -1409,7 +1434,7 @@ function drawHUD(dt) {
   ctx.fillText(phaseLabel, GAME_W / 2, 60);
   if (depth === 1 && turnCount < 7) {
     ctx.font = 'bold 12px system-ui'; ctx.fillStyle = '#fff0b8';
-    ctx.fillText('Cyan path · enemy labels = intent · purple rune pillars open routes', GAME_W / 2, 78);
+    ctx.fillText('Cyan path · enemy labels = intent · wards stun foes', GAME_W / 2, 78);
   }
 
   // potion button bottom-left
@@ -1822,7 +1847,7 @@ if (new URLSearchParams(location.search).has('debug')) {
       const near = [];
       if (monsters) for (const m of monsters) {
         const dx = m.x - hero.x, dy = m.y - hero.y;
-        if (Math.abs(dx) <= 6 && Math.abs(dy) <= 6) near.push({ dx, dy, hp: m.hp });
+        if (Math.abs(dx) <= 6 && Math.abs(dy) <= 6) near.push({ dx, dy, hp: m.hp, type: m.type, intent: monsterIntent(m).id, staggered: m.staggered || 0 });
       }
       // BFS next-step toward stairs
       let sd = { dx: 0, dy: 0 }, stairsReachable = false;
@@ -1860,6 +1885,7 @@ if (new URLSearchParams(location.search).has('debug')) {
         bestiaryCount: Object.keys(meta.bestiary).length,
         altarCount: altars ? altars.length : 0, soulGemCount: soulGems ? soulGems.length : 0,
         turnPhase, paused, floorSeed, runePillarCount: runePillars ? runePillars.length : 0,
+        staggeredMonsterCount: monsters ? monsters.filter(m => m.staggered > 0).length : 0,
         particleCount: particles.length, floaterCount: floaters.length, listenerCount: 8,
         safeStart: monsters ? !monsters.some(m => Math.abs(m.x - hero.x) + Math.abs(m.y - hero.y) <= 4) : false,
         firstFloorResource: potionsOnFloor ? potionsOnFloor.length > 0 : false,
@@ -1893,6 +1919,21 @@ if (new URLSearchParams(location.search).has('debug')) {
     },
     setResolutionDelay: (ms) => { resolutionDelay = Math.max(1, Math.min(120, Number(ms) || 120)); },
     setHeroHp: (hp) => { hero.hp = Math.max(1, Math.min(hero.maxHp, Number(hp) || hero.hp)); },
+    setupFinalPolishEncounter: (kind) => {
+      monsters = []; runePillars = [];
+      const px = hero.x + 1, py = hero.y;
+      for (let x = hero.x - 1; x <= hero.x + 4; x++) if (x > 0 && x < MAP_W - 1) map[py][x] = 0;
+      if (kind === 'slow') {
+        spawnMonster('ogre', hero.x + 3, py, Math.max(1, depth));
+        turnCount = 1; // the next enemy phase is an ogre's rest turn
+      } else if (kind === 'ward') {
+        map[py][px] = 3;
+        runePillars.push({ x: px, y: py, hp: 2, maxHp: 2 });
+        spawnMonster('skeleton', hero.x + 3, py, Math.max(1, depth));
+        turnCount = 0;
+      }
+      updateVisibility();
+    },
     pauseRun,
     resumeRun,
   };
