@@ -1520,23 +1520,41 @@ function drawHUD(dt) {
 }
 
 function drawMenuBackdrop() {
-  // dungeon wall backdrop with brick texture
+  // Bright torchlit entry hall: the opening screen carries the cover's warm,
+  // adventurous promise without changing the darker in-dungeon game scenes.
+  const sky = ctx.createLinearGradient(0, 0, GAME_W, GAME_H);
+  sky.addColorStop(0, '#315d9d'); sky.addColorStop(0.46, '#6658a6'); sky.addColorStop(1, '#b15c65');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, GAME_W, GAME_H);
+  const menuGlow = ctx.createRadialGradient(GAME_W / 2, GAME_H * 0.38, 30, GAME_W / 2, GAME_H * 0.42, GAME_H * 0.82);
+  menuGlow.addColorStop(0, 'rgba(255,230,138,0.66)');
+  menuGlow.addColorStop(0.38, 'rgba(115,224,255,0.23)');
+  menuGlow.addColorStop(1, 'rgba(67,42,104,0)');
+  ctx.fillStyle = menuGlow; ctx.fillRect(0, 0, GAME_W, GAME_H);
+  // Dungeon texture is now a translucent edge treatment rather than a dark veil.
   const biome = 0;
   if (gfx.walls[biome]) {
     ctx.save();
-    ctx.globalAlpha = 0.5;
+    ctx.globalAlpha = 0.28;
     for (let y = 0; y < GAME_H; y += TILE) for (let x = 0; x < GAME_W; x += TILE) {
       const sh = tileShade(x / TILE, y / TILE);
       ctx.drawImage((y < TILE * 2 || y > GAME_H - TILE * 2) ? gfx.walls[biome][(sh * 4) | 0] : gfx.floors[biome][(sh * 6) | 0], x, y);
     }
     ctx.restore();
-    // darken center-out
+    // Preserve readable contrast at the rim without a gloomy center.
     const dg = ctx.createRadialGradient(GAME_W / 2, GAME_H / 2, 100, GAME_W / 2, GAME_H / 2, GAME_H * 0.95);
-    dg.addColorStop(0, 'rgba(7,6,12,0.55)');
-    dg.addColorStop(1, 'rgba(7,6,12,0.92)');
+    dg.addColorStop(0, 'rgba(45,35,91,0.03)');
+    dg.addColorStop(1, 'rgba(31,20,63,0.38)');
     ctx.fillStyle = dg;
     ctx.fillRect(0, 0, GAME_W, GAME_H);
   }
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
+  for (let i = 0; i < 7; i++) {
+    const bx = GAME_W * (0.12 + i * 0.13);
+    ctx.fillStyle = i % 2 ? 'rgba(255,222,120,0.09)' : 'rgba(158,235,255,0.08)';
+    ctx.beginPath(); ctx.moveTo(bx, 0); ctx.lineTo(bx + 86, 0); ctx.lineTo(bx + 260, GAME_H); ctx.lineTo(bx + 175, GAME_H); ctx.closePath(); ctx.fill();
+  }
+  ctx.restore();
   // two big flaming torches flanking the title
   for (const tx of [GAME_W / 2 - 330, GAME_W / 2 + 330]) {
     const ty = 150;
@@ -1593,12 +1611,16 @@ function drawMenu() {
   // logo with glow
   const pulseL = 0.75 + 0.25 * Math.sin(time * 2.2);
   ctx.save();
-  ctx.shadowColor = `rgba(255,190,80,${0.55 * pulseL})`;
-  ctx.shadowBlur = 26;
-  ctx.font = 'bold 68px Georgia, serif';
+  ctx.shadowColor = `rgba(255,222,105,${0.82 * pulseL})`;
+  ctx.shadowBlur = 32;
+  ctx.font = '900 70px Arial Black, Impact, sans-serif';
   const grd = ctx.createLinearGradient(0, 130, 0, 210);
-  grd.addColorStop(0, '#ffe9a8'); grd.addColorStop(0.5, '#ffd76a'); grd.addColorStop(1, '#b06a20');
-  ctx.fillStyle = '#1a0e04'; ctx.fillText('RUNIC DEPTHS', GAME_W / 2 + 4, 184);
+  grd.addColorStop(0, '#fff6c5'); grd.addColorStop(0.48, '#ffdf65'); grd.addColorStop(1, '#ff9b52');
+  ctx.lineJoin = 'round'; ctx.strokeStyle = '#3a276c'; ctx.lineWidth = 8;
+  ctx.strokeText('RUNIC DEPTHS', GAME_W / 2 + 5, 184);
+  ctx.fillStyle = '#3a276c'; ctx.fillText('RUNIC DEPTHS', GAME_W / 2 + 5, 184);
+  ctx.strokeStyle = '#fff2aa'; ctx.lineWidth = 2;
+  ctx.strokeText('RUNIC DEPTHS', GAME_W / 2, 180);
   ctx.fillStyle = grd; ctx.fillText('RUNIC DEPTHS', GAME_W / 2, 180);
   ctx.restore();
   // rune underline
