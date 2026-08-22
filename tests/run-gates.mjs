@@ -1,7 +1,7 @@
 import http from 'node:http';
 import { readFileSync, existsSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 
 const dist = join(process.cwd(), 'dist');
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png', '.mp4': 'video/mp4' };
@@ -19,8 +19,12 @@ const env = { ...process.env, PORT: String(port) };
 const gates = ['tests/e2e.mjs', 'tests/final-polish-gate.mjs', 'tests/round3-compliance-gate.mjs', 'tests/floor-property-gate.mjs', 'tests/viewport-gate.mjs', 'tests/refresh-rate-gate.mjs', 'tools/e2e-soak.cjs'];
 let status = 0;
 for (const gate of gates) {
-  const result = spawnSync(process.execPath, [gate], { stdio: 'inherit', env });
-  if (result.status) { status = result.status; break; }
+  const result = await new Promise((resolve) => {
+    const child = spawn(process.execPath, [gate], { stdio: 'inherit', env });
+    child.once('error', () => resolve(1));
+    child.once('exit', (code) => resolve(code || 0));
+  });
+  if (result) { status = result; break; }
 }
 await new Promise(resolve => server.close(resolve));
 process.exit(status);

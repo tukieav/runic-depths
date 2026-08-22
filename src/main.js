@@ -342,7 +342,7 @@ function newRun(seed = (Date.now() ^ (Math.random() * 0xffffffff)) >>> 0) {
     x: 0, y: 0, hp: s.maxHp, maxHp: s.maxHp, baseAtk: s.baseAtk, baseDef: s.baseDef,
     lvl: 1, xp: 0, weapon: 0, armor: 0, potions: s.potions,
     crit: s.crit, healAmt: s.heal, tint: s.tint, cursed: 0, blessed: 0,
-    bump: 0, bumpDx: 0, bumpDy: 0, flash: 0, face: 1,
+    bump: 0, bumpDx: 0, bumpDy: 0, lunge: 0, lungeDx: 0, lungeDy: 0, flash: 0, face: 1,
   };
   displayHp = s.maxHp; displayXp = 0;
   depth = 1; gold = 0; score = 0; turnCount = 0;
@@ -403,6 +403,7 @@ function attackPillar(pillar, dx, dy) {
     map[pillar.y][pillar.x] = 0;
     runePillars.splice(runePillars.indexOf(pillar), 1);
     burstParticles(pillar.x, pillar.y, '#c88aff', 20);
+    shatterRunePillar(pillar.x, pillar.y, dx, dy);
     const affected = monsters.filter(m => Math.abs(m.x - pillar.x) + Math.abs(m.y - pillar.y) <= 3);
     for (const m of affected) m.staggered = Math.max(m.staggered || 0, 2);
     logMsg(`Rune pulse staggers ${affected.length} ${affected.length === 1 ? 'enemy' : 'enemies'}!`, '#c88aff');
@@ -484,6 +485,7 @@ function openChest(ch) {
 
 function attackMonster(mon, dx, dy) {
   hero.bump = 1; hero.bumpDx = dx * 0.6; hero.bumpDy = dy * 0.6;
+  hero.lunge = 1; hero.lungeDx = dx; hero.lungeDy = dy;
   const variance = (Math.random() * 3 | 0) - 1;
   const isCrit = hero.crit > 0 && Math.random() < hero.crit;
   let dmg = Math.max(1, heroAtk() + variance - mon.def);
@@ -782,6 +784,22 @@ function burstSparks(tx, ty, n) {
       r: 1 + Math.random() * 2, spark: true,
     });
   }
+}
+// Rune debris is deliberately angular and short-lived so a shattered ward reads
+// differently from a normal sword impact without adding visual clutter.
+function shatterRunePillar(tx, ty, dx, dy) {
+  const cx = tx * TILE + TILE / 2, cy = ty * TILE + TILE / 2;
+  for (let i = 0; i < 28; i++) {
+    const a = Math.random() * Math.PI * 2, s = 75 + Math.random() * 185;
+    addParticle({
+      x: cx + (Math.random() - 0.5) * 10, y: cy + (Math.random() - 0.5) * 12,
+      vx: Math.cos(a) * s + dx * 48, vy: Math.sin(a) * s + dy * 30 - 55,
+      life: 0.38 + Math.random() * 0.32,
+      color: Math.random() < 0.6 ? '#c88aff' : '#d9c2ff', r: 2 + Math.random() * 3,
+      square: true,
+    });
+  }
+  doShake(5);
 }
 // death: sprite shatters into colored shards + dust puff
 function deathBurst(tx, ty, color, n) {
@@ -1317,9 +1335,11 @@ function draw(dt) {
   // --- hero (layered sprite: body + armor tint + weapon) ---
   {
     hero.bump = Math.max(0, hero.bump - dt * 6);
+    hero.lunge = Math.max(0, (hero.lunge || 0) - dt * 12);
     hero.flash = Math.max(0, (hero.flash || 0) - dt);
-    const px = hero.x * TILE + TILE / 2 - hero.bumpDx * hero.bump * 12;
-    const py = hero.y * TILE + TILE / 2 - hero.bumpDy * hero.bump * 12;
+    const lunge = Math.sin(Math.min(1, hero.lunge || 0) * Math.PI) * 10;
+    const px = hero.x * TILE + TILE / 2 - hero.bumpDx * hero.bump * 12 + (hero.lungeDx || 0) * lunge;
+    const py = hero.y * TILE + TILE / 2 - hero.bumpDy * hero.bump * 12 + (hero.lungeDy || 0) * lunge;
     const bob = Math.sin(time * 3.2) * 1.4;
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
     ctx.beginPath(); ctx.ellipse(px, py + 15, 11, 4, 0, 0, 7); ctx.fill();
@@ -1586,9 +1606,14 @@ function drawMenu() {
   ctx.beginPath(); ctx.moveTo(GAME_W / 2 - 250, 200); ctx.lineTo(GAME_W / 2 + 250, 200); ctx.stroke();
   for (let i = 0; i < 7; i++) {
     const rx = GAME_W / 2 - 210 + i * 70;
-    ctx.fillStyle = `rgba(138,208,255,${0.3 + 0.4 * Math.sin(time * 3 + i)})`;
+    const runePulse = 0.45 + 0.55 * (0.5 + 0.5 * Math.sin(time * 3 + i));
+    ctx.save();
+    ctx.shadowColor = `rgba(138,208,255,${0.7 * runePulse})`;
+    ctx.shadowBlur = 10 + 8 * runePulse;
+    ctx.fillStyle = `rgba(138,208,255,${0.28 + 0.55 * runePulse})`;
     ctx.font = '14px Georgia, serif';
     ctx.fillText(['ᚱ', 'ᚢ', 'ᚾ', 'ᛁ', 'ᚲ', 'ᛞ', 'ᛟ'][i], rx, 218);
+    ctx.restore();
   }
   ctx.font = '19px Georgia, serif'; ctx.fillStyle = '#b0a8c4';
   ctx.fillText('Turn-based dungeon crawler — loot, level up, descend', GAME_W / 2, 244);

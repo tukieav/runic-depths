@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 
-const url = `http://localhost:${process.env.PORT || 8531}/?debug=1`;
+const url = `http://127.0.0.1:${process.env.PORT || 8531}/?debug=1`;
 const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true });
 const page = await browser.newPage({ viewport: { width: 907, height: 510 }, deviceScaleFactor: 1 });
 const failures = [];
@@ -10,7 +10,7 @@ function check(name, ok, detail = '') {
 }
 
 await page.addInitScript(() => localStorage.removeItem('runic-depths-controls-seen'));
-await page.goto(url, { waitUntil: 'networkidle' });
+await page.goto(url, { waitUntil: 'domcontentloaded' });
 
 await page.evaluate(() => window.__astro.startGame());
 let state = await page.evaluate(() => window.__astro.getState());
