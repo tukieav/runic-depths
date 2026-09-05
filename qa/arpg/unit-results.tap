@@ -1,0 +1,336 @@
+TAP version 13
+# Subtest: boot and effects before user gesture never construct AudioContext
+ok 1 - boot and effects before user gesture never construct AudioContext
+  ---
+  duration_ms: 1.141016
+  type: 'test'
+  ...
+# Subtest: all effects and adaptive chapters schedule finite voices safely
+ok 2 - all effects and adaptive chapters schedule finite voices safely
+  ---
+  duration_ms: 2.401895
+  type: 'test'
+  ...
+# Subtest: platform mute wins over local preferences; hidden/pause suppress new audio
+ok 3 - platform mute wins over local preferences; hidden/pause suppress new audio
+  ---
+  duration_ms: 0.744344
+  type: 'test'
+  ...
+# Subtest: missing WebAudio support is a silent supported fallback
+ok 4 - missing WebAudio support is a silent supported fallback
+  ---
+  duration_ms: 0.575408
+  type: 'test'
+  ...
+# Subtest: all campaign content is available in both languages
+ok 5 - all campaign content is available in both languages
+  ---
+  duration_ms: 2.079263
+  type: 'test'
+  ...
+# Subtest: five distinct classes each have three usable skills and a supported weapon
+ok 6 - five distinct classes each have three usable skills and a supported weapon
+  ---
+  duration_ms: 0.156433
+  type: 'test'
+  ...
+# Subtest: twelve depths link to 24 enemy archetypes, six distinct bosses, and discoverable memories
+ok 7 - twelve depths link to 24 enemy archetypes, six distinct bosses, and discoverable memories
+  ---
+  duration_ms: 0.155504
+  type: 'test'
+  ...
+# Subtest: all four choice combinations reach the expected three endings
+ok 8 - all four choice combinations reach the expected three endings
+  ---
+  duration_ms: 0.139099
+  type: 'test'
+  ...
+# Subtest: every supported equipment slot has loot and all rarity tiers are ordered
+ok 9 - every supported equipment slot has loot and all rarity tiers are ordered
+  ---
+  duration_ms: 0.121035
+  type: 'test'
+  ...
+# Subtest: localization safely handles fallback and literal interpolation values
+ok 10 - localization safely handles fallback and literal interpolation values
+  ---
+  duration_ms: 0.09486
+  type: 'test'
+  ...
+# Subtest: all walkable tiles, spawn rooms and exits are connected for 100 seeds × 12 floors
+ok 11 - all walkable tiles, spawn rooms and exits are connected for 100 seeds × 12 floors
+  ---
+  duration_ms: 212.371248
+  type: 'test'
+  ...
+# Subtest: dungeon seed is deterministic and different seeds vary rooms
+ok 12 - dungeon seed is deterministic and different seeds vary rooms
+  ---
+  duration_ms: 0.578198
+  type: 'test'
+  ...
+# Subtest: click movement follows a real route around walls to the distant portal room
+ok 13 - click movement follows a real route around walls to the distant portal room
+  ---
+  duration_ms: 18.248574
+  type: 'test'
+  ...
+# Subtest: clicking a ranged target behind a wall paths to a clear firing position
+ok 14 - clicking a ranged target behind a wall paths to a clear firing position
+  ---
+  duration_ms: 6.360806
+  type: 'test'
+  ...
+# Subtest: line-of-sight sampling rejects the blocked corridor corner found in combat soak
+ok 15 - line-of-sight sampling rejects the blocked corridor corner found in combat soak
+  ---
+  duration_ms: 0.412041
+  type: 'test'
+  ...
+# Subtest: five distinct bilingual classes, six chapters, 24 regular enemies and six bosses
+ok 16 - five distinct bilingual classes, six chapters, 24 regular enemies and six bosses
+  ---
+  duration_ms: 0.134793
+  type: 'test'
+  ...
+# Subtest: warden: basic attacks damage, respect cooldown and cannot hit through walls
+ok 17 - warden: basic attacks damage, respect cooldown and cannot hit through walls
+  ---
+  duration_ms: 2.237864
+  type: 'test'
+  ...
+# Subtest: warden: sun_sweep has bounded power and mana/cooldown costs
+ok 18 - warden: sun_sweep has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.921615
+  type: 'test'
+  ...
+# Subtest: warden: oath_charge has bounded power and mana/cooldown costs
+ok 19 - warden: oath_charge has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.887253
+  type: 'test'
+  ...
+# Subtest: warden: dawn_prayer has bounded power and mana/cooldown costs
+ok 20 - warden: dawn_prayer has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.783348
+  type: 'test'
+  ...
+# Subtest: ranger: basic attacks damage, respect cooldown and cannot hit through walls
+ok 21 - ranger: basic attacks damage, respect cooldown and cannot hit through walls
+  ---
+  duration_ms: 1.884631
+  type: 'test'
+  ...
+# Subtest: ranger: star_arrow has bounded power and mana/cooldown costs
+ok 22 - ranger: star_arrow has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.727974
+  type: 'test'
+  ...
+# Subtest: ranger: wind_step has bounded power and mana/cooldown costs
+ok 23 - ranger: wind_step has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.704689
+  type: 'test'
+  ...
+# Subtest: ranger: thorn_sigil has bounded power and mana/cooldown costs
+ok 24 - ranger: thorn_sigil has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 1.781948
+  type: 'test'
+  ...
+# Subtest: arcanist: basic attacks damage, respect cooldown and cannot hit through walls
+ok 25 - arcanist: basic attacks damage, respect cooldown and cannot hit through walls
+  ---
+  duration_ms: 1.39335
+  type: 'test'
+  ...
+# Subtest: arcanist: astral_lance has bounded power and mana/cooldown costs
+ok 26 - arcanist: astral_lance has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.203788
+  type: 'test'
+  ...
+# Subtest: arcanist: rift_nova has bounded power and mana/cooldown costs
+ok 27 - arcanist: rift_nova has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.164701
+  type: 'test'
+  ...
+# Subtest: arcanist: echo_pillar has bounded power and mana/cooldown costs
+ok 28 - arcanist: echo_pillar has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.337079
+  type: 'test'
+  ...
+# Subtest: reaver: basic attacks damage, respect cooldown and cannot hit through walls
+ok 29 - reaver: basic attacks damage, respect cooldown and cannot hit through walls
+  ---
+  duration_ms: 0.372883
+  type: 'test'
+  ...
+# Subtest: reaver: cinder_arc has bounded power and mana/cooldown costs
+ok 30 - reaver: cinder_arc has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.165875
+  type: 'test'
+  ...
+# Subtest: reaver: ember_rush has bounded power and mana/cooldown costs
+ok 31 - reaver: ember_rush has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.188907
+  type: 'test'
+  ...
+# Subtest: reaver: furnace_roar has bounded power and mana/cooldown costs
+ok 32 - reaver: furnace_roar has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.160168
+  type: 'test'
+  ...
+# Subtest: oracle: basic attacks damage, respect cooldown and cannot hit through walls
+ok 33 - oracle: basic attacks damage, respect cooldown and cannot hit through walls
+  ---
+  duration_ms: 0.370037
+  type: 'test'
+  ...
+# Subtest: oracle: moon_shard has bounded power and mana/cooldown costs
+ok 34 - oracle: moon_shard has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.16223
+  type: 'test'
+  ...
+# Subtest: oracle: returning_tide has bounded power and mana/cooldown costs
+ok 35 - oracle: returning_tide has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.239739
+  type: 'test'
+  ...
+# Subtest: oracle: ancestor_lantern has bounded power and mana/cooldown costs
+ok 36 - oracle: ancestor_lantern has bounded power and mana/cooldown costs
+  ---
+  duration_ms: 0.406696
+  type: 'test'
+  ...
+# Subtest: real-time motion, mana and cooldowns agree at 30/60/120/144 Hz; pause freezes state
+ok 37 - real-time motion, mana and cooldowns agree at 30/60/120/144 Hz; pause freezes state
+  ---
+  duration_ms: 1.108745
+  type: 'test'
+  ...
+# Subtest: XP grants levels and talent points; legal purchases and forge limits are enforced
+ok 38 - XP grants levels and talent points; legal purchases and forge limits are enforced
+  ---
+  duration_ms: 0.363159
+  type: 'test'
+  ...
+# Subtest: all generated equipment uses a matching content slot
+ok 39 - all generated equipment uses a matching content slot
+  ---
+  duration_ms: 0.438235
+  type: 'test'
+  ...
+# Subtest: melee danger telegraphs allow reaction and dodge avoids damage
+ok 40 - melee danger telegraphs allow reaction and dodge avoids damage
+  ---
+  duration_ms: 1.20036
+  type: 'test'
+  ...
+# Subtest: campaign gates all 12 floors, requires each boss and reaches final victory
+ok 41 - campaign gates all 12 floors, requires each boss and reaches final victory
+  ---
+  duration_ms: 1.436514
+  type: 'test'
+  ...
+# Subtest: both story decisions affect three resolved endings
+ok 42 - both story decisions affect three resolved endings
+  ---
+  duration_ms: 0.087445
+  type: 'test'
+  ...
+# Subtest: save roundtrip retains class, floor kills, objects, inventory, choices and progression
+ok 43 - save roundtrip retains class, floor kills, objects, inventory, choices and progression
+  ---
+  duration_ms: 1.219353
+  type: 'test'
+  ...
+# Subtest: reloading does not bypass skill, potion or dodge recovery
+ok 44 - reloading does not bypass skill, potion or dodge recovery
+  ---
+  duration_ms: 0.332797
+  type: 'test'
+  ...
+# Subtest: a defeated hero remains defeated after reload and pays the normal revival cost
+ok 45 - a defeated hero remains defeated after reload and pays the normal revival cost
+  ---
+  duration_ms: 0.328938
+  type: 'test'
+  ...
+# Subtest: invalid save inputs never throw or create unsafe combat values
+ok 46 - invalid save inputs never throw or create unsafe combat values
+  ---
+  duration_ms: 7.092159
+  type: 'test'
+  ...
+# Subtest: rapid start/stop boundaries remain paired; duplicate transitions are idempotent
+ok 47 - rapid start/stop boundaries remain paired; duplicate transitions are idempotent
+  ---
+  duration_ms: 1.313266
+  type: 'test'
+  ...
+# Subtest: settings subscribe before init, receive initial values, change and unsubscribe
+ok 48 - settings subscribe before init, receive initial values, change and unsubscribe
+  ---
+  duration_ms: 0.616403
+  type: 'test'
+  ...
+# Subtest: cloud null is authoritative and never resurrects another account local progress
+ok 49 - cloud null is authoritative and never resurrects another account local progress
+  ---
+  duration_ms: 0.557615
+  type: 'test'
+  ...
+# Subtest: offline saves work; unsupported storage degrades to memory; absent ads never grant reward
+ok 50 - offline saves work; unsupported storage degrades to memory; absent ads never grant reward
+  ---
+  duration_ms: 0.532527
+  type: 'test'
+  ...
+# Subtest: SDK timeout releases boot; late init cannot attach after timeout
+ok 51 - SDK timeout releases boot; late init cannot attach after timeout
+  ---
+  duration_ms: 50.017698
+  type: 'test'
+  ...
+# Subtest: disabled environments do not call modules
+ok 52 - disabled environments do not call modules
+  ---
+  duration_ms: 0.774594
+  type: 'test'
+  ...
+# Subtest: late CDN script loads and initialization is shared across concurrent callers
+ok 53 - late CDN script loads and initialization is shared across concurrent callers
+  ---
+  duration_ms: 15.385954
+  type: 'test'
+  ...
+# Subtest: ad outcome settles once, errors do not produce reward, callback exceptions are isolated
+ok 54 - ad outcome settles once, errors do not produce reward, callback exceptions are isolated
+  ---
+  duration_ms: 0.893343
+  type: 'test'
+  ...
+1..54
+# tests 54
+# suites 0
+# pass 54
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 308.234406
+npm notice run runic-depths@2.0.0 test
+npm notice run node --test tests/content.test.mjs tests/engine.test.mjs tests/sdk.test.mjs tests/audio.test.mjs

@@ -1,0 +1,120 @@
+{
+  "date": "2026-09-05T20:07:26.564Z",
+  "browser": "152.0.7977.75",
+  "renderer": "headless Chrome SwiftShader",
+  "buildHashes": {
+    "bundle.js": "470dc7db0584b08f3a862196eacc1148600632f3d9d8379f53257993013522f7",
+    "bundle.css": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5",
+    "index.html": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685"
+  },
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "coarsePointer": false,
+      "dpr": 1
+    },
+    {
+      "label": "portal",
+      "width": 907,
+      "height": 510,
+      "coarsePointer": false,
+      "dpr": 1
+    },
+    {
+      "label": "portal-medium",
+      "width": 1216,
+      "height": 684,
+      "coarsePointer": false,
+      "dpr": 1
+    },
+    {
+      "label": "portal-compact",
+      "width": 1077,
+      "height": 606,
+      "coarsePointer": false,
+      "dpr": 1
+    },
+    {
+      "label": "portal-small",
+      "width": 821,
+      "height": 462,
+      "coarsePointer": false,
+      "dpr": 1
+    },
+    {
+      "label": "laptop",
+      "width": 1366,
+      "height": 768,
+      "coarsePointer": false,
+      "dpr": 1
+    },
+    {
+      "label": "full-hd",
+      "width": 1920,
+      "height": 1080,
+      "coarsePointer": false,
+      "dpr": 1
+    },
+    {
+      "label": "desktop-large",
+      "width": 1536,
+      "height": 864,
+      "coarsePointer": false,
+      "dpr": 1
+    },
+    {
+      "label": "hd",
+      "width": 1280,
+      "height": 720,
+      "coarsePointer": false,
+      "dpr": 1
+    },
+    {
+      "label": "tablet",
+      "width": 1080,
+      "height": 607,
+      "coarsePointer": true,
+      "dpr": 1
+    },
+    {
+      "label": "mobile-wide",
+      "width": 800,
+      "height": 450,
+      "coarsePointer": true,
+      "dpr": 1
+    },
+    {
+      "label": "portrait",
+      "width": 390,
+      "height": 844,
+      "coarsePointer": true,
+      "dpr": 1
+    },
+    {
+      "label": "landscape",
+      "width": 844,
+      "height": 390,
+      "coarsePointer": true,
+      "dpr": 1
+    }
+  ],
+  "passed": [
+    "WebGL scene boots with opt-in QA hook",
+    "keyboard movement changes world position continuously",
+    "ground click creates movement and reaches nearby target",
+    "inventory pauses simulation and Escape resumes play",
+    "modal focus stays trapped and focused buttons activate from the keyboard",
+    "English/Polish switching updates visible gameplay labels",
+    "five classes render and keyboard skills spend mana with cooldown feedback",
+    "mute and modal lifecycle control live WebAudio",
+    "WebGL context loss pauses safely and restoration permits resume",
+    "local progress survives reload and continue",
+    "real story-choice buttons lead to three final ending screens (scripted combat setup)",
+    "desktop and portal/mobile layouts keep controls reachable",
+    "shipping URL hides privileged QA controls"
+  ],
+  "errors": [],
+  "externalPortalAudit": "not performed"
+}

@@ -1,115 +1,237 @@
-// CrazyGames SDK v3 wrapper — safe no-op fallbacks when SDK unavailable (local dev)
+// CrazyGames HTML5 SDK v3. The wrapper owns loading; the game also runs offline.
+// Official contract: https://docs.crazygames.com/sdk/intro/
+const SDK_URL = 'https://sdk.crazygames.com/crazygames-sdk-v3.js';
 let sdk = null;
-let inited = false;
+let initPromise = null;
 let gameplayActive = false;
-let lastGameplayBoundary = 0;
+let loadingActive = false;
+let lastHappy = -Infinity;
+let settings = { muteAudio: false };
+let status = { state: 'idle', environment: 'offline', reason: '', dataError: '' };
+const settingsListeners = new Set();
+const memory = new Map();
 
-export async function initSDK() {
+const host = () => globalThis.window || globalThis;
+const candidate = () => host().CrazyGames?.SDK;
+function safely(fn) {
   try {
-    if (window.CrazyGames && window.CrazyGames.SDK) {
-      // SDK.init() may hang forever on non-whitelisted domains (sitelock),
-      // e.g. GitHub Pages — race it against a timeout so the game always boots.
-      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('sdk init timeout')), 3000));
-      await Promise.race([window.CrazyGames.SDK.init(), timeout]);
-      sdk = window.CrazyGames.SDK;
-      inited = true;
-    }
-  } catch (e) {
-    console.warn('CrazyGames SDK unavailable (local dev / non-CG domain)', e);
-    sdk = null;
-    inited = false;
+    return fn();
+  } catch {
+    return undefined;
   }
-  return inited;
 }
-
-export function sdkAvailable() { return inited; }
-
-export function gameplayStart() {
-  if (gameplayActive) return;
-  gameplayActive = true;
-  const now = Date.now();
-  if (now - lastGameplayBoundary < 1000) return;
-  lastGameplayBoundary = now;
-  try { if (sdk) sdk.game.gameplayStart(); } catch (e) {}
+function emitSettings(next) {
+  settings = {
+    ...settings,
+    ...next,
+    muteAudio: typeof next?.muteAudio === 'boolean' ? next.muteAudio : settings.muteAudio,
+  };
+  for (const fn of settingsListeners) safely(() => fn({ ...settings }));
 }
-
-export function gameplayStop() {
-  if (!gameplayActive) return;
-  gameplayActive = false;
-  const now = Date.now();
-  if (now - lastGameplayBoundary < 1000) return;
-  lastGameplayBoundary = now;
-  try { if (sdk) sdk.game.gameplayStop(); } catch (e) {}
+function bounded(promise, ms, message) {
+  let timer;
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(message)), ms);
+    }),
+  ]).finally(() => clearTimeout(timer));
 }
-
-export function loadingStart() {
-  try { if (sdk) sdk.game.loadingStart(); } catch (e) {}
-}
-
-export function loadingStop() {
-  try { if (sdk) sdk.game.loadingStop(); } catch (e) {}
-}
-
-let lastHappy = 0;
-export function happytime() {
-  const now = Date.now();
-  if (now - lastHappy < 1500) return; // SDK throttles to 1/s and logs an error — pre-throttle
-  lastHappy = now;
-  try { if (sdk) sdk.game.happytime(); } catch (e) {}
-}
-
-// Returns a promise resolving to true if the ad finished (grant reward), false otherwise.
-export function requestAd(type, { onStart, onFinish } = {}) {
+function loadScript(timeoutMs) {
+  const doc = globalThis.document;
+  if (!doc) return Promise.resolve(null);
   return new Promise((resolve) => {
-    // Local development has no ad surface. Resolve the callback path so QA can
-    // exercise rewarded recovery without making a real SDK request.
-    if (!sdk) { if (onStart) onStart(); if (onFinish) onFinish(); resolve(true); return; }
-    const callbacks = {
-      adStarted: () => { if (onStart) onStart(); },
-      adFinished: () => { if (onFinish) onFinish(); resolve(true); },
-      adError: (e) => { if (onFinish) onFinish(); resolve(false); },
+    let script = doc.querySelector('script[src="' + SDK_URL + '"]');
+    let poll, timer;
+    const finish = () => {
+      clearTimeout(timer);
+      clearInterval(poll);
+      script.removeEventListener('load', finish);
+      script.removeEventListener('error', finish);
+      resolve(candidate() || null);
     };
-    try { sdk.ad.requestAd(type, callbacks); }
-    catch (e) { if (onFinish) onFinish(); resolve(false); }
+    if (!script) {
+      script = doc.createElement('script');
+      script.src = SDK_URL;
+      script.async = true;
+    }
+    script.addEventListener('load', finish);
+    script.addEventListener('error', finish);
+    timer = setTimeout(finish, timeoutMs);
+    poll = setInterval(() => {
+      if (candidate()) finish();
+    }, 40);
+    if (!script.parentNode) doc.head.appendChild(script);
+    if (candidate()) finish();
   });
 }
 
+export function initSDK({ timeoutMs = 4500 } = {}) {
+  if (initPromise) return initPromise;
+  initPromise = (async () => {
+    status.state = 'loading';
+    const location = host().location || {};
+    const forceLocal = new URLSearchParams(location.search || '').get('useLocalSdk') === 'true';
+    const local =
+      !location.hostname || ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+    const deadline = Date.now() + Math.max(50, timeoutMs);
+    try {
+      let next = candidate();
+      if (!next && (!local || forceLocal))
+        next = await loadScript(Math.max(1, deadline - Date.now()));
+      if (!next) {
+        status = { ...status, state: 'offline', reason: 'SDK not loaded' };
+        return false;
+      }
+      await bounded(
+        Promise.resolve().then(() => next.init()),
+        Math.max(1, deadline - Date.now()),
+        'SDK initialization timeout',
+      );
+      if (next.environment === 'disabled') {
+        status = {
+          ...status,
+          state: 'offline',
+          environment: 'disabled',
+          reason: 'SDK disabled on this origin',
+        };
+        return false;
+      }
+      sdk = next;
+      status = {
+        ...status,
+        state: 'ready',
+        environment: next.environment || 'unknown',
+        reason: '',
+      };
+      safely(() => sdk.game.addSettingsChangeListener(emitSettings));
+      emitSettings(safely(() => sdk.game.settings) || { muteAudio: false });
+      // Preserve current state if integration was initialized after the game.
+      if (loadingActive) safely(() => sdk.game.loadingStart());
+      if (gameplayActive) safely(() => sdk.game.gameplayStart());
+      return true;
+    } catch (error) {
+      status = { ...status, state: 'offline', reason: error?.message || 'SDK unavailable' };
+      return false;
+    }
+  })();
+  return initPromise;
+}
+export function sdkAvailable() {
+  return !!sdk;
+}
+export function getSDKStatus() {
+  return { ...status, gameplayActive, loadingActive };
+}
+export function gameplayStart() {
+  if (gameplayActive) return;
+  gameplayActive = true;
+  safely(() => sdk?.game.gameplayStart());
+}
+export function gameplayStop() {
+  if (!gameplayActive) return;
+  gameplayActive = false;
+  safely(() => sdk?.game.gameplayStop());
+}
+export function loadingStart() {
+  if (loadingActive) return;
+  loadingActive = true;
+  safely(() => sdk?.game.loadingStart());
+}
+export function loadingStop() {
+  if (!loadingActive) return;
+  loadingActive = false;
+  safely(() => sdk?.game.loadingStop());
+}
+export function happytime() {
+  const now = Date.now();
+  if (!sdk || now - lastHappy < 1500) return;
+  lastHappy = now;
+  safely(() => sdk.game.happytime());
+}
+
+// Optional API only: core gameplay does not request ads. Offline cannot earn rewards.
+export function requestAd(type, { onStart, onFinish } = {}) {
+  if (!sdk?.ad || !['midgame', 'rewarded'].includes(type)) return Promise.resolve(false);
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (success) => {
+      if (settled) return;
+      settled = true;
+      safely(() => onFinish?.(success));
+      resolve(success);
+    };
+    try {
+      const result = sdk.ad.requestAd(type, {
+        adStarted: () => {
+          if (!settled) safely(() => onStart?.());
+        },
+        adFinished: () => finish(true),
+        adError: () => finish(false),
+      });
+      result?.catch?.(() => finish(false));
+    } catch {
+      finish(false);
+    }
+  });
+}
 export function getMuteSetting() {
-  try { return sdk ? !!sdk.game.settings.muteAudio : false; } catch (e) { return false; }
+  return !!settings.muteAudio;
 }
-
+export function getSystemLocale() {
+  return safely(() => sdk?.user.systemInfo.locale) || null;
+}
 export function onSettingsChange(fn) {
-  try { if (sdk) sdk.game.addSettingsChangeListener(fn); } catch (e) {}
+  if (typeof fn !== 'function') return () => {};
+  settingsListeners.add(fn);
+  if (sdk) safely(() => fn({ ...settings }));
+  return () => settingsListeners.delete(fn);
 }
 
-// Persistent best score: SDK data module (cross-device) with localStorage fallback
-export function loadBest() {
-  try {
-    if (sdk) {
-      const v = sdk.data.getItem('bestScore');
-      if (v != null) return parseInt(v, 10) || 0;
-    }
-  } catch (e) {}
-  try { return parseInt(localStorage.getItem('runicdepths.best') || '0', 10) || 0; } catch (e) { return 0; }
-}
-
-export function saveBest(score) {
-  try { if (sdk) sdk.data.setItem('bestScore', String(score)); } catch (e) {}
-  try { localStorage.setItem('runicdepths.best', String(score)); } catch (e) {}
-}
-
-// Generic persistent data: SDK data module (cross-device) with localStorage fallback
+// On CrazyGames the Data Module is authoritative, including a missing value.
+// Never resurrect local saves belonging to a different portal account.
 export function loadData(key) {
-  try {
-    if (sdk) {
-      const v = sdk.data.getItem(key);
-      if (v != null) return v;
+  if (sdk) {
+    try {
+      const value = sdk.data.getItem(key);
+      status.dataError = '';
+      return value ?? null;
+    } catch {
+      status.dataError = 'SDK data read failed';
+      return memory.get(key) ?? null;
     }
-  } catch (e) {}
-  try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+  try {
+    return globalThis.localStorage.getItem(key) ?? memory.get(key) ?? null;
+  } catch {
+    return memory.get(key) ?? null;
+  }
 }
-
 export function saveData(key, value) {
-  try { if (sdk) sdk.data.setItem(key, value); } catch (e) {}
-  try { localStorage.setItem(key, value); } catch (e) {}
+  value = String(value);
+  memory.set(key, value);
+  if (sdk) {
+    try {
+      sdk.data.setItem(key, value);
+      status.dataError = '';
+      return true;
+    } catch {
+      status.dataError = 'SDK data write failed';
+      return false;
+    }
+  }
+  try {
+    globalThis.localStorage.setItem(key, value);
+    return true;
+  } catch {
+    status.dataError = 'Local storage unavailable; save kept for this session';
+    return false;
+  }
+}
+export function loadBest() {
+  const value = loadData(sdk ? 'bestScore' : 'runicdepths.best');
+  return Math.max(0, Number.parseInt(value || '0', 10) || 0);
+}
+export function saveBest(score) {
+  return saveData(sdk ? 'bestScore' : 'runicdepths.best', Math.max(loadBest(), Number(score) || 0));
 }

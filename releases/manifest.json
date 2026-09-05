@@ -1,0 +1,42 @@
+{
+  "title": "Runic Depths: The Hollow Covenant",
+  "version": "2.0.0",
+  "generatedAt": "2026-09-05T20:14:11.975Z",
+  "fileCount": 6,
+  "uncompressedBytes": 3712449,
+  "zipBytes": 3145656,
+  "sha256": "8024a31c4af807961b249b080f66aff73fdba5c3dfffb4b4f8f91eec6d600208",
+  "files": [
+    {
+      "path": "THREE-LICENSE.txt",
+      "bytes": 1081,
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    {
+      "path": "assets/PROVENANCE.md",
+      "bytes": 907,
+      "sha256": "e6cf2a7cf9efb52e2d69822366f10e52ad40870fc54ace28697eece6247539e0"
+    },
+    {
+      "path": "assets/hero-atlas.png",
+      "bytes": 3000104,
+      "sha256": "2b19f34df7749b321f080816215926b9b72e95a0fdf649e5725d35430198a8a3"
+    },
+    {
+      "path": "bundle.css",
+      "bytes": 22134,
+      "sha256": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5"
+    },
+    {
+      "path": "bundle.js",
+      "bytes": 683115,
+      "sha256": "470dc7db0584b08f3a862196eacc1148600632f3d9d8379f53257993013522f7"
+    },
+    {
+      "path": "index.html",
+      "bytes": 5108,
+      "sha256": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685"
+    }
+  ],
+  "verification": "Local automated tests and package checks. CrazyGames portal acceptance and physical-device QA are separate."
+}

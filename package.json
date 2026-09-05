@@ -1,16 +1,25 @@
 {
   "name": "runic-depths",
-  "version": "1.0.0",
-  "description": "Runic Depths - turn-based dungeon crawler mini-cRPG for CrazyGames",
+  "version": "2.0.0",
+  "description": "Runic Depths: The Hollow Covenant \u2014 bilingual isometric 3D action RPG",
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "esbuild src/main.js --bundle --minify --outfile=dist/bundle.js && node scripts/pack.mjs",
-    "dev": "esbuild src/main.js --bundle --outfile=dist/bundle.js --watch --servedir=dist",
-    "test": "npm run build && node tests/run-gates.mjs"
+    "build": "esbuild src/main.js --bundle --minify --outfile=dist/bundle.js --loader:.png=file --asset-names=assets/[name] && node scripts/pack.mjs",
+    "dev": "npm run build && esbuild src/main.js --bundle --outfile=dist/bundle.js --loader:.png=file --asset-names=assets/[name] --watch --servedir=dist --serve=8485",
+    "test": "node --test tests/content.test.mjs tests/engine.test.mjs tests/sdk.test.mjs tests/audio.test.mjs",
+    "test:browser": "npm run build && node tests/arpg-browser.mjs",
+    "package": "npm run build && node scripts/release.mjs",
+    "test:platform": "npm run build && node tests/platform-browser.mjs && node tests/audio-browser.mjs",
+    "test:campaign": "BALANCE_SOAK=1 node --test --test-name-pattern=\"combat soak\" tests/engine.test.mjs",
+    "format": "prettier --write src/*.js src/style.css index.html scripts/pack.mjs scripts/release.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.12",
-    "playwright": "^1.62.1"
+    "playwright": "^1.62.1",
+    "prettier": "^3.9.6"
+  },
+  "dependencies": {
+    "three": "^0.185.1"
   }
 }

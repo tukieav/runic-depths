@@ -1,5 +1,6 @@
-// Copies index.html into dist/ so dist is a self-contained CrazyGames bundle
-import { copyFileSync, mkdirSync } from 'node:fs';
+import { copyFileSync, mkdirSync, cpSync, existsSync } from 'node:fs';
 mkdirSync('dist', { recursive: true });
 copyFileSync('index.html', 'dist/index.html');
-console.log('dist/ ready');
+if (existsSync('assets')) cpSync('assets', 'dist/assets', { recursive: true });
+copyFileSync('node_modules/three/LICENSE', 'dist/THREE-LICENSE.txt');
+console.log('dist/ ready: standalone relative-path build');

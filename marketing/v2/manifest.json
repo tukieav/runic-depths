@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "createdAt": "2026-09-05T20:11:34.606Z",
+  "requirements": "https://docs.crazygames.com/requirements/game-covers/",
+  "artwork": {
+    "source": "../../assets/hero-atlas.png",
+    "provenance": "../../assets/PROVENANCE.md",
+    "method": "Original five-hero portrait atlas placed in a responsive HTML/CSS composition; covers rendered with Chromium. No image manipulation pipeline."
+  },
+  "coverCopy": "RUNIC DEPTHS",
+  "covers": [
+    {
+      "file": "cover-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 3020237
+    },
+    {
+      "file": "cover-1x1.png",
+      "width": 800,
+      "height": 800,
+      "bytes": 934985
+    },
+    {
+      "file": "cover-2x3.png",
+      "width": 800,
+      "height": 1200,
+      "bytes": 1268795
+    }
+  ],
+  "videos": [
+    {
+      "file": "video-landscape.mp4",
+      "width": 1920,
+      "height": 1080,
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30/1"
+        }
+      ],
+      "format": {
+        "duration": "17.966667",
+        "size": "6463819"
+      },
+      "openingCover": "cover-16x9.png",
+      "openingCoverSeconds": 0.5,
+      "errors": [],
+      "endState": {
+        "mode": "playing",
+        "hp": 203.6,
+        "kills": 8,
+        "bossAlive": false
+      }
+    },
+    {
+      "file": "video-portrait.mp4",
+      "width": 720,
+      "height": 1080,
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 720,
+          "height": 1080,
+          "r_frame_rate": "30/1"
+        }
+      ],
+      "format": {
+        "duration": "17.966667",
+        "size": "4289035"
+      },
+      "openingCover": "cover-2x3.png",
+      "openingCoverSeconds": 0.5,
+      "errors": [],
+      "endState": {
+        "mode": "playing",
+        "hp": 230,
+        "kills": 12,
+        "bossAlive": false
+      }
+    }
+  ],
+  "staging": "Preview encounters are staged before recording using the local QA interface: level 8 Rune Arcanist with ordinary level/talent stats, full health and mana, positioned in the floor 6 guardian arena. Recording then uses real keyboard movement, attacks and abilities in the actual game at normal wall-clock speed. No invulnerability, damage override, debug overlay or speed-up is used.",
+  "capture": "Game graphics Performance setting. Desktop viewport is rendered at 0.8 internal pixel ratio for software Chromium capture; DOM/UI and output remain full resolution. No audio track or cursor. Each preview begins with its matching static cover for approximately 0.5 seconds."
+}

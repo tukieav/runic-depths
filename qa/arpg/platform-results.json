@@ -1,0 +1,14 @@
+{
+  "scope": "Bundled game in Chrome; controlled SDK transport, real WebAudio/WebGL and iframe lifecycle",
+  "passed": [
+    "907x510 embedded shipping game boots directly into playable state",
+    "actual rapid pause/resume buttons preserve every SDK boundary",
+    "inventory pauses simulation/audio and UI navigation cannot restart score",
+    "real iframe focus loss stops gameplay; explicit resume restarts it",
+    "visibility loss uses the same paired paused boundary",
+    "platform mute wins over actual in-game audio toggles",
+    "missing SDK and denied storage still boot; failed save visibly warns mobile player",
+    "SDK initialization rejection is optional and never blocks real gameplay"
+  ],
+  "errors": []
+}

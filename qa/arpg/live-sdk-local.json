@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-09-05T20:10:08.619266+00:00",
+  "url": "http://127.0.0.1:8485/?qa=1&useLocalSdk=true",
+  "scope": "Real CrazyGames hosted SDK v3 in supported local development environment, not portal preview",
+  "sdk": {
+    "state": "ready",
+    "environment": "local",
+    "reason": "",
+    "dataError": "",
+    "gameplayActive": true,
+    "loadingActive": false
+  },
+  "mode": "playing",
+  "consoleWarningsOrErrors": [],
+  "bundleSha256": "470dc7db0584b08f3a862196eacc1148600632f3d9d8379f53257993013522f7"
+}
