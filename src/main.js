@@ -252,6 +252,7 @@ function nextFloor() {
   announce();
 }
 function newGame(classId) {
+  $('toast-stack').replaceChildren();
   lastStep = 0;
   game = new Game({ classId, onEvent: event });
   selectedClass = game.class.id;

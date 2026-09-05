@@ -39,6 +39,11 @@ const viewportMatrix = [
 const check = async (name, run) => { await run(); results.push(name); console.log(`PASS ${name}`); };
 const state = page => page.evaluate(() => window.__RUNIC.snapshot());
 const hero = page => page.evaluate(() => ({ ...window.__RUNIC.game.hero, time: window.__RUNIC.game.time }));
+// Wait for observed motion: software WebGL on CI may render only a few frames per second.
+const waitForMotion = (page, before, minimum) => page.waitForFunction(({ x, y, minimum }) => {
+  const h = window.__RUNIC.game.hero;
+  return Math.hypot(h.x - x, h.y - y) > minimum;
+}, { x: before.x, y: before.y, minimum }, { timeout: 10000 });
 const start = async (page, classId = 'warden') => {
   await page.evaluate(id => window.__RUNIC.newGame(id), classId);
   await page.waitForFunction(() => window.__RUNIC.game.mode === 'playing' && !document.querySelector('#hud').hidden);
@@ -57,16 +62,25 @@ try {
   });
   await start(page);
   await check('keyboard movement changes world position continuously', async () => {
-    const before = await hero(page); await page.keyboard.down('d'); await page.waitForTimeout(350); await page.keyboard.up('d');
+    const before = await hero(page); await page.keyboard.down('d');
+    try { await waitForMotion(page, before, .25); } finally { await page.keyboard.up('d'); }
     const after = await hero(page); assert.ok(Math.hypot(after.x - before.x, after.y - before.y) > .25);
     assert.ok(after.time > before.time);
   });
   await check('ground click creates movement and reaches nearby target', async () => {
+    await start(page);
     const point = await page.evaluate(() => {
       const { game, renderer } = window.__RUNIC;
-      return renderer.project(game.hero.x, game.hero.y + 1.5, 0);
+      for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 8) {
+        const target = { x: game.hero.x + Math.cos(angle) * 2, y: game.hero.y + Math.sin(angle) * 2 };
+        if (!game.walkable(target.x, target.y) || !game.lineOfSight(game.hero, target)) continue;
+        if ([...game.objects.filter(o => !o.used), ...game.enemies.filter(e => !e.dead)].some(o => Math.hypot(o.x - target.x, o.y - target.y) < 1.3)) continue;
+        const screen = renderer.project(target.x, target.y, 0);
+        if (document.elementFromPoint(screen.x, screen.y)?.id === 'game') return screen;
+      }
+      throw new Error('No unobstructed nearby ground click target');
     });
-    const before = await hero(page); await page.mouse.click(point.x, point.y); await page.waitForTimeout(650);
+    const before = await hero(page); await page.mouse.click(point.x, point.y); await waitForMotion(page, before, .3);
     const after = await hero(page); assert.ok(Math.hypot(after.x - before.x, after.y - before.y) > .3);
   });
   await check('inventory pauses simulation and Escape resumes play', async () => {
@@ -189,7 +203,7 @@ try {
         const cdp = await view.context().newCDPSession(view), x = box.x + box.width / 2, y = box.y + box.height / 2;
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x + 25, y }] });
-        await view.waitForTimeout(350); await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+        try { await waitForMotion(view, before, .2); } finally { await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); }
         const after = await hero(view); assert.ok(Math.hypot(after.x - before.x, after.y - before.y) > .2, `${label}: real touch joystick moves hero`);
         await view.close();
       }

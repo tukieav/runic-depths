@@ -1,11 +1,11 @@
 {
   "title": "Runic Depths: The Hollow Covenant",
   "version": "2.0.0",
-  "generatedAt": "2026-09-05T20:14:11.975Z",
+  "generatedAt": "2026-09-05T20:22:20.587Z",
   "fileCount": 6,
-  "uncompressedBytes": 3712449,
-  "zipBytes": 3145656,
-  "sha256": "8024a31c4af807961b249b080f66aff73fdba5c3dfffb4b4f8f91eec6d600208",
+  "uncompressedBytes": 3712485,
+  "zipBytes": 3145666,
+  "sha256": "e3de2ae3b8caff6e3b869b4ed3528507a4d4045fab147ba1e57a1c19b5195f9c",
   "files": [
     {
       "path": "THREE-LICENSE.txt",
@@ -29,8 +29,8 @@
     },
     {
       "path": "bundle.js",
-      "bytes": 683115,
-      "sha256": "470dc7db0584b08f3a862196eacc1148600632f3d9d8379f53257993013522f7"
+      "bytes": 683151,
+      "sha256": "dc6a9290d85b01b5766f80bde12d40abc2238f39b767ea0d90fbce447366590c"
     },
     {
       "path": "index.html",
