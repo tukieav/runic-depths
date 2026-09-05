@@ -162,6 +162,8 @@ try {
     const layoutErrors = [];
     for (const [label, width, height, mobile] of viewportMatrix) {
       const priorErrors = layoutErrors.length;
+      // Release the desktop WebGL context before opening touch contexts on small CI runners.
+      if (mobile && !page.isClosed()) await page.close();
       const view = mobile ? await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1, hasTouch: true, isMobile: true, locale: 'en-US' }) : page;
       if (mobile) {
         view.on('pageerror', e => errors.push(e.message));
