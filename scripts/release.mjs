@@ -29,7 +29,7 @@ const zip = spawnSync('python3', ['-c', script, root, target], { encoding: 'utf8
 if (zip.status !== 0) throw Error(zip.stderr || 'ZIP packaging failed; Python 3 required');
 const manifest = {
   title: 'Runic Depths: The Hollow Covenant',
-  version: '2.0.0',
+  version: JSON.parse(readFileSync('package.json', 'utf8')).version,
   generatedAt: new Date().toISOString(),
   fileCount: files.length,
   uncompressedBytes: bytes,

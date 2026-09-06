@@ -2,6 +2,10 @@
 
 This report concerns the rebuilt real-time, WebGL action RPG. Earlier `ROUND*` and `FINAL_POLISH*` reports concern the previous turn-based game and do not prove this build.
 
+## Graphics update 2.1
+
+The 2026-09-06 update adds eight original Blender-authored skinned GLB characters, five animation clips per model, fifteen authored PBR surface maps, two GLB props, modelled gothic architecture, directional shadows and environment lighting. See [graphics pipeline](../docs/GRAPHICS_PIPELINE.md). `npm run test:graphics` verifies binary assets and their actual usage in the shipping scene, real animation changes under input, decoded maps, placement across chapters, and aborted or stalled asset fallbacks. The current graphics report is `qa/graphics/results.json`; its SHA-256 manifest identifies the exact build. Physical-device performance and external platform acceptance remain separate.
+
 ## Repeatable local checks
 
 ```sh

@@ -1,7 +1,11 @@
 # Asset provenance
 
 - `hero-atlas.png`: original five-character portrait atlas generated for Runic Depths on 2026-09-05 with OpenAI image generation. No reference image, existing game artwork, logo, or named artist was supplied. Used on the optional character-selection panel.
-- All dungeon architecture, material patterns, creatures, hero models, spell effects and interface ornament are procedural code in `src/renderer.js` and `src/style.css`.
+- `models/*.glb`: eight original characters authored in Blender 4.5 LTS with 16-bone rigs and five animation clips each. Reproducible authoring script: `scripts/build-character-assets.py`; editable source scenes: `source-art/characters/`. See `models/README.md` and its manifest.
+- `textures/*.webp`: fifteen original albedo/normal/roughness maps authored deterministically with Python; generator and licensing are documented in `textures/README.md`.
+- `props/*.glb`: two original modelled props authored with the offline Three.js GLTFExporter pipeline in `scripts/build-surface-props.mjs`; see `props/README.md`.
+- Additional architecture, procedural fallback creatures, spell effects and interface ornament are code in `src/renderer.js`, `src/gothic-architecture.js` and `src/style.css`.
+- No Quaternius, Kenney, commercial marketplace or other third-party art pack is bundled. Those were evaluated as alternative sources; all new model and texture assets were created for this project.
 - Campaign, characters and bilingual text are authored for this game in `src/content.js` and `src/i18n.js`.
 - Music “The Bell Beneath” and sound effects are synthesized in `src/audio.js`, with no downloaded music recordings or samples.
 - Three.js is distributed under its MIT license; the shipping bundle includes `THREE-LICENSE.txt`.

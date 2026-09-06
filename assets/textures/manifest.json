@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "authoring": "Original deterministic mathematical artwork for Runic Depths",
+  "generator": "scripts/build-surface-assets.py",
+  "resolution": 512,
+  "normalConvention": "OpenGL tangent space +Y",
+  "surfaces": {
+    "flagstone": {
+      "width": 512,
+      "height": 512,
+      "maps": {
+        "albedo": {
+          "url": "assets/textures/flagstone-albedo.webp",
+          "bytes": 11026,
+          "sha256": "0050ad7f4bb8ea4561c635c4a14b32bf7f1cd8c84e2e2efb6e633d5e3724a072"
+        },
+        "normal": {
+          "url": "assets/textures/flagstone-normal.webp",
+          "bytes": 290054,
+          "sha256": "60bb06b618007061ab9004af060e603eec28ec8e684e215b904a5016e2306d9c"
+        },
+        "roughness": {
+          "url": "assets/textures/flagstone-roughness.webp",
+          "bytes": 46708,
+          "sha256": "bb77539aa3e5a5603ab9059b5a985c09245921cf2a3c16766189e7c17f1957d0"
+        }
+      }
+    },
+    "masonry": {
+      "width": 512,
+      "height": 512,
+      "maps": {
+        "albedo": {
+          "url": "assets/textures/masonry-albedo.webp",
+          "bytes": 12714,
+          "sha256": "1ac136337d4c3941a2d68606cfba81a70eb81149e41e0577f4581e0100ff02ce"
+        },
+        "normal": {
+          "url": "assets/textures/masonry-normal.webp",
+          "bytes": 299846,
+          "sha256": "22fec4893c8f16bb82bbc936e322c18b440a04c379261c2649697583fd750323"
+        },
+        "roughness": {
+          "url": "assets/textures/masonry-roughness.webp",
+          "bytes": 48186,
+          "sha256": "a60be6346f2dfdd4089a9296ecaa99728cf5162524d407bbf54fe300fb782847"
+        }
+      }
+    },
+    "metal": {
+      "width": 512,
+      "height": 512,
+      "maps": {
+        "albedo": {
+          "url": "assets/textures/metal-albedo.webp",
+          "bytes": 14534,
+          "sha256": "cbe47e1eca90da6d71775b0f5a020ff5dcbc7eeb2cdb1ffc66f90bd9435ff7f3"
+        },
+        "normal": {
+          "url": "assets/textures/metal-normal.webp",
+          "bytes": 136794,
+          "sha256": "41318aef623897e529e752a73acb5abff71df85720406dba15a38e089b3809b1"
+        },
+        "roughness": {
+          "url": "assets/textures/metal-roughness.webp",
+          "bytes": 67558,
+          "sha256": "5faad190f6d5375f6df8d1f7837d27d5271894c45bccc22b32865415fd8ec293"
+        }
+      }
+    },
+    "cloth": {
+      "width": 512,
+      "height": 512,
+      "maps": {
+        "albedo": {
+          "url": "assets/textures/cloth-albedo.webp",
+          "bytes": 15520,
+          "sha256": "10db88c9252541799a0f54b6b65c4280ae982d1af42e215fd542c106709f46c7"
+        },
+        "normal": {
+          "url": "assets/textures/cloth-normal.webp",
+          "bytes": 89216,
+          "sha256": "58d86a803ae87929dcfcddc8ca161d7f7128741e3566d105de58f14c680b2421"
+        },
+        "roughness": {
+          "url": "assets/textures/cloth-roughness.webp",
+          "bytes": 28856,
+          "sha256": "1e68c3497495521e04f9f7a189c92704943311a73900fd689b1dc27ceec2b878"
+        }
+      }
+    },
+    "runestone": {
+      "width": 512,
+      "height": 512,
+      "maps": {
+        "albedo": {
+          "url": "assets/textures/runestone-albedo.webp",
+          "bytes": 16392,
+          "sha256": "07266d76ebd5a757eb133e03534597ac89a2db8ab149d032572595160b41ec60"
+        },
+        "normal": {
+          "url": "assets/textures/runestone-normal.webp",
+          "bytes": 322234,
+          "sha256": "49cde2a4770d3f6f9570b256ed4dad07a2aafbd3bfb8229a825ee938b85be882"
+        },
+        "roughness": {
+          "url": "assets/textures/runestone-roughness.webp",
+          "bytes": 51102,
+          "sha256": "bd82af98e274b6201908edd8ca5a2669df179abd25eba5ca140d96630ff470c3"
+        }
+      }
+    }
+  }
+}

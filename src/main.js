@@ -116,6 +116,7 @@ function event(e) {
       e.ranged ? audio.magicSound() : audio.swordSound();
       break;
     case 'skill':
+      renderer?.playHeroAnimation('cast');
       audio.skillSound(e.kind);
       break;
     case 'dodge':
@@ -1006,6 +1007,7 @@ async function boot() {
         toast(text('Scene restored. Resume when ready.', 'Scena odtworzona. Możesz wznowić grę.'));
       },
     });
+    await renderer.loadAssets();
     game = Game.restore(sdk.loadData(SAVE), event) || new Game({ onEvent: event });
     selectedClass = game.class.id;
     applyPrefs();

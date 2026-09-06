@@ -1,6 +1,6 @@
 # Runic Depths: The Hollow Covenant — submission draft
 
-**Version:** 2.0.0
+**Version:** 2.1.0
 **Polish subtitle:** Pusty Pakt
 **Format:** Browser action RPG; real-time combat; isometric 3D WebGL
 **Languages:** English and Polish

@@ -31,6 +31,7 @@ jobs:
       - name: Test gameplay, touch, platform lifecycle and audio
         run: |
           export CHROME_BIN="$(node --input-type=module -e 'import {chromium} from "playwright"; process.stdout.write(chromium.executablePath())')"
+          node tests/graphics-assets.mjs
           node tests/arpg-browser.mjs
           node tests/platform-browser.mjs
           node tests/audio-browser.mjs
@@ -41,6 +42,7 @@ jobs:
           name: runic-depths-qa-and-package
           path: |
             qa/arpg
+            qa/graphics
             releases
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

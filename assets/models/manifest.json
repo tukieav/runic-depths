@@ -1,0 +1,120 @@
+{
+  "generator": "Blender 4.5 LTS / scripts/build-character-assets.py",
+  "license": "CC0-1.0",
+  "original": true,
+  "coordinates": "+Y up, +Z forward, feet at Y=0",
+  "assets": [
+    {
+      "id": "warden",
+      "vertices": 4625,
+      "polygons": 4506,
+      "bones": 16,
+      "clips": [
+        "idle",
+        "walk",
+        "attack",
+        "cast",
+        "death"
+      ],
+      "bytes": 529332
+    },
+    {
+      "id": "ranger",
+      "vertices": 4761,
+      "polygons": 4629,
+      "bones": 16,
+      "clips": [
+        "idle",
+        "walk",
+        "attack",
+        "cast",
+        "death"
+      ],
+      "bytes": 555344
+    },
+    {
+      "id": "arcanist",
+      "vertices": 4491,
+      "polygons": 4356,
+      "bones": 16,
+      "clips": [
+        "idle",
+        "walk",
+        "attack",
+        "cast",
+        "death"
+      ],
+      "bytes": 517880
+    },
+    {
+      "id": "reaver",
+      "vertices": 4699,
+      "polygons": 4604,
+      "bones": 16,
+      "clips": [
+        "idle",
+        "walk",
+        "attack",
+        "cast",
+        "death"
+      ],
+      "bytes": 533432
+    },
+    {
+      "id": "oracle",
+      "vertices": 4771,
+      "polygons": 4670,
+      "bones": 16,
+      "clips": [
+        "idle",
+        "walk",
+        "attack",
+        "cast",
+        "death"
+      ],
+      "bytes": 557000
+    },
+    {
+      "id": "skeleton",
+      "vertices": 4926,
+      "polygons": 4792,
+      "bones": 16,
+      "clips": [
+        "idle",
+        "walk",
+        "attack",
+        "cast",
+        "death"
+      ],
+      "bytes": 574116
+    },
+    {
+      "id": "wraith",
+      "vertices": 4293,
+      "polygons": 4154,
+      "bones": 16,
+      "clips": [
+        "idle",
+        "walk",
+        "attack",
+        "cast",
+        "death"
+      ],
+      "bytes": 499888
+    },
+    {
+      "id": "brute",
+      "vertices": 5371,
+      "polygons": 5240,
+      "bones": 16,
+      "clips": [
+        "idle",
+        "walk",
+        "attack",
+        "cast",
+        "death"
+      ],
+      "bytes": 590500
+    }
+  ]
+}

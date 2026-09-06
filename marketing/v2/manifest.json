@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "createdAt": "2026-09-05T20:11:34.606Z",
+  "version": "2.1",
+  "createdAt": "2026-09-06T03:28:42.456Z",
   "requirements": "https://docs.crazygames.com/requirements/game-covers/",
   "artwork": {
     "source": "../../assets/hero-atlas.png",
@@ -46,16 +46,171 @@
       ],
       "format": {
         "duration": "17.966667",
-        "size": "6463819"
+        "size": "4463690"
       },
       "openingCover": "cover-16x9.png",
       "openingCoverSeconds": 0.5,
       "errors": [],
       "endState": {
         "mode": "playing",
-        "hp": 203.6,
-        "kills": 8,
-        "bossAlive": false
+        "hp": 203,
+        "kills": 6,
+        "bossAlive": true,
+        "graphics": {
+          "characters": {
+            "loaded": [
+              "warden",
+              "ranger",
+              "oracle",
+              "reaver",
+              "wraith",
+              "arcanist",
+              "skeleton",
+              "brute"
+            ],
+            "failed": {},
+            "ready": true,
+            "assets": {
+              "warden": {
+                "id": "warden",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6071,
+                "triangles": 8916,
+                "bytes": 529332,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "ranger": {
+                "id": "ranger",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6373,
+                "triangles": 9230,
+                "bytes": 555344,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "oracle": {
+                "id": "oracle",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6324,
+                "triangles": 9236,
+                "bytes": 557000,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "reaver": {
+                "id": "reaver",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6260,
+                "triangles": 9112,
+                "bytes": 533432,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "wraith": {
+                "id": "wraith",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 5630,
+                "triangles": 8316,
+                "bytes": 499888,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "arcanist": {
+                "id": "arcanist",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 5904,
+                "triangles": 8704,
+                "bytes": 517880,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "skeleton": {
+                "id": "skeleton",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6702,
+                "triangles": 9608,
+                "bytes": 574116,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "brute": {
+                "id": "brute",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 7232,
+                "triangles": 10432,
+                "bytes": 590500,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              }
+            }
+          },
+          "props": {
+            "requested": 2,
+            "loaded": 2,
+            "failed": [],
+            "ready": true,
+            "triangles": 8992
+          },
+          "surfaces": {
+            "requested": 15,
+            "loaded": 15,
+            "failed": [],
+            "ready": true
+          },
+          "shadows": true,
+          "drawCalls": 114,
+          "triangles": 297460
+        },
+        "shadowMapEnabled": true
       }
     },
     {
@@ -75,19 +230,183 @@
       ],
       "format": {
         "duration": "17.966667",
-        "size": "4289035"
+        "size": "2806556"
       },
       "openingCover": "cover-2x3.png",
       "openingCoverSeconds": 0.5,
       "errors": [],
       "endState": {
         "mode": "playing",
-        "hp": 230,
-        "kills": 12,
-        "bossAlive": false
+        "hp": 194,
+        "kills": 5,
+        "bossAlive": true,
+        "graphics": {
+          "characters": {
+            "loaded": [
+              "arcanist",
+              "warden",
+              "ranger",
+              "oracle",
+              "reaver",
+              "wraith",
+              "skeleton",
+              "brute"
+            ],
+            "failed": {},
+            "ready": true,
+            "assets": {
+              "arcanist": {
+                "id": "arcanist",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 5904,
+                "triangles": 8704,
+                "bytes": 517880,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "warden": {
+                "id": "warden",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6071,
+                "triangles": 8916,
+                "bytes": 529332,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "ranger": {
+                "id": "ranger",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6373,
+                "triangles": 9230,
+                "bytes": 555344,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "oracle": {
+                "id": "oracle",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6324,
+                "triangles": 9236,
+                "bytes": 557000,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "reaver": {
+                "id": "reaver",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6260,
+                "triangles": 9112,
+                "bytes": 533432,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "wraith": {
+                "id": "wraith",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 5630,
+                "triangles": 8316,
+                "bytes": 499888,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "skeleton": {
+                "id": "skeleton",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 6702,
+                "triangles": 9608,
+                "bytes": 574116,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "brute": {
+                "id": "brute",
+                "meshes": 1,
+                "bones": 16,
+                "vertices": 7232,
+                "triangles": 10432,
+                "bytes": 590500,
+                "clips": [
+                  "attack",
+                  "cast",
+                  "death",
+                  "idle",
+                  "walk"
+                ]
+              }
+            }
+          },
+          "props": {
+            "requested": 2,
+            "loaded": 2,
+            "failed": [],
+            "ready": true,
+            "triangles": 8992
+          },
+          "surfaces": {
+            "requested": 15,
+            "loaded": 15,
+            "failed": [],
+            "ready": true
+          },
+          "shadows": true,
+          "drawCalls": 136,
+          "triangles": 326312
+        },
+        "shadowMapEnabled": true
       }
     }
   ],
   "staging": "Preview encounters are staged before recording using the local QA interface: level 8 Rune Arcanist with ordinary level/talent stats, full health and mana, positioned in the floor 6 guardian arena. Recording then uses real keyboard movement, attacks and abilities in the actual game at normal wall-clock speed. No invulnerability, damage override, debug overlay or speed-up is used.",
-  "capture": "Game graphics Performance setting. Desktop viewport is rendered at 0.8 internal pixel ratio for software Chromium capture; DOM/UI and output remain full resolution. No audio track or cursor. Each preview begins with its matching static cover for approximately 0.5 seconds."
+  "capture": "Game graphics high setting (dynamic shadows and point lights enabled). Viewport is rendered at 0.8 internal pixel ratio for software Chromium capture; DOM/UI and output remain full resolution. No audio track or cursor. Each preview begins with its matching static cover for approximately 0.5 seconds.",
+  "captureQuality": "high",
+  "buildHashes": {
+    "bundle.js": "484b97e2464832ab07874b41ad3680efce092b6e8c7cfefa63d713daf162c31e",
+    "bundle.css": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5",
+    "index.html": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685",
+    "assets/models/manifest.json": "5b02f7947e42ca45aeaaa558aae03399cb0131ee7f641fd0555b6ff42e154fda",
+    "assets/textures/manifest.json": "d673eb80b31fa21470fb78ae1473c77b609215142a6e3a1fe110b62d00d80cb5",
+    "assets/props/manifest.json": "24f8fb5bf7cd5def2b35ffe6aef7e48ec0a7e3a2c7a0360a0ca512e715ca93de"
+  }
 }

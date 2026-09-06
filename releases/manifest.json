@@ -1,11 +1,11 @@
 {
   "title": "Runic Depths: The Hollow Covenant",
-  "version": "2.0.0",
-  "generatedAt": "2026-09-05T20:22:20.587Z",
-  "fileCount": 6,
-  "uncompressedBytes": 3712485,
-  "zipBytes": 3145666,
-  "sha256": "e3de2ae3b8caff6e3b869b4ed3528507a4d4045fab147ba1e57a1c19b5195f9c",
+  "version": "2.1.0",
+  "generatedAt": "2026-09-06T03:31:19.464Z",
+  "fileCount": 37,
+  "uncompressedBytes": 9991363,
+  "zipBytes": 6394219,
+  "sha256": "56869bfa76802b60b4fee31089824ac58d0bdecebe72799763e7fab8a23036a5",
   "files": [
     {
       "path": "THREE-LICENSE.txt",
@@ -14,13 +14,168 @@
     },
     {
       "path": "assets/PROVENANCE.md",
-      "bytes": 907,
-      "sha256": "e6cf2a7cf9efb52e2d69822366f10e52ad40870fc54ace28697eece6247539e0"
+      "bytes": 1726,
+      "sha256": "879950daa2a9b540da8676466256709c33b4112da06254ca38a946857dea2d60"
     },
     {
       "path": "assets/hero-atlas.png",
       "bytes": 3000104,
       "sha256": "2b19f34df7749b321f080816215926b9b72e95a0fdf649e5725d35430198a8a3"
+    },
+    {
+      "path": "assets/models/README.md",
+      "bytes": 1821,
+      "sha256": "7b083815b43ee83f5eac49bdf6ef0ca00a38f0e7b5306c02707a8b1308028191"
+    },
+    {
+      "path": "assets/models/arcanist.glb",
+      "bytes": 517880,
+      "sha256": "9c2d4600c720123c60178e222dd63d6d589167c00aec7b659569e144bba2077a"
+    },
+    {
+      "path": "assets/models/brute.glb",
+      "bytes": 590500,
+      "sha256": "509a37be475f79155de10e2f9c967d31025fcdc181168aa1ab0dae589fbc3cfe"
+    },
+    {
+      "path": "assets/models/manifest.json",
+      "bytes": 2044,
+      "sha256": "5b02f7947e42ca45aeaaa558aae03399cb0131ee7f641fd0555b6ff42e154fda"
+    },
+    {
+      "path": "assets/models/oracle.glb",
+      "bytes": 557000,
+      "sha256": "137f3aaad05439f54aa45eacb4ed171649e6ab334cfa3824a3ab658d5567b4c3"
+    },
+    {
+      "path": "assets/models/ranger.glb",
+      "bytes": 555344,
+      "sha256": "564cd22559e4193a571a37db19f6f58cc9a0cf5193d003801c16a93e16c06ca0"
+    },
+    {
+      "path": "assets/models/reaver.glb",
+      "bytes": 533432,
+      "sha256": "8c1b20868ce0e70c59aaf655ebf0f45ec0a0e9e23bfd35dc049e8cf81d6cd159"
+    },
+    {
+      "path": "assets/models/skeleton.glb",
+      "bytes": 574116,
+      "sha256": "1d6c6674006b438230112fd4bdda8d77b47d1a0eda4546e46abebd4ffb830990"
+    },
+    {
+      "path": "assets/models/warden.glb",
+      "bytes": 529332,
+      "sha256": "6144f401e72f33611925dd1ecd0c998e3a5c050e25855c4730d1d296821596fe"
+    },
+    {
+      "path": "assets/models/wraith.glb",
+      "bytes": 499888,
+      "sha256": "6e201b79fa6ae6efca218f07eef488fabd58bd1f11c3a0e7d07d357c7722b1fe"
+    },
+    {
+      "path": "assets/props/README.md",
+      "bytes": 1674,
+      "sha256": "c198d806811b2930deefb43b29a9986aef49dbd62efc79601c058992d3f92dde"
+    },
+    {
+      "path": "assets/props/manifest.json",
+      "bytes": 1117,
+      "sha256": "24f8fb5bf7cd5def2b35ffe6aef7e48ec0a7e3a2c7a0360a0ca512e715ca93de"
+    },
+    {
+      "path": "assets/props/sarcophagus.glb",
+      "bytes": 130784,
+      "sha256": "6deb9218d1cd81a9ace50141f80f8f7f86d57782e9d7f1c18e9ba6b5702d7105"
+    },
+    {
+      "path": "assets/props/shrine.glb",
+      "bytes": 188844,
+      "sha256": "b53c70f7837d4d1ce81f3abf35b04d855344dbd2bca11f3a4d8aab88d17e9cee"
+    },
+    {
+      "path": "assets/textures/README.md",
+      "bytes": 1854,
+      "sha256": "b7c1166a7fa74194460bb9545ad44e0324efb8b59ac90f3e5acac0c4962a3a13"
+    },
+    {
+      "path": "assets/textures/cloth-albedo.webp",
+      "bytes": 15520,
+      "sha256": "10db88c9252541799a0f54b6b65c4280ae982d1af42e215fd542c106709f46c7"
+    },
+    {
+      "path": "assets/textures/cloth-normal.webp",
+      "bytes": 89216,
+      "sha256": "58d86a803ae87929dcfcddc8ca161d7f7128741e3566d105de58f14c680b2421"
+    },
+    {
+      "path": "assets/textures/cloth-roughness.webp",
+      "bytes": 28856,
+      "sha256": "1e68c3497495521e04f9f7a189c92704943311a73900fd689b1dc27ceec2b878"
+    },
+    {
+      "path": "assets/textures/flagstone-albedo.webp",
+      "bytes": 11026,
+      "sha256": "0050ad7f4bb8ea4561c635c4a14b32bf7f1cd8c84e2e2efb6e633d5e3724a072"
+    },
+    {
+      "path": "assets/textures/flagstone-normal.webp",
+      "bytes": 290054,
+      "sha256": "60bb06b618007061ab9004af060e603eec28ec8e684e215b904a5016e2306d9c"
+    },
+    {
+      "path": "assets/textures/flagstone-roughness.webp",
+      "bytes": 46708,
+      "sha256": "bb77539aa3e5a5603ab9059b5a985c09245921cf2a3c16766189e7c17f1957d0"
+    },
+    {
+      "path": "assets/textures/manifest.json",
+      "bytes": 3712,
+      "sha256": "d673eb80b31fa21470fb78ae1473c77b609215142a6e3a1fe110b62d00d80cb5"
+    },
+    {
+      "path": "assets/textures/masonry-albedo.webp",
+      "bytes": 12714,
+      "sha256": "1ac136337d4c3941a2d68606cfba81a70eb81149e41e0577f4581e0100ff02ce"
+    },
+    {
+      "path": "assets/textures/masonry-normal.webp",
+      "bytes": 299846,
+      "sha256": "22fec4893c8f16bb82bbc936e322c18b440a04c379261c2649697583fd750323"
+    },
+    {
+      "path": "assets/textures/masonry-roughness.webp",
+      "bytes": 48186,
+      "sha256": "a60be6346f2dfdd4089a9296ecaa99728cf5162524d407bbf54fe300fb782847"
+    },
+    {
+      "path": "assets/textures/metal-albedo.webp",
+      "bytes": 14534,
+      "sha256": "cbe47e1eca90da6d71775b0f5a020ff5dcbc7eeb2cdb1ffc66f90bd9435ff7f3"
+    },
+    {
+      "path": "assets/textures/metal-normal.webp",
+      "bytes": 136794,
+      "sha256": "41318aef623897e529e752a73acb5abff71df85720406dba15a38e089b3809b1"
+    },
+    {
+      "path": "assets/textures/metal-roughness.webp",
+      "bytes": 67558,
+      "sha256": "5faad190f6d5375f6df8d1f7837d27d5271894c45bccc22b32865415fd8ec293"
+    },
+    {
+      "path": "assets/textures/runestone-albedo.webp",
+      "bytes": 16392,
+      "sha256": "07266d76ebd5a757eb133e03534597ac89a2db8ab149d032572595160b41ec60"
+    },
+    {
+      "path": "assets/textures/runestone-normal.webp",
+      "bytes": 322234,
+      "sha256": "49cde2a4770d3f6f9570b256ed4dad07a2aafbd3bfb8229a825ee938b85be882"
+    },
+    {
+      "path": "assets/textures/runestone-roughness.webp",
+      "bytes": 51102,
+      "sha256": "bd82af98e274b6201908edd8ca5a2669df179abd25eba5ca140d96630ff470c3"
     },
     {
       "path": "bundle.css",
@@ -29,8 +184,8 @@
     },
     {
       "path": "bundle.js",
-      "bytes": 683151,
-      "sha256": "dc6a9290d85b01b5766f80bde12d40abc2238f39b767ea0d90fbce447366590c"
+      "bytes": 821128,
+      "sha256": "484b97e2464832ab07874b41ad3680efce092b6e8c7cfefa63d713daf162c31e"
     },
     {
       "path": "index.html",

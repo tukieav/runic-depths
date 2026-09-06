@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "authoring": "Original modeled geometry for Runic Depths",
+  "generator": "scripts/build-surface-props.mjs",
+  "props": {
+    "sarcophagus": {
+      "url": "assets/props/sarcophagus.glb",
+      "bytes": 130784,
+      "sha256": "6deb9218d1cd81a9ace50141f80f8f7f86d57782e9d7f1c18e9ba6b5702d7105",
+      "triangles": 3680,
+      "drawCalls": 3,
+      "bounds": {
+        "min": [
+          -0.550000011920929,
+          2.38418573772492e-9,
+          -1.0499999523162842
+        ],
+        "max": [
+          0.550000011920929,
+          0.8429999947547913,
+          1.0499999523162842
+        ]
+      }
+    },
+    "shrine": {
+      "url": "assets/props/shrine.glb",
+      "bytes": 188844,
+      "sha256": "b53c70f7837d4d1ce81f3abf35b04d855344dbd2bca11f3a4d8aab88d17e9cee",
+      "triangles": 5312,
+      "drawCalls": 9,
+      "bounds": {
+        "min": [
+          -0.6299999952316284,
+          -2.98023217215615e-10,
+          -0.39500001072883606
+        ],
+        "max": [
+          0.6299999952316284,
+          1.7462787628173828,
+          0.39500001072883606
+        ]
+      }
+    }
+  }
+}

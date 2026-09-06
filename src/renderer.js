@@ -1,5 +1,20 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { addGothicArchitecture } from './gothic-architecture.js';
+import { createSurfaceLibrary } from './surface-assets.js';
+import {
+  loadCharacterAssets,
+  createCharacterVisual,
+  getCharacterAssetStatus,
+} from './character-assets.js';
+import {
+  loadPropAssets,
+  createPropVisual,
+  propAssetState,
+  disposePropAssets,
+} from './prop-assets.js';
 
 // The world lives on the X/Z plane. Game coordinates stay in tiles throughout.
 const UP = new THREE.Vector3(0, 1, 0);
@@ -12,6 +27,7 @@ const PALETTE = {
 };
 const GEO = {
   box: new THREE.BoxGeometry(1, 1, 1),
+  bevel: new RoundedBoxGeometry(1, 1, 1, 1, 0.035),
   sphere: new THREE.SphereGeometry(1, 8, 6),
   gem: new THREE.OctahedronGeometry(1, 0),
   cone: new THREE.ConeGeometry(1, 1, 6),
@@ -64,6 +80,8 @@ class Batch {
       geometry.computeBoundingSphere();
       const mesh = new THREE.Mesh(geometry, material);
       mesh.userData.ownedGeometry = true;
+      mesh.castShadow = material.userData.shadowCaster !== false && !material.transparent;
+      mesh.receiveShadow = !material.isMeshBasicMaterial;
       parent.add(mesh);
     }
   }
@@ -80,9 +98,12 @@ export class DungeonRenderer {
     });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.4;
+    this.renderer.toneMappingExposure = 1.2;
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.renderer.setClearColor('#101925');
     this.scene = new THREE.Scene();
+    this.createLightingProbe();
     this.camera = new THREE.OrthographicCamera(-10, 10, 8, -8, 0.1, 120);
     this.camera.up.copy(UP);
     this.camera.position.set(14, 18, 14);
@@ -96,6 +117,7 @@ export class DungeonRenderer {
     this.static = new THREE.Group();
     this.dynamic = new THREE.Group();
     this.scene.add(this.static, this.dynamic);
+    this.surfaces = createSurfaceLibrary(this.renderer);
     this.materials = new Map();
     this.actors = new Map();
     this.objectModels = new Map();
@@ -105,10 +127,25 @@ export class DungeonRenderer {
     this.torches = [];
     this.quality = 'high';
     this.initialized = false;
-    this.scene.add(new THREE.HemisphereLight('#b2c5e0', '#30202a', 2.05));
-    const sun = new THREE.DirectionalLight('#ffe3ba', 2.9);
-    sun.position.set(-4, 10, 7);
-    this.scene.add(sun);
+    this.scene.add(new THREE.HemisphereLight('#a6bfd8', '#30232b', 1.35));
+    const sun = new THREE.DirectionalLight('#ffe3ba', 3.2);
+    sun.position.set(-7, 13, 9);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    Object.assign(sun.shadow.camera, {
+      left: -12,
+      right: 12,
+      top: 12,
+      bottom: -12,
+      near: 0.5,
+      far: 42,
+    });
+    sun.shadow.radius = 2;
+    sun.shadow.intensity = 0.86;
+    sun.shadow.normalBias = 0.035;
+    sun.shadow.bias = -0.00015;
+    this.sun = sun;
+    this.scene.add(sun, sun.target);
     const rim = new THREE.DirectionalLight('#799ed3', 1.1);
     rim.position.set(5, 4, -8);
     this.scene.add(rim);
@@ -123,12 +160,26 @@ export class DungeonRenderer {
       event.preventDefault();
       onContextLost?.();
     };
-    this._contextRestored = () => onContextRestored?.();
+    this._contextRestored = () => {
+      this.createLightingProbe();
+      onContextRestored?.();
+    };
     canvas.addEventListener('webglcontextlost', this._contextLost);
     canvas.addEventListener('webglcontextrestored', this._contextRestored);
     this._resize = () => this.resize();
     window.addEventListener('resize', this._resize);
     this.resize();
+  }
+
+  createLightingProbe() {
+    this.lightingProbe?.dispose();
+    const environment = new RoomEnvironment();
+    const pmrem = new THREE.PMREMGenerator(this.renderer);
+    this.lightingProbe = pmrem.fromScene(environment, 0.04, 0.1, 100, { size: 128 });
+    this.scene.environment = this.lightingProbe.texture;
+    this.scene.environmentIntensity = 0.18;
+    environment.dispose();
+    pmrem.dispose();
   }
 
   material(
@@ -157,49 +208,77 @@ export class DungeonRenderer {
             depthWrite: !transparent,
             flatShading: true,
           });
+      if (!basic && metalness >= 0.4 && emissive === 0)
+        this.surfaces.apply(material, 'metal', { metalness });
       this.materials.set(key, material);
     }
     return this.materials.get(key);
   }
 
-  stoneMaterial(value) {
-    const material = this.material(value);
-    if (!material.userData.stone) {
-      material.userData.stone = true;
-      material.onBeforeCompile = (shader) => {
-        shader.vertexShader = 'varying vec3 vStonePosition;\n' + shader.vertexShader;
-        shader.vertexShader = shader.vertexShader.replace(
-          '#include <begin_vertex>',
-          '#include <begin_vertex>\nvStonePosition = (modelMatrix * vec4(position, 1.0)).xyz;',
-        );
-        shader.fragmentShader =
-          `varying vec3 vStonePosition;
-          float stoneHash(vec2 p) { return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453); }
-          float stoneNoise(vec2 p) {
-            vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
-            return mix(mix(stoneHash(i),stoneHash(i+vec2(1.,0.)),f.x),mix(stoneHash(i+vec2(0.,1.)),stoneHash(i+vec2(1.,1.)),f.x),f.y);
-          }
-        ` + shader.fragmentShader;
-        shader.fragmentShader = shader.fragmentShader.replace(
-          '#include <color_fragment>',
-          `#include <color_fragment>
-          vec2 stoneUV = vStonePosition.xz + vStonePosition.y * vec2(.71,.43);
-          float grain = stoneNoise(stoneUV * 17.0);
-          float mottling = stoneNoise(stoneUV * 3.7);
-          diffuseColor.rgb *= .81 + mottling * .23 + grain * .09;
-        `,
-        );
-      };
-      material.customProgramCacheKey = () => 'runic-weathered-stone-v1';
-      material.needsUpdate = true;
+  stoneMaterial(value, kind = 'masonry') {
+    const c = color(value);
+    const key = `surface:${kind}:${c.getHexString()}`;
+    if (!this.materials.has(key)) {
+      const material = new THREE.MeshStandardMaterial({ color: c, roughness: 0.94 });
+      this.surfaces.apply(material, kind);
+      this.materials.set(key, material);
     }
-    return material;
+    return this.materials.get(key);
+  }
+
+  async loadAssets() {
+    let timer;
+    await Promise.race([
+      Promise.all([this.surfaces.ready, loadCharacterAssets(), loadPropAssets(this.surfaces)]),
+      new Promise((resolve) => {
+        timer = setTimeout(resolve, 6000);
+      }),
+    ]);
+    clearTimeout(timer);
+  }
+
+  prepareCharacterVisual(visual, tint = null) {
+    if (!visual) return;
+    visual.root.traverse((node) => {
+      if (!node.isMesh) return;
+      if (tint !== null) {
+        const key = `character-tint:${visual.stats.id}:${color(tint).getHexString()}`;
+        if (!this.materials.has(key)) {
+          const material = node.material.clone();
+          material.color.lerp(color(tint), 0.22);
+          this.materials.set(key, material);
+        }
+        node.material = this.materials.get(key);
+      }
+      for (const material of [].concat(node.material)) {
+        material.envMap = this.lightingProbe.texture;
+        material.envMapIntensity = 0.58;
+        material.needsUpdate = true;
+      }
+    });
+  }
+
+  playHeroAnimation(name) {
+    if (name === 'cast') this.heroCastUntil = (this.world?.time || 0) + 0.6;
+  }
+
+  getGraphicsStatus() {
+    return {
+      characters: getCharacterAssetStatus(),
+      props: { ...propAssetState },
+      surfaces: { ...this.surfaces.state },
+      shadows: this.renderer.shadowMap.enabled,
+      drawCalls: this.renderer.info.render.calls,
+      triangles: this.renderer.info.render.triangles,
+    };
   }
 
   mesh(geometry, material, position = [0, 0, 0], scale = [1, 1, 1], parent = null) {
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(...position);
     mesh.scale.set(...scale);
+    mesh.castShadow = !material.transparent && !material.isMeshBasicMaterial;
+    mesh.receiveShadow = !material.isMeshBasicMaterial;
     parent?.add(mesh);
     return mesh;
   }
@@ -223,6 +302,8 @@ export class DungeonRenderer {
 
   setQuality(quality) {
     this.quality = quality === 'low' ? 'low' : 'high';
+    this.renderer.shadowMap.enabled = this.quality === 'high';
+    this.sun.castShadow = this.quality === 'high';
     this.torchLights.forEach((light) => {
       light.visible = this.quality === 'high';
     });
@@ -239,6 +320,9 @@ export class DungeonRenderer {
 
   build(world) {
     this.world = world;
+    this.heroCastUntil = 0;
+    for (const actor of this.actors.values()) actor.visual?.dispose();
+    for (const object of this.objectModels.values()) object.visual?.dispose();
     this.clearGroup(this.static);
     this.clearGroup(this.dynamic);
     for (const models of [
@@ -263,8 +347,11 @@ export class DungeonRenderer {
     const isFloor = (x, y) => y >= 0 && y < height && x >= 0 && x < width && map[y][x] === 0;
     const batch = new Batch(this);
     const floors = Array.from({ length: 5 }, (_, i) =>
-      this.stoneMaterial(floorColor.clone().multiplyScalar(0.77 + i * 0.09)),
+      this.stoneMaterial(floorColor.clone().multiplyScalar(0.9 + i * 0.07), 'flagstone'),
     );
+    floors.forEach((material) => {
+      material.userData.shadowCaster = false;
+    });
     const wall = this.stoneMaterial(stoneColor);
     const wallDark = this.stoneMaterial(stoneColor.clone().multiplyScalar(0.67));
     const trim = this.stoneMaterial(stoneColor.clone().lerp(color('#b9b09c'), 0.25));
@@ -293,20 +380,20 @@ export class DungeonRenderer {
         if (isFloor(x, y)) {
           if (n > 0.74) {
             batch.add(
-              GEO.box,
+              GEO.bevel,
               floors[Math.floor(n * floors.length)],
               [x - 0.245, -0.09, y],
               [0.475, 0.18, 0.97],
             );
             batch.add(
-              GEO.box,
+              GEO.bevel,
               floors[Math.floor(n * floors.length) - 1],
               [x + 0.245, -0.09, y],
               [0.475, 0.18, 0.97],
             );
           } else
             batch.add(
-              GEO.box,
+              GEO.bevel,
               floors[Math.floor(n * floors.length)],
               [x, -0.09, y],
               [0.97, 0.18, 0.97],
@@ -321,7 +408,7 @@ export class DungeonRenderer {
               [0, n * 3, 0],
             );
             batch.add(
-              GEO.box,
+              GEO.bevel,
               floors[4],
               [x - 0.22, 0.007, y + 0.27],
               [0.19, 0.008, 0.025],
@@ -465,7 +552,7 @@ export class DungeonRenderer {
         insetY = room.h * 0.28;
       if (chapterId === 'ashen_bells' && ri % 3 !== 2) {
         // Threadbare prayer carpets lie flat and never alter navigation.
-        const carpet = this.stoneMaterial('#40333a');
+        const carpet = this.stoneMaterial('#594047', 'cloth');
         const edging = this.material('#827152');
         batch.add(
           GEO.box,
@@ -619,10 +706,23 @@ export class DungeonRenderer {
       if (!isFloor(alcoveX, alcoveY) && isFloor(alcoveX, alcoveY + 1)) {
         const z = alcoveY + 0.45;
         if (chapterId === 'ashen_bells' && ri % 2) {
-          batch.add(GEO.box, wallDark, [alcoveX, 0.3, z], [1.6, 0.49, 0.62]);
-          batch.add(GEO.box, cap, [alcoveX, 0.59, z], [1.72, 0.14, 0.67]);
-          batch.add(GEO.gem, trim, [alcoveX, 0.72, z], [0.47, 0.12, 0.2]);
-          batch.add(GEO.box, gold, [alcoveX, 0.86, z], [0.38, 0.024, 0.025]);
+          const prop = createPropVisual('sarcophagus');
+          if (prop) {
+            prop.position.set(alcoveX, 0.02, alcoveY - 0.08);
+            prop.rotation.y = Math.PI / 2;
+            prop.traverse((node) => {
+              if (node.isMesh) {
+                node.castShadow = true;
+                node.receiveShadow = true;
+              }
+            });
+            this.static.add(prop);
+          } else {
+            batch.add(GEO.box, wallDark, [alcoveX, 0.3, z], [1.6, 0.49, 0.62]);
+            batch.add(GEO.box, cap, [alcoveX, 0.59, z], [1.72, 0.14, 0.67]);
+            batch.add(GEO.gem, trim, [alcoveX, 0.72, z], [0.47, 0.12, 0.2]);
+            batch.add(GEO.box, gold, [alcoveX, 0.86, z], [0.38, 0.024, 0.025]);
+          }
         } else if (chapterId === 'glass_archive') {
           batch.add(GEO.box, bark, [alcoveX, 0.44, z], [1.65, 0.12, 0.49]);
           for (let j = 0; j < 4; j++)
@@ -656,6 +756,17 @@ export class DungeonRenderer {
         }
       }
     }
+    addGothicArchitecture({
+      batch,
+      geo: GEO,
+      world,
+      isFloor,
+      wall,
+      trim,
+      metal: gold,
+      dark,
+      surface: this,
+    });
     batch.finish(this.static);
     this.createEmbers();
     this.target.set(world.hero?.x || 0, 0, world.hero?.y || 0);
@@ -756,209 +867,236 @@ export class DungeonRenderer {
     const isBeast = /beast|wolf|hound|rat|crawler/.test(shape);
     const isInsect = /spider|insect|swarm|scarab/.test(shape);
     const isBrute = /brute|golem|ogre|construct|troll|demon/.test(shape);
-    if (!hero && isBeast) {
-      height = 0.72;
-      batch.add(GEO.sphere, cloth, [0, 0.4, 0], [0.3, 0.27, 0.47]);
-      batch.add(GEO.gem, primary, [0, 0.52, 0.37], [0.26, 0.24, 0.31]);
-      batch.add(GEO.box, dark, [0, 0.46, 0.58], [0.19, 0.13, 0.21]);
-      for (const sx of [-1, 1]) {
-        batch.add(
-          GEO.cone,
-          primary,
-          [sx * 0.15, 0.74, 0.3],
-          [0.08, 0.23, 0.07],
-          [0.1, 0, sx * -0.15],
+    const assetId = hero
+      ? id
+      : /skeleton|bone|undead|humanoid/.test(shape)
+        ? 'skeleton'
+        : isWraith
+          ? 'wraith'
+          : isBrute
+            ? 'brute'
+            : null;
+    const visual = createCharacterVisual(assetId);
+    if (visual) {
+      this.prepareCharacterVisual(visual, hero ? null : mainColor);
+      model.add(visual.root);
+      height = 1.65;
+    } else {
+      if (!hero && isBeast) {
+        height = 0.72;
+        batch.add(GEO.sphere, cloth, [0, 0.4, 0], [0.3, 0.27, 0.47]);
+        batch.add(GEO.gem, primary, [0, 0.52, 0.37], [0.26, 0.24, 0.31]);
+        batch.add(GEO.box, dark, [0, 0.46, 0.58], [0.19, 0.13, 0.21]);
+        for (const sx of [-1, 1]) {
+          batch.add(
+            GEO.cone,
+            primary,
+            [sx * 0.15, 0.74, 0.3],
+            [0.08, 0.23, 0.07],
+            [0.1, 0, sx * -0.15],
+          );
+          batch.add(GEO.gem, glow, [sx * 0.16, 0.58, 0.52], [0.045, 0.035, 0.03]);
+          batch.add(GEO.box, cloth, [sx * 0.2, 0.16, -0.25], [0.1, 0.29, 0.12]);
+          batch.add(GEO.box, cloth, [sx * 0.2, 0.16, 0.27], [0.1, 0.29, 0.12]);
+        }
+        batch.add(GEO.cone, cloth, [0, 0.44, -0.54], [0.09, 0.42, 0.1], [-1.1, 0, 0]);
+        for (let i = 0; i < 3; i++)
+          batch.add(GEO.cone, armor, [0, 0.65, -0.2 + i * 0.2], [0.09, 0.2, 0.08], [-0.5, 0, 0]);
+      } else if (!hero && isInsect) {
+        height = 0.6;
+        batch.add(GEO.sphere, dark, [0, 0.32, -0.1], [0.32, 0.24, 0.38]);
+        batch.add(GEO.gem, primary, [0, 0.36, 0.27], [0.25, 0.2, 0.25]);
+        batch.add(GEO.gem, glow, [0, 0.52, -0.1], [0.12, 0.05, 0.2]);
+        for (const sx of [-1, 1]) {
+          for (let i = 0; i < 3; i++) {
+            batch.add(
+              GEO.box,
+              cloth,
+              [sx * 0.4, 0.28, -0.25 + i * 0.25],
+              [0.48, 0.065, 0.065],
+              [0, (i - 1) * sx * 0.5, sx * -0.35],
+            );
+            batch.add(
+              GEO.box,
+              primary,
+              [sx * 0.6, 0.13, -0.31 + i * 0.3],
+              [0.065, 0.28, 0.065],
+              [0, 0, sx * 0.3],
+            );
+          }
+          batch.add(GEO.gem, glow, [sx * 0.11, 0.4, 0.45], [0.04, 0.04, 0.035]);
+        }
+      } else if (!hero && isWraith) {
+        height = 1.25;
+        batch.add(GEO.cone, cloth, [0, 0.6, 0], [0.32, 0.9, 0.27]);
+        batch.add(GEO.sphere, primary, [0, 1.03, 0], [0.23, 0.26, 0.22]);
+        batch.add(GEO.box, dark, [0, 1.04, 0.185], [0.27, 0.17, 0.035]);
+        for (const sx of [-1, 1]) {
+          batch.add(GEO.gem, glow, [sx * 0.075, 1.07, 0.21], [0.037, 0.022, 0.025]);
+          batch.add(GEO.cone, primary, [sx * 0.32, 0.67, 0], [0.11, 0.58, 0.11], [0, 0, sx * 0.8]);
+        }
+        batch.add(GEO.gem, glow, [0, 0.63, 0.25], [0.075, 0.12, 0.06]);
+        this.ring(
+          0.4,
+          0.022,
+          this.material(mainColor, { basic: true, transparent: true, opacity: 0.6 }),
+          root,
         );
-        batch.add(GEO.gem, glow, [sx * 0.16, 0.58, 0.52], [0.045, 0.035, 0.03]);
-        batch.add(GEO.box, cloth, [sx * 0.2, 0.16, -0.25], [0.1, 0.29, 0.12]);
-        batch.add(GEO.box, cloth, [sx * 0.2, 0.16, 0.27], [0.1, 0.29, 0.12]);
-      }
-      batch.add(GEO.cone, cloth, [0, 0.44, -0.54], [0.09, 0.42, 0.1], [-1.1, 0, 0]);
-      for (let i = 0; i < 3; i++)
-        batch.add(GEO.cone, armor, [0, 0.65, -0.2 + i * 0.2], [0.09, 0.2, 0.08], [-0.5, 0, 0]);
-    } else if (!hero && isInsect) {
-      height = 0.6;
-      batch.add(GEO.sphere, dark, [0, 0.32, -0.1], [0.32, 0.24, 0.38]);
-      batch.add(GEO.gem, primary, [0, 0.36, 0.27], [0.25, 0.2, 0.25]);
-      batch.add(GEO.gem, glow, [0, 0.52, -0.1], [0.12, 0.05, 0.2]);
-      for (const sx of [-1, 1]) {
-        for (let i = 0; i < 3; i++) {
+      } else {
+        const brute = !hero && isBrute;
+        const skeleton = !hero && /skeleton|bone|undead|humanoid/.test(shape);
+        const torso = skeleton ? skin : brute ? armor : primary;
+        const shoulderWidth = brute ? 0.35 : 0.23;
+        height = brute ? 1.4 : 1.12;
+        leftLeg = this.mesh(GEO.box, dark, [-0.13, 0.21, 0], [0.17, 0.36, 0.2], model);
+        rightLeg = this.mesh(GEO.box, dark, [0.13, 0.21, 0], [0.17, 0.36, 0.2], model);
+        batch.add(GEO.taper, cloth, [0, 0.42, 0], [brute ? 0.38 : 0.28, 0.3, 0.22]);
+        batch.add(
+          GEO.taper,
+          torso,
+          [0, 0.68, 0],
+          [brute ? 0.42 : 0.29, brute ? 0.5 : 0.38, brute ? 0.29 : 0.2],
+          [0, 0, Math.PI],
+        );
+        batch.add(GEO.box, gold, [0, 0.49, 0.017], [brute ? 0.6 : 0.48, 0.075, 0.4]);
+        batch.add(GEO.gem, glow, [0, 0.5, 0.225], [0.055, 0.065, 0.025]);
+        batch.add(
+          GEO.sphere,
+          skeleton ? skin : hero ? skin : primary,
+          [0, brute ? 1.17 : 1, 0],
+          [brute ? 0.26 : 0.19, brute ? 0.25 : 0.19, 0.185],
+        );
+        for (const sx of [-1, 1]) {
+          batch.add(
+            GEO.gem,
+            brute || id === 'warden' ? armor : cloth,
+            [sx * shoulderWidth, 0.83, 0],
+            [brute ? 0.26 : 0.17, 0.17, 0.22],
+          );
           batch.add(
             GEO.box,
             cloth,
-            [sx * 0.4, 0.28, -0.25 + i * 0.25],
-            [0.48, 0.065, 0.065],
-            [0, (i - 1) * sx * 0.5, sx * -0.35],
+            [sx * (shoulderWidth + 0.07), 0.63, 0],
+            [0.13, 0.28, 0.16],
+            [0, 0, sx * 0.15],
           );
-          batch.add(
-            GEO.box,
-            primary,
-            [sx * 0.6, 0.13, -0.31 + i * 0.3],
-            [0.065, 0.28, 0.065],
-            [0, 0, sx * 0.3],
-          );
+          if (!hero)
+            batch.add(
+              GEO.gem,
+              glow,
+              [sx * 0.072, brute ? 1.2 : 1.015, 0.164],
+              [0.037, 0.025, 0.033],
+            );
         }
-        batch.add(GEO.gem, glow, [sx * 0.11, 0.4, 0.45], [0.04, 0.04, 0.035]);
-      }
-    } else if (!hero && isWraith) {
-      height = 1.25;
-      batch.add(GEO.cone, cloth, [0, 0.6, 0], [0.32, 0.9, 0.27]);
-      batch.add(GEO.sphere, primary, [0, 1.03, 0], [0.23, 0.26, 0.22]);
-      batch.add(GEO.box, dark, [0, 1.04, 0.185], [0.27, 0.17, 0.035]);
-      for (const sx of [-1, 1]) {
-        batch.add(GEO.gem, glow, [sx * 0.075, 1.07, 0.21], [0.037, 0.022, 0.025]);
-        batch.add(GEO.cone, primary, [sx * 0.32, 0.67, 0], [0.11, 0.58, 0.11], [0, 0, sx * 0.8]);
-      }
-      batch.add(GEO.gem, glow, [0, 0.63, 0.25], [0.075, 0.12, 0.06]);
-      this.ring(
-        0.4,
-        0.022,
-        this.material(mainColor, { basic: true, transparent: true, opacity: 0.6 }),
-        root,
-      );
-    } else {
-      const brute = !hero && isBrute;
-      const skeleton = !hero && /skeleton|bone|undead/.test(shape);
-      const torso = skeleton ? skin : brute ? armor : primary;
-      const shoulderWidth = brute ? 0.35 : 0.23;
-      height = brute ? 1.4 : 1.12;
-      leftLeg = this.mesh(GEO.box, dark, [-0.13, 0.21, 0], [0.17, 0.36, 0.2], model);
-      rightLeg = this.mesh(GEO.box, dark, [0.13, 0.21, 0], [0.17, 0.36, 0.2], model);
-      batch.add(GEO.taper, cloth, [0, 0.42, 0], [brute ? 0.38 : 0.28, 0.3, 0.22]);
-      batch.add(
-        GEO.taper,
-        torso,
-        [0, 0.68, 0],
-        [brute ? 0.42 : 0.29, brute ? 0.5 : 0.38, brute ? 0.29 : 0.2],
-        [0, 0, Math.PI],
-      );
-      batch.add(GEO.box, gold, [0, 0.49, 0.017], [brute ? 0.6 : 0.48, 0.075, 0.4]);
-      batch.add(GEO.gem, glow, [0, 0.5, 0.225], [0.055, 0.065, 0.025]);
-      batch.add(
-        GEO.sphere,
-        skeleton ? skin : hero ? skin : primary,
-        [0, brute ? 1.17 : 1, 0],
-        [brute ? 0.26 : 0.19, brute ? 0.25 : 0.19, 0.185],
-      );
-      for (const sx of [-1, 1]) {
-        batch.add(
-          GEO.gem,
-          brute || id === 'warden' ? armor : cloth,
-          [sx * shoulderWidth, 0.83, 0],
-          [brute ? 0.26 : 0.17, 0.17, 0.22],
-        );
-        batch.add(
-          GEO.box,
-          cloth,
-          [sx * (shoulderWidth + 0.07), 0.63, 0],
-          [0.13, 0.28, 0.16],
-          [0, 0, sx * 0.15],
-        );
-        if (!hero)
-          batch.add(GEO.gem, glow, [sx * 0.072, brute ? 1.2 : 1.015, 0.164], [0.037, 0.025, 0.033]);
-      }
-      if (skeleton) {
-        for (let i = 0; i < 3; i++)
-          batch.add(GEO.box, dark, [0, 0.59 + i * 0.08, 0.2], [0.34, 0.028, 0.032]);
-        batch.add(GEO.box, dark, [0, 0.95, 0.16], [0.11, 0.027, 0.035]);
-      }
-      if (hero && id === 'warden') {
-        batch.add(GEO.sphere, armor, [0, 1.075, -0.015], [0.205, 0.15, 0.2]);
-        batch.add(GEO.box, dark, [0, 1.015, 0.181], [0.23, 0.04, 0.035]);
-        batch.add(GEO.box, primary, [0, 1.2, -0.07], [0.055, 0.16, 0.2]);
-        batch.add(GEO.box, cloth, [0, 0.64, -0.235], [0.4, 0.62, 0.045], [-0.18, 0, 0]);
-        batch.add(GEO.gem, armor, [-0.38, 0.57, 0.16], [0.27, 0.37, 0.1]);
-        batch.add(GEO.gem, primary, [-0.38, 0.57, 0.235], [0.2, 0.29, 0.04]);
-        batch.add(GEO.box, gold, [-0.38, 0.57, 0.27], [0.05, 0.35, 0.035]);
-      } else if (hero && id === 'ranger') {
-        batch.add(GEO.sphere, cloth, [0, 1.07, -0.015], [0.21, 0.17, 0.21]);
-        batch.add(GEO.cone, primary, [0, 1.19, -0.09], [0.16, 0.25, 0.17], [-0.6, 0, 0]);
-        batch.add(GEO.box, cloth, [0, 0.64, -0.22], [0.34, 0.52, 0.045], [-0.15, 0, 0]);
-        batch.add(GEO.cylinder, gold, [-0.13, 0.74, -0.3], [0.07, 0.5, 0.07], [0, 0, -0.3]);
-        for (let i = 0; i < 3; i++)
-          batch.add(
-            GEO.box,
-            skin,
-            [-0.19 + i * 0.035, 1.02, -0.3],
-            [0.015, 0.29, 0.015],
-            [0, 0, -0.3],
-          );
-      } else if (hero && (id === 'arcanist' || id === 'oracle')) {
-        batch.add(GEO.taper, primary, [0, 0.35, 0], [0.3, 0.56, 0.27]);
-        batch.add(GEO.box, gold, [0, 0.7, 0.21], [0.055, 0.39, 0.025]);
-        batch.add(GEO.sphere, cloth, [0, 1.04, -0.04], [0.21, 0.21, 0.2]);
-        if (id === 'arcanist') {
-          batch.add(GEO.cone, primary, [0, 1.34, -0.03], [0.23, 0.47, 0.22], [-0.15, 0, 0]);
-          batch.add(GEO.cylinder, gold, [0, 1.13, -0.03], [0.25, 0.055, 0.24]);
-        } else {
-          for (const sx of [-1, 1])
+        if (skeleton) {
+          for (let i = 0; i < 3; i++)
+            batch.add(GEO.box, dark, [0, 0.59 + i * 0.08, 0.2], [0.34, 0.028, 0.032]);
+          batch.add(GEO.box, dark, [0, 0.95, 0.16], [0.11, 0.027, 0.035]);
+        }
+        if (hero && id === 'warden') {
+          batch.add(GEO.sphere, armor, [0, 1.075, -0.015], [0.205, 0.15, 0.2]);
+          batch.add(GEO.box, dark, [0, 1.015, 0.181], [0.23, 0.04, 0.035]);
+          batch.add(GEO.box, primary, [0, 1.2, -0.07], [0.055, 0.16, 0.2]);
+          batch.add(GEO.box, cloth, [0, 0.64, -0.235], [0.4, 0.62, 0.045], [-0.18, 0, 0]);
+          batch.add(GEO.gem, armor, [-0.38, 0.57, 0.16], [0.27, 0.37, 0.1]);
+          batch.add(GEO.gem, primary, [-0.38, 0.57, 0.235], [0.2, 0.29, 0.04]);
+          batch.add(GEO.box, gold, [-0.38, 0.57, 0.27], [0.05, 0.35, 0.035]);
+        } else if (hero && id === 'ranger') {
+          batch.add(GEO.sphere, cloth, [0, 1.07, -0.015], [0.21, 0.17, 0.21]);
+          batch.add(GEO.cone, primary, [0, 1.19, -0.09], [0.16, 0.25, 0.17], [-0.6, 0, 0]);
+          batch.add(GEO.box, cloth, [0, 0.64, -0.22], [0.34, 0.52, 0.045], [-0.15, 0, 0]);
+          batch.add(GEO.cylinder, gold, [-0.13, 0.74, -0.3], [0.07, 0.5, 0.07], [0, 0, -0.3]);
+          for (let i = 0; i < 3; i++)
+            batch.add(
+              GEO.box,
+              skin,
+              [-0.19 + i * 0.035, 1.02, -0.3],
+              [0.015, 0.29, 0.015],
+              [0, 0, -0.3],
+            );
+        } else if (hero && (id === 'arcanist' || id === 'oracle')) {
+          batch.add(GEO.taper, primary, [0, 0.35, 0], [0.3, 0.56, 0.27]);
+          batch.add(GEO.box, gold, [0, 0.7, 0.21], [0.055, 0.39, 0.025]);
+          batch.add(GEO.sphere, cloth, [0, 1.04, -0.04], [0.21, 0.21, 0.2]);
+          if (id === 'arcanist') {
+            batch.add(GEO.cone, primary, [0, 1.34, -0.03], [0.23, 0.47, 0.22], [-0.15, 0, 0]);
+            batch.add(GEO.cylinder, gold, [0, 1.13, -0.03], [0.25, 0.055, 0.24]);
+          } else {
+            for (const sx of [-1, 1])
+              batch.add(
+                GEO.cone,
+                gold,
+                [sx * 0.15, 1.25, -0.04],
+                [0.065, 0.32, 0.07],
+                [0, 0, -sx * 0.3],
+              );
+            batch.add(GEO.gem, whiteGlow, [0, 1.2, 0.07], [0.08, 0.15, 0.06]);
+          }
+        } else if (hero && id === 'reaver') {
+          batch.add(GEO.gem, armor, [0.29, 0.86, 0], [0.22, 0.19, 0.25]);
+          batch.add(GEO.box, skin, [-0.28, 0.65, 0], [0.17, 0.35, 0.16]);
+          batch.add(GEO.box, cloth, [0, 1.095, -0.01], [0.2, 0.1, 0.32]);
+          batch.add(GEO.box, primary, [0, 1.02, 0.17], [0.28, 0.065, 0.025]);
+        } else if (brute) {
+          for (const sx of [-1, 1]) {
             batch.add(
               GEO.cone,
               gold,
-              [sx * 0.15, 1.25, -0.04],
-              [0.065, 0.32, 0.07],
-              [0, 0, -sx * 0.3],
+              [sx * 0.24, 1.4, -0.01],
+              [0.09, 0.35, 0.1],
+              [0, 0, -sx * 0.5],
             );
-          batch.add(GEO.gem, whiteGlow, [0, 1.2, 0.07], [0.08, 0.15, 0.06]);
+            batch.add(
+              GEO.cone,
+              primary,
+              [sx * 0.38, 0.98, -0.04],
+              [0.13, 0.34, 0.12],
+              [0, 0, -sx * 0.65],
+            );
+          }
         }
-      } else if (hero && id === 'reaver') {
-        batch.add(GEO.gem, armor, [0.29, 0.86, 0], [0.22, 0.19, 0.25]);
-        batch.add(GEO.box, skin, [-0.28, 0.65, 0], [0.17, 0.35, 0.16]);
-        batch.add(GEO.box, cloth, [0, 1.095, -0.01], [0.2, 0.1, 0.32]);
-        batch.add(GEO.box, primary, [0, 1.02, 0.17], [0.28, 0.065, 0.025]);
-      } else if (brute) {
-        for (const sx of [-1, 1]) {
-          batch.add(GEO.cone, gold, [sx * 0.24, 1.4, -0.01], [0.09, 0.35, 0.1], [0, 0, -sx * 0.5]);
-          batch.add(
-            GEO.cone,
-            primary,
-            [sx * 0.38, 0.98, -0.04],
-            [0.13, 0.34, 0.12],
-            [0, 0, -sx * 0.65],
-          );
+        // Weapons move independently of the merged torso.
+        weapon.position.set(0.31, 0.58, 0.13);
+        const wb = new Batch(this);
+        if (hero && id === 'ranger') {
+          for (let i = 0; i < 7; i++) {
+            const a = -0.95 + i * 0.32;
+            wb.add(
+              GEO.box,
+              gold,
+              [0, Math.sin(a) * 0.47, 0.22 + Math.cos(a) * 0.22],
+              [0.045, 0.17, 0.045],
+              [a * 0.8, 0, 0],
+            );
+          }
+          wb.add(GEO.box, skin, [0, 0, 0.34], [0.008, 0.77, 0.008]);
+          wb.add(GEO.box, armor, [0, 0, 0.49], [0.016, 0.016, 0.57]);
+        } else if (hero && (id === 'arcanist' || id === 'oracle')) {
+          wb.add(GEO.cylinder, gold, [0.09, 0.1, 0.03], [0.033, 1.25, 0.033]);
+          wb.add(GEO.gem, glow, [0.09, 0.83, 0.03], [0.13, 0.19, 0.13]);
+          for (const sx of [-1, 1])
+            wb.add(
+              GEO.cone,
+              gold,
+              [0.09 + sx * 0.12, 0.75, 0.03],
+              [0.038, 0.27, 0.04],
+              [0, 0, sx * -0.4],
+            );
+        } else if ((hero && id === 'reaver') || brute) {
+          wb.add(GEO.cylinder, gold, [0, 0.14, 0.08], [0.035, 0.88, 0.035]);
+          wb.add(GEO.gem, armor, [0, 0.54, 0.08], [0.29, 0.26, 0.055]);
+          wb.add(GEO.gem, primary, [0, 0.53, 0.115], [0.18, 0.16, 0.03]);
+        } else {
+          wb.add(GEO.box, gold, [0, 0, 0.12], [0.055, 0.24, 0.06]);
+          wb.add(GEO.box, gold, [0, 0.15, 0.12], [0.28, 0.055, 0.07]);
+          wb.add(GEO.box, armor, [0, 0.41, 0.12], [0.075, 0.49, 0.035]);
+          wb.add(GEO.cone, armor, [0, 0.7, 0.12], [0.055, 0.14, 0.025]);
+          wb.add(GEO.box, whiteGlow, [0.029, 0.41, 0.145], [0.012, 0.45, 0.005]);
         }
+        wb.finish(weapon);
       }
-      // Weapons move independently of the merged torso.
-      weapon.position.set(0.31, 0.58, 0.13);
-      const wb = new Batch(this);
-      if (hero && id === 'ranger') {
-        for (let i = 0; i < 7; i++) {
-          const a = -0.95 + i * 0.32;
-          wb.add(
-            GEO.box,
-            gold,
-            [0, Math.sin(a) * 0.47, 0.22 + Math.cos(a) * 0.22],
-            [0.045, 0.17, 0.045],
-            [a * 0.8, 0, 0],
-          );
-        }
-        wb.add(GEO.box, skin, [0, 0, 0.34], [0.008, 0.77, 0.008]);
-        wb.add(GEO.box, armor, [0, 0, 0.49], [0.016, 0.016, 0.57]);
-      } else if (hero && (id === 'arcanist' || id === 'oracle')) {
-        wb.add(GEO.cylinder, gold, [0.09, 0.1, 0.03], [0.033, 1.25, 0.033]);
-        wb.add(GEO.gem, glow, [0.09, 0.83, 0.03], [0.13, 0.19, 0.13]);
-        for (const sx of [-1, 1])
-          wb.add(
-            GEO.cone,
-            gold,
-            [0.09 + sx * 0.12, 0.75, 0.03],
-            [0.038, 0.27, 0.04],
-            [0, 0, sx * -0.4],
-          );
-      } else if ((hero && id === 'reaver') || brute) {
-        wb.add(GEO.cylinder, gold, [0, 0.14, 0.08], [0.035, 0.88, 0.035]);
-        wb.add(GEO.gem, armor, [0, 0.54, 0.08], [0.29, 0.26, 0.055]);
-        wb.add(GEO.gem, primary, [0, 0.53, 0.115], [0.18, 0.16, 0.03]);
-      } else {
-        wb.add(GEO.box, gold, [0, 0, 0.12], [0.055, 0.24, 0.06]);
-        wb.add(GEO.box, gold, [0, 0.15, 0.12], [0.28, 0.055, 0.07]);
-        wb.add(GEO.box, armor, [0, 0.41, 0.12], [0.075, 0.49, 0.035]);
-        wb.add(GEO.cone, armor, [0, 0.7, 0.12], [0.055, 0.14, 0.025]);
-        wb.add(GEO.box, whiteGlow, [0.029, 0.41, 0.145], [0.012, 0.45, 0.005]);
-      }
-      wb.finish(weapon);
+      batch.finish(model);
     }
-    batch.finish(model);
     const scale = data.scale || (data.boss ? 1.65 : 1);
     model.scale.setScalar(scale);
     this.shadow(root, (data.boss ? 0.65 : 0.35) * Math.max(1, scale * 0.8));
@@ -1007,6 +1145,7 @@ export class DungeonRenderer {
     return {
       root,
       model,
+      visual,
       weapon,
       leftLeg,
       rightLeg,
@@ -1026,7 +1165,7 @@ export class DungeonRenderer {
   createObject(data) {
     const group = new THREE.Group();
     const batch = new Batch(this);
-    const stone = this.material('#69727e');
+    const stone = this.stoneMaterial('#8b929a', 'runestone');
     const dark = this.material('#27283a');
     const gold = this.material('#c5a864', { metalness: 0.65 });
     const wood = this.material('#674b44');
@@ -1127,28 +1266,45 @@ export class DungeonRenderer {
         group,
       );
     } else if (data.type === 'shrine') {
-      batch.add(GEO.box, dark, [0, 0.08, 0], [0.95, 0.16, 0.85]);
-      batch.add(GEO.box, stone, [0, 0.27, 0], [0.66, 0.32, 0.58]);
-      batch.add(GEO.box, gold, [0, 0.46, 0], [0.79, 0.1, 0.7]);
-      batch.add(GEO.taper, stone, [0, 0.81, -0.13], [0.19, 0.62, 0.19]);
-      batch.add(GEO.sphere, gold, [0, 1.22, -0.13], [0.16, 0.18, 0.15]);
-      for (const sx of [-1, 1])
-        batch.add(GEO.cone, stone, [sx * 0.27, 0.94, -0.1], [0.12, 0.6, 0.15], [0, 0, -sx * 0.85]);
-      const gem = this.mesh(
-        GEO.gem,
-        this.material('#7cebbb', { emissive: 1.4 }),
-        [0, 0.78, 0.28],
-        [0.1, 0.17, 0.1],
-        group,
-      );
-      object.animated.push(gem);
-      object.spark = gem;
-      this.ring(
-        0.68,
-        0.035,
-        this.material('#74dba6', { basic: true, transparent: true, opacity: 0.55 }),
-        group,
-      );
+      const prop = createPropVisual('shrine');
+      if (prop) {
+        prop.traverse((node) => {
+          if (node.isMesh) {
+            node.castShadow = true;
+            node.receiveShadow = true;
+          }
+        });
+        group.add(prop);
+      } else {
+        batch.add(GEO.box, dark, [0, 0.08, 0], [0.95, 0.16, 0.85]);
+        batch.add(GEO.box, stone, [0, 0.27, 0], [0.66, 0.32, 0.58]);
+        batch.add(GEO.box, gold, [0, 0.46, 0], [0.79, 0.1, 0.7]);
+        batch.add(GEO.taper, stone, [0, 0.81, -0.13], [0.19, 0.62, 0.19]);
+        batch.add(GEO.sphere, gold, [0, 1.22, -0.13], [0.16, 0.18, 0.15]);
+        for (const sx of [-1, 1])
+          batch.add(
+            GEO.cone,
+            stone,
+            [sx * 0.27, 0.94, -0.1],
+            [0.12, 0.6, 0.15],
+            [0, 0, -sx * 0.85],
+          );
+        const gem = this.mesh(
+          GEO.gem,
+          this.material('#7cebbb', { emissive: 1.4 }),
+          [0, 0.78, 0.28],
+          [0.1, 0.17, 0.1],
+          group,
+        );
+        object.animated.push(gem);
+        object.spark = gem;
+        this.ring(
+          0.68,
+          0.035,
+          this.material('#74dba6', { basic: true, transparent: true, opacity: 0.55 }),
+          group,
+        );
+      }
     } else if (data.type === 'lore') {
       batch.add(GEO.box, stone, [0, 0.22, 0], [0.5, 0.42, 0.44]);
       batch.add(GEO.box, gold, [0, 0.48, 0], [0.63, 0.08, 0.49], [0.18, 0, 0]);
@@ -1170,15 +1326,22 @@ export class DungeonRenderer {
       );
       object.animated.push(object.spark);
     } else if (data.type === 'npc') {
-      batch.add(GEO.taper, this.material('#5c8298'), [0, 0.39, 0], [0.31, 0.69, 0.25]);
-      batch.add(GEO.sphere, this.material('#c3a18a'), [0, 0.93, 0], [0.19, 0.2, 0.18]);
-      batch.add(GEO.sphere, dark, [0, 1.04, -0.03], [0.21, 0.17, 0.19]);
-      batch.add(GEO.box, gold, [0, 0.68, 0.22], [0.045, 0.35, 0.03]);
-      batch.add(GEO.cylinder, wood, [0.34, 0.55, 0.07], [0.04, 1.09, 0.04]);
+      object.visual = createCharacterVisual('oracle');
+      this.prepareCharacterVisual(object.visual);
+      if (object.visual) {
+        object.visual.root.rotation.y = 0.55;
+        group.add(object.visual.root);
+      } else {
+        batch.add(GEO.taper, this.material('#5c8298'), [0, 0.39, 0], [0.31, 0.69, 0.25]);
+        batch.add(GEO.sphere, this.material('#c3a18a'), [0, 0.93, 0], [0.19, 0.2, 0.18]);
+        batch.add(GEO.sphere, dark, [0, 1.04, -0.03], [0.21, 0.17, 0.19]);
+        batch.add(GEO.box, gold, [0, 0.68, 0.22], [0.045, 0.35, 0.03]);
+        batch.add(GEO.cylinder, wood, [0.34, 0.55, 0.07], [0.04, 1.09, 0.04]);
+      }
       const marker = this.mesh(
         GEO.gem,
         this.material('#f4d78a', { emissive: 1.2 }),
-        [0, 1.5, 0],
+        [0, object.visual ? 1.95 : 1.5, 0],
         [0.1, 0.17, 0.1],
         group,
       );
@@ -1225,6 +1388,7 @@ export class DungeonRenderer {
   removeMissing(models, active, key = 'root') {
     for (const [id, model] of models) {
       if (active.has(id)) continue;
+      model.visual?.dispose();
       const object = model[key] || model;
       this.clearGroup(object);
       if (object.userData?.ownedGeometry) object.geometry?.dispose();
@@ -1247,8 +1411,22 @@ export class DungeonRenderer {
     for (let i = 0; i < list.length; i++) {
       const data = list[i];
       if (!Number.isFinite(data.x) || !Number.isFinite(data.y)) continue;
-      if (data.dead || (data.hp <= 0 && !data.isHero)) continue;
       const id = data.id ?? `enemy:${i}`;
+      if (data.dead || (data.hp <= 0 && !data.isHero)) {
+        const corpse = this.actors.get(id);
+        // Only an enemy seen alive gets a brief visual death; loaded corpses do
+        // not resurrect. This is presentation only and does not alter combat.
+        if (corpse?.visual) {
+          corpse.deathAge = (corpse.deathAge || 0) + (world.mode === 'paused' ? 0 : dt);
+          if (corpse.deathAge < 1.3) {
+            active.add(id);
+            corpse.health.visible = false;
+            corpse.visual.update({ ...data, dead: true }, world.mode === 'paused' ? 0 : dt, time);
+            corpse.model.position.y = -Math.max(0, corpse.deathAge - 0.85) * 1.4;
+          }
+        }
+        continue;
+      }
       active.add(id);
       let actor = this.actors.get(id);
       if (!actor) {
@@ -1270,22 +1448,41 @@ export class DungeonRenderer {
       if (facing === null && moving) facing = Math.atan2(dx, dy);
       if (facing !== null) actor.model.rotation.y = facing;
       const reduced = world.settings?.reducedMotion;
-      actor.model.position.y = reduced
-        ? 0
-        : actor.isWraith
-          ? 0.09 + Math.sin(time * 2 + actor.phase) * 0.055
-          : moving
-            ? Math.abs(Math.sin(actor.phase)) * 0.045
-            : Math.sin(time * 2 + actor.phase) * 0.009;
-      const stride = moving && !reduced ? Math.sin(actor.phase) * 0.47 : 0;
-      if (actor.leftLeg) actor.leftLeg.rotation.x = stride;
-      if (actor.rightLeg) actor.rightLeg.rotation.x = -stride;
-      const attack = Math.max(0, Math.min(1, Number(data.attackTime) || 0));
-      actor.weapon.rotation.x =
-        attack > 0 ? -0.9 - Math.sin(attack * 12) * 0.8 : moving ? Math.sin(actor.phase) * 0.1 : 0;
-      actor.weapon.rotation.z = attack > 0 ? -0.6 : 0;
-      actor.model.rotation.z = data.dashTime > 0 ? -0.15 : 0;
-      if (data.isHero && data.hp <= 0) actor.model.rotation.z = -Math.PI / 2;
+      if (actor.visual) {
+        if (actor.root.visible)
+          actor.visual.update(
+            {
+              ...data,
+              moving,
+              castTime: data.isHero ? Math.max(0, (this.heroCastUntil || 0) - world.time) : 0,
+              reducedMotion: reduced,
+            },
+            world.mode === 'paused' ? 0 : dt,
+            time,
+          );
+        actor.model.position.y = 0;
+      } else {
+        actor.model.position.y = reduced
+          ? 0
+          : actor.isWraith
+            ? 0.09 + Math.sin(time * 2 + actor.phase) * 0.055
+            : moving
+              ? Math.abs(Math.sin(actor.phase)) * 0.045
+              : Math.sin(time * 2 + actor.phase) * 0.009;
+        const stride = moving && !reduced ? Math.sin(actor.phase) * 0.47 : 0;
+        if (actor.leftLeg) actor.leftLeg.rotation.x = stride;
+        if (actor.rightLeg) actor.rightLeg.rotation.x = -stride;
+        const attack = Math.max(0, Math.min(1, Number(data.attackTime) || 0));
+        actor.weapon.rotation.x =
+          attack > 0
+            ? -0.9 - Math.sin(attack * 12) * 0.8
+            : moving
+              ? Math.sin(actor.phase) * 0.1
+              : 0;
+        actor.weapon.rotation.z = attack > 0 ? -0.6 : 0;
+        actor.model.rotation.z = data.dashTime > 0 ? -0.15 : 0;
+        if (data.isHero && data.hp <= 0) actor.model.rotation.z = -Math.PI / 2;
+      }
       actor.health.visible = !data.isHero && (data.hp < data.maxHp || data.boss) && distance < 12;
       actor.health.quaternion.copy(this.camera.quaternion);
       const ratio = Math.max(0, Math.min(1, data.hp / (data.maxHp || 1)));
@@ -1478,6 +1675,8 @@ export class DungeonRenderer {
     this.target.lerp(target, snap ? 1 : 1 - Math.exp(-dt * 8));
     this.camera.position.copy(this.target).add(this.cameraOffset);
     this.camera.lookAt(this.target);
+    this.sun.position.set(world.hero.x - 7, 13, world.hero.y + 9);
+    this.sun.target.position.set(world.hero.x, 0, world.hero.y);
     this.heroLight.position.set(world.hero.x, 2.3, world.hero.y);
     this.updateActors(world, dt, time);
     this.syncObjects(world);
@@ -1485,6 +1684,7 @@ export class DungeonRenderer {
     this.updateProjectiles(world);
     this.updateEffects(world, time);
     for (const object of this.objectModels.values()) {
+      object.visual?.update({ hp: 1, moving: false }, world.mode === 'paused' ? 0 : dt, time);
       for (let i = 0; i < object.animated.length; i++) {
         const mesh = object.animated[i];
         if (!world.settings?.reducedMotion) {
@@ -1567,10 +1767,15 @@ export class DungeonRenderer {
     window.removeEventListener('resize', this._resize);
     this.canvas.removeEventListener('webglcontextlost', this._contextLost);
     this.canvas.removeEventListener('webglcontextrestored', this._contextRestored);
+    for (const actor of this.actors.values()) actor.visual?.dispose();
+    for (const object of this.objectModels.values()) object.visual?.dispose();
     this.clearGroup(this.static);
     this.clearGroup(this.dynamic);
     for (const material of this.materials.values()) material.dispose();
     this.materials.clear();
+    disposePropAssets();
+    this.surfaces.dispose();
+    this.lightingProbe?.dispose();
     this.renderer.dispose();
   }
 }
