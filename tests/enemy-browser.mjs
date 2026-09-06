@@ -80,7 +80,7 @@ const check = async (name, run) => {
 };
 let browser;
 async function start(page) {
-  await page.goto(`${base}/?qa=1`);
+  await page.goto(`${base}/?qa=1`, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => window.__RUNIC?.game, null, { timeout: 45000 });
   await page.evaluate(() => window.__RUNIC.newGame('warden'));
   await page.waitForFunction(
@@ -154,52 +154,74 @@ async function fixture(page, ids, { floor = 1, distance = 4 } = {}) {
 }
 
 async function inspect(page, id) {
-  return page.evaluate((id) => {
-    const { game: g, renderer: r } = window.__RUNIC;
-    const e = g.enemies.find((e) => e.type === id),
-      actor = r.actors.get(e?.id);
-    if (!actor) return { id, missing: true };
-    const meshes = [],
-      bones = [],
-      materials = new Set();
-    let triangles = 0,
-      bowWeightedVertices = 0;
-    (actor.visual?.root || actor.model).traverse((node) => {
-      if (node.isBone) bones.push(node.name);
-      if (!node.isMesh) return;
-      triangles += (node.geometry.index?.count || node.geometry.attributes.position.count) / 3;
-      meshes.push({ name: node.name, skinned: !!node.isSkinnedMesh, userData: node.userData });
-      if (node.isSkinnedMesh) {
-        const drawJoint = node.skeleton.bones.findIndex((bone) => bone.name === 'bow_draw');
-        const index = node.geometry.attributes.skinIndex,
-          weight = node.geometry.attributes.skinWeight;
-        if (drawJoint >= 0 && index && weight)
-          for (let vertex = 0; vertex < index.count; vertex++)
-            for (let component = 0; component < 4; component++)
-              if (
-                index.getComponent(vertex, component) === drawJoint &&
-                weight.getComponent(vertex, component) > 0.01
-              ) {
-                bowWeightedVertices++;
-                break;
-              }
-      }
-      for (const material of [].concat(node.material)) materials.add(material.type);
-    });
-    return {
-      id,
-      stats: actor.visual?.stats || null,
-      asset: actor.visual?.root.userData || null,
-      actorData: actor.root.userData,
-      meshes,
-      bones,
-      triangles,
-      bowWeightedVertices,
-      materials: [...materials],
-      animation: actor.visual?.root.userData.animation,
-      visible: actor.root.visible,
-    };
-  }, id);
+  const multiple = Array.isArray(id);
+  const result = await page.evaluate(
+    ({ ids, render }) => {
+      const { game: g, renderer: r } = window.__RUNIC;
+      // A streamed hero LOD can rebuild actors between automation messages. Read
+      // one actual rendered frame atomically, never a half-prepared scene.
+      if (render) r.render(g, 0);
+      const rows = ids.map((id) => {
+        const e = g.enemies.find((e) => e.type === id),
+          actor = r.actors.get(e?.id);
+        if (!actor) return { id, missing: true };
+        const meshes = [],
+          bones = [],
+          materials = new Set();
+        let triangles = 0,
+          bowWeightedVertices = 0;
+        (actor.visual?.root || actor.model).traverse((node) => {
+          if (node.isBone) bones.push(node.name);
+          if (!node.isMesh) return;
+          triangles += (node.geometry.index?.count || node.geometry.attributes.position.count) / 3;
+          meshes.push({ name: node.name, skinned: !!node.isSkinnedMesh, userData: node.userData });
+          if (node.isSkinnedMesh) {
+            const drawJoint = node.skeleton.bones.findIndex((bone) => bone.name === 'bow_draw');
+            const index = node.geometry.attributes.skinIndex,
+              weight = node.geometry.attributes.skinWeight;
+            if (drawJoint >= 0 && index && weight)
+              for (let vertex = 0; vertex < index.count; vertex++)
+                for (let component = 0; component < 4; component++)
+                  if (
+                    index.getComponent(vertex, component) === drawJoint &&
+                    weight.getComponent(vertex, component) > 0.01
+                  ) {
+                    bowWeightedVertices++;
+                    break;
+                  }
+          }
+          for (const material of [].concat(node.material)) materials.add(material.type);
+        });
+        return {
+          id,
+          stats: actor.visual?.stats || null,
+          asset: actor.visual?.root.userData || null,
+          actorData: actor.root.userData,
+          meshes,
+          bones,
+          triangles,
+          bowWeightedVertices,
+          materials: [...materials],
+          animation: actor.visual?.root.userData.animation,
+          visible: actor.root.visible,
+        };
+      });
+      return {
+        rows,
+        frame: render
+          ? {
+              quality: r.quality,
+              actorCount: r.actors.size,
+              expectedEnemyCount: ids.length,
+              heroDetail: r.actors.get('$hero')?.visual?.stats.detail,
+              glError: r.renderer.getContext().getError(),
+            }
+          : null,
+      };
+    },
+    { ids: multiple ? id : [id], render: multiple },
+  );
+  return multiple ? result : result.rows[0];
 }
 
 async function portrait(page, id) {
@@ -640,10 +662,12 @@ try {
       r.build(g);
       r.render(g, 0);
     });
-    report.performance = [];
-    for (const id of Object.keys(ENEMIES)) {
-      const result = await inspect(page, id);
-      report.performance.push(result);
+    const snapshot = await inspect(page, Object.keys(ENEMIES));
+    report.performance = snapshot.rows;
+    report.performanceFrame = snapshot.frame;
+    assert.equal(snapshot.frame.glError, 0, 'Performance snapshot is a clean actual GPU frame');
+    for (const result of snapshot.rows) {
+      const { id } = result;
       assert.equal(result.stats?.id, id, `${id}: Performance retains identity`);
       assert.equal(result.stats.detail, 'low', `${id}: real low-detail asset loaded`);
       assert.ok(
@@ -677,6 +701,10 @@ try {
     );
     await page.screenshot({ path: `${output}/performance-equipment.png` });
   });
+
+  // Fallback is an independent cold-start test. Retire the completed 30-actor
+  // scene so its continuous software-GPU loop cannot starve a second context.
+  await page.close();
 
   await check('missing authored enemy files preserve playable role-correct fallback', async () => {
     const fallback = await browser.newPage({
