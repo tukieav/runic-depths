@@ -1,9 +1,10 @@
 {
-  "generatedAt": "2026-09-06T08:05:33.139Z",
+  "generatedAt": "2026-09-06T18:20:50.388Z",
   "scope": "Built game, Chromium software WebGL, scripted visual fixtures. No physical-device performance or AAA/portal certification.",
   "buildHashes": {
     "THREE-LICENSE.txt": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
-    "assets/PROVENANCE.md": "a384bb8a2fd5a72d57d9eaf8435541bef00651ca066898d065a0c5449e9412ae",
+    "assets/MESHOPTIMIZER-LICENSE.txt": "f03037ca7bad1e3eb7f4a63fa6084a8baabd5ba30d3c239a9a7f35705d873e26",
+    "assets/PROVENANCE.md": "e89801853fea03c5b045d553b5b0de12a0f1deef95804625e6e73a7329ae98d1",
     "assets/audio/PROVENANCE.md": "15bae2dd3d1097654ef063713542b84643aeabfa87bf68947a367fc73286ee78",
     "assets/audio/blade-1.ogg": "bc6e53446a24603c76ef9c2b8e19da1c0e662f08e4c2415286824b99b868b979",
     "assets/audio/blade-2.ogg": "7f391cc462b687436369f71a6e2427654374c55285934911ef586f6077efc015",
@@ -32,27 +33,87 @@
     "assets/audio/step-2.ogg": "9d3e77569a00bdb6b3c49f6dabb99c8e037da8ea6945512bcfffc69d4b2b7809",
     "assets/audio/step-3.ogg": "6d9111152dee16591255c665497e2c3c898fe9bfb004920b6639d3bf4d58d939",
     "assets/audio/ui.ogg": "cd51aa71b0d642ff32e969052863789cfb540c64fb816f64cef7431d2e1ddd78",
+    "assets/enemies/README.md": "b3eab4a3a3794969d63df570074957c52bc96a27c3e07ae32870c5a6eb4bf487",
+    "assets/enemies/abyss_jelly.glb": "d0e2dc10145d9b541e611c30afdc0e0d42a57d3d9a7ab77b43523caa30bf378e",
+    "assets/enemies/bark_colossus.glb": "c2cd9fb6e9d3b81d6b7876a4a9a82a0621f5ab9d43be3fc0481fab7a12126585",
+    "assets/enemies/bell_hound.glb": "2a08d066478f3dbbff9735e6519f17cbd60b79c576d1e7e5ccce4ffd7bafe8ed",
+    "assets/enemies/bell_keeper.glb": "64f5f40c775e2514dd3d65819b72007d5d7afb3705afc6b67d889b8720397a91",
+    "assets/enemies/candle_wisp.glb": "06d7676cae1c89615c88474bddd9e888fc32989591cf99b645092b01a0754812",
+    "assets/enemies/chain_sentinel.glb": "d4717ab61c2df89db1d27bdbcb38745acb541f9694e4d139b76bd4e3f6e88c05",
+    "assets/enemies/color.png": "c0d32cb0b5713bf040111b077783148e80fb4fb2d1a0367432adcaa0bebfb4fa",
+    "assets/enemies/coral_maw.glb": "202999ab870328f2a6d478a3b71c4967cbab2aa42679b5e59147b9af37ed6151",
+    "assets/enemies/crypt_crawler.glb": "77f697a49b20953b0fe2ca22d1352eb0dcaca90aedaf529568de7d7e86849125",
+    "assets/enemies/drowned_king.glb": "c5c48b5a836065abc4884b2d10fd46b4a9f61e33f63b08ab55bbd2e455e6fa1c",
+    "assets/enemies/echo_archon.glb": "a57969c14d709f1f6cfe362c6ae36b79ad9c73c317f18debdca5c92f2b2e697b",
+    "assets/enemies/ember_channeler.glb": "af527dc2159c118de3a64c77e72f57971bf97d534b71d0d997ecdae265da3038",
+    "assets/enemies/emission.png": "3b98fa7351c5fa51331f38bc67e1a60c74a858b67a6b077ef873cf6a693d7712",
+    "assets/enemies/first_keeper.glb": "bcb565cea2767db0349af8eeb6409cb0fb782dfca75d9fc5338546e21ff81656",
+    "assets/enemies/furnace_hound.glb": "f37293e8e7380a9e12d04d6dfcaf91ae4969ca11e5de4ea32f7ca6d4b86222e6",
+    "assets/enemies/glass_oracle.glb": "6933de87bab89d61ba5932b7f4eb1794ca45b170fa53ce17f3aeed0877227ad7",
+    "assets/enemies/glass_scribe.glb": "60344ccfea1083bbdbe03485234e04947b000e786fa35b6c40cc5abe92629e75",
+    "assets/enemies/hollow_guard.glb": "ada0a088ae6d19c15d14cd69e140260f834338dcea6479b910765eda41645f1d",
+    "assets/enemies/iron_judge.glb": "5c57d9b2475ae039c3f59ccf5ef81e6fbd164e5c647746e197c868bb57880a39",
+    "assets/enemies/lod/abyss_jelly.glb": "9b728b61890daa5bbfce9a917fcfc4715cccd940e439ad7d2500a5280728f32e",
+    "assets/enemies/lod/bark_colossus.glb": "cc2d641721e70c21a0f5af002f27a17bb678aa6fd67240f29555857029fa04fb",
+    "assets/enemies/lod/bell_hound.glb": "34e516b4e37c637686bd53997c647db0659db20bf1f198d1d70185318531c07a",
+    "assets/enemies/lod/bell_keeper.glb": "fb79edb923f7b61294d45a81c72d05d215a85a57fe93089a22cf31eafacd16a4",
+    "assets/enemies/lod/candle_wisp.glb": "7e17583e8b521b267d1262d205d0813de482e547279e79d405aadec2b7bcd1a4",
+    "assets/enemies/lod/chain_sentinel.glb": "f5aad5d825d8b407ececa8021b81da0883b9097d53fea50ed270b9aea712284d",
+    "assets/enemies/lod/coral_maw.glb": "2d738fa2624ce59e689980a1c30bca06da502412dce703534ec4b344c1e27aac",
+    "assets/enemies/lod/crypt_crawler.glb": "4e8edcc06e7c9d76090bb832c1142c4b2612142b6fd924320e7096fa8582369c",
+    "assets/enemies/lod/drowned_king.glb": "f38881b0ebc957ae5191285d261e67b75f7f98308b8f12c8c7544cee8d151c47",
+    "assets/enemies/lod/echo_archon.glb": "719dd0391546dd9b6573270c9bc57e7fc7013bcbc1969edb0c7b994396809bc7",
+    "assets/enemies/lod/ember_channeler.glb": "98321af4ae2356e1dac6d289d3e609119e63aa407c331d3b1258b39e6371b922",
+    "assets/enemies/lod/first_keeper.glb": "0e2df9c8658ef4a1bc719071db10c063ee3e5df5618d7b9a8af9a54f6587f291",
+    "assets/enemies/lod/furnace_hound.glb": "4b56411c1105164853740296e83e7ee31d24a9bedaaba62e9c05db5941bc6595",
+    "assets/enemies/lod/glass_oracle.glb": "d970bc955d2f9109910fb790e58b36e191ab0e00f2c78b529df699a3cc237e43",
+    "assets/enemies/lod/glass_scribe.glb": "34f89ff0688d0fa3b258123c9e20362ccde491cbb9f49f8e81bc9e2f86136899",
+    "assets/enemies/lod/hollow_guard.glb": "ed5bb58a879ae032874d723ec5ac09a85776e92c6226ae3f32df97235d991ad6",
+    "assets/enemies/lod/iron_judge.glb": "357a4dc52a3fff9b2b1fab6a559e4de032dc81f52f45d2bc5978137c6fb19e4e",
+    "assets/enemies/lod/mirror_knight.glb": "af5e2e22e5b169a543a5c76642607639a978cc6503f30fd034e2d7a4f10c4f91",
+    "assets/enemies/lod/moss_caller.glb": "c6abbcf45cf7fa7e3172e9850ad085cc4cb9b5984278c267e9395d46c99f450e",
+    "assets/enemies/lod/null_weaver.glb": "91773d59a8895d185d721673dc8e37fea69d98989dcc48e30a2107ea37ccc3f2",
+    "assets/enemies/lod/prism_mote.glb": "0fb61ff5252cd0849dedaa9dd7f9d91fca03daab0b5f77ac06e529086046cf07",
+    "assets/enemies/lod/root_matriarch.glb": "6f222b61dc2e3b985b9c41c06189c6c2ad83699c35f883be96f63f2060b53c15",
+    "assets/enemies/lod/shard_skitter.glb": "6498601b4b9b8ce7b7ae099757b4c490d22bf819f8a634d1acf67a5fe5f3118e",
+    "assets/enemies/lod/slag_titan.glb": "fd3923fd0d10114b95bae7b38e19d4c5d770ca9d2ba58293aef4ab6600c95abe",
+    "assets/enemies/lod/spore_weaver.glb": "5cde45cb9b38e575cd9a6ab96e74ca1e1567c6321fbbf8533b825461017c4468",
+    "assets/enemies/lod/star_devourer.glb": "fcb2ec84af6797ed297cc8d41445d4158def46c942070333cde78ddd36724d14",
+    "assets/enemies/lod/thorn_lurker.glb": "20bed2f8ec17df68e72959048f14ce7cd2d8276fb5eb60dbfe81951bbdaaebb1",
+    "assets/enemies/lod/tidebound.glb": "64b51798572503489c7c607dbd39f02a25bb465ef11e45ff47ca307b57a40d3f",
+    "assets/enemies/lod/undertow_cantor.glb": "03a2e7b03a091e7cb5d5bcefe356f79f440160c81ef6a6ee19fabd26fc1e70f1",
+    "assets/enemies/lod/void_paladin.glb": "11599e480c30d479c764344a720d623e289b1e815f2874088ecf2fa5c20e06f2",
+    "assets/enemies/manifest.json": "3dcac1f0aede84b14e25cd8027dd71f7380df515f6aebbbac103f31322dff68b",
+    "assets/enemies/mirror_knight.glb": "5d9c209540503029d0312fcdf6503523ef14632fd95c8d52b6918971ec2a6200",
+    "assets/enemies/moss_caller.glb": "8ec26937864c027ffa35036cc399f5c511e4a839b0de45da1fa72bff1a7c8fdf",
+    "assets/enemies/normal.png": "15bf08d376c17d6f72258f90705f16f6adc520fed691271ff538435a5e3caff1",
+    "assets/enemies/null_weaver.glb": "6f41055fb911c6e372c8571b269c7352f00330f04ed488e8845c6c756c6e3d68",
+    "assets/enemies/prism_mote.glb": "06db5a0373df2b94289ea2c8c9cf8ef26253b5cb182b30599a4e8a552c1f02ac",
+    "assets/enemies/root_matriarch.glb": "df414d641a7aeb6f1b89320125fe62c066b3689d1404e66f69c6b729bf5cf56c",
+    "assets/enemies/roughmetal.png": "3d5d86f8a5d5f41b11d673dfcca1eedea130f66184c689291ac8081af43f6178",
+    "assets/enemies/shard_skitter.glb": "b569e46d7f21b598e47f2ded3629034bf88a8bf40690d234eed584a073582121",
+    "assets/enemies/slag_titan.glb": "4784a1f70d0600f5b3160451215a7571d32c80a5212bc03f52e86a41b0a438df",
+    "assets/enemies/spore_weaver.glb": "376844278630044d97dc2d151b6edf37803f6010217a2e39b0d4504b1ff11c85",
+    "assets/enemies/star_devourer.glb": "8f5f07f9c9c2230f83c77576ead07aaa0991e36ead426121898e2b1e23fb5b31",
+    "assets/enemies/thorn_lurker.glb": "43b0c4523468689d3832fee38d52f166b9beca987c9781cc0aca7360855b0f63",
+    "assets/enemies/tidebound.glb": "8d48634dcaae6d9bba9f643c65e46b44a06cbfd63369891ce6d12f7145fad8f7",
+    "assets/enemies/undertow_cantor.glb": "22e5cbf88ba4066a58e5c68f5f6fc16f2fd2c8eab2e404041ae77d0940f5b6e9",
+    "assets/enemies/void_paladin.glb": "1c9101e370682266a3ca75ca7e3aedb92b6ba4739415fe23f75a79b881e285be",
     "assets/hero-atlas.png": "2b19f34df7749b321f080816215926b9b72e95a0fdf649e5725d35430198a8a3",
-    "assets/models/README.md": "0eee11b72795ceae318021baf446024ab1d7db774acb6c3f912e1384a9b903f6",
+    "assets/models/README.md": "f9b24be5b4bf64deb944bb1ebcce6b7c99b15dbc74f41db1c9f6aae380401ef1",
     "assets/models/arcanist.glb": "49e3296737564b5677da9c0aae7e7be6e96daebf2b434179206a3d5894098729",
-    "assets/models/brute.glb": "1cb19141990a6d62ab63645d90345e24d74dd0bac644a6bb6727cd1a36773ce4",
     "assets/models/lod/README.md": "c3ff5f19cd000bd7087b84f048ee740f4ab1d2b985797f5a26d7fc79d3216757",
     "assets/models/lod/arcanist.glb": "2eb34a703275b7c3bd8ac873b79d93f3a31573789a31c438e18d1a71d8a2dca1",
-    "assets/models/lod/brute.glb": "b7616ac7c603ef3e8d822da3b53dfab2f99ecac5f9c8ab5bb14fc28a6e1a840c",
-    "assets/models/lod/manifest.json": "a06439fc7c6f6569aca9ef2b749446bd5e79200cfa98894fb8655941a1973f1b",
+    "assets/models/lod/manifest.json": "6fc51e4efbf0c56b061adfc1d7edc987ea59c98fe832f1a6936b8606c9c990fd",
     "assets/models/lod/oracle.glb": "9e375eb6a82096db015a8396033c9ca2ab38137f2f9ceb71b9c769e4e5b1c347",
     "assets/models/lod/ranger.glb": "159cd1d3abc310b8cb885c0799b07fccee3846db0e7d4bb901481ac3e93e39f4",
     "assets/models/lod/reaver.glb": "70ddc15feb7ebc44d17f4f64ddac8cb8f9636e379fd404badb42f7fa6f775a53",
-    "assets/models/lod/skeleton.glb": "4399bb61ed61da2a8d4645684c98e1c9e0ec82536ad9cecd97aaeba8595a8505",
     "assets/models/lod/warden.glb": "0c1c3059a91e61eb65f7944edfa8049fbbeb32c2887644bbb157fdb9b2d99d0c",
-    "assets/models/lod/wraith.glb": "683240c40d70bee922895ff773499e3c6cc5a19a63ae62da23fd3a67e063b941",
-    "assets/models/manifest.json": "13f573dd02d173b17e1051d799dacb0ffe674eb730ae20e0cc74d5399ae97046",
+    "assets/models/manifest.json": "97084b420cea5af958c49a8541c16440873f6bd68668dd0f8fccf03fb29c173e",
     "assets/models/oracle.glb": "b30e34cb099528f045c1b910b1f7247c7b2d486bed62d921ca844c20ee2ec858",
     "assets/models/ranger.glb": "5f3481c89f93ba30565a6aa26fdd2e6290257d505b6367f763dea6f09eec486a",
     "assets/models/reaver.glb": "eab6709f3044054bd1d136ffd0528554a0200e56905c938a390bd1c92aff4ae1",
-    "assets/models/skeleton.glb": "33bfd0aacc959cab3e4c7d498eef6e23f2ca3b60a9ca28804b0b22117fdbd4c8",
     "assets/models/warden.glb": "6c999f584ce0dd2da9d37586460884eedb62d5b9114e726a2bb47e92d432a6dc",
-    "assets/models/wraith.glb": "745148ac10f71f8d50db644c6a6c69af26f713e2849c901ba08e1d8ea7a97c93",
     "assets/props/README.md": "c198d806811b2930deefb43b29a9986aef49dbd62efc79601c058992d3f92dde",
     "assets/props/manifest.json": "24f8fb5bf7cd5def2b35ffe6aef7e48ec0a7e3a2c7a0360a0ca512e715ca93de",
     "assets/props/sarcophagus.glb": "6deb9218d1cd81a9ace50141f80f8f7f86d57782e9d7f1c18e9ba6b5702d7105",
@@ -75,7 +136,7 @@
     "assets/textures/runestone-normal.webp": "49cde2a4770d3f6f9570b256ed4dad07a2aafbd3bfb8229a825ee938b85be882",
     "assets/textures/runestone-roughness.webp": "bd82af98e274b6201908edd8ca5a2669df179abd25eba5ca140d96630ff470c3",
     "bundle.css": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5",
-    "bundle.js": "273c6d408f2d57f9173877c62e854cbf248250540332ca257d476892ca923477",
+    "bundle.js": "bb5ca9749d100cdeb4725b21d60396a65b1cc8570a4c8df680e01ec2cbc9c059",
     "index.html": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685"
   },
   "passed": [
@@ -108,9 +169,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 70.925148856773,
-      "luminanceDeviation": 35.30122636639928,
-      "heroPixels": 92.65122677605973,
+      "meanLuminance": 70.46412501302628,
+      "luminanceDeviation": 34.75473058755545,
+      "heroPixels": 92.65122677605984,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -118,8 +179,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 225,
-      "triangles": 262805,
+      "drawCalls": 218,
+      "triangles": 271009,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -172,8 +233,8 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 74.09945478645501,
-      "luminanceDeviation": 42.698455198473695,
+      "meanLuminance": 64.67872745051905,
+      "luminanceDeviation": 38.803931689754734,
       "heroPixels": 92.65122677605967,
       "heroVisible": true,
       "animation": "idle",
@@ -182,8 +243,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 240,
-      "triangles": 265243,
+      "drawCalls": 231,
+      "triangles": 239306,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -236,9 +297,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 67.07966247395619,
-      "luminanceDeviation": 36.48977425961983,
-      "heroPixels": 92.65122677605967,
+      "meanLuminance": 70.45962560676999,
+      "luminanceDeviation": 37.1086252959316,
+      "heroPixels": 92.65122677605973,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -246,8 +307,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 214,
-      "triangles": 261743,
+      "drawCalls": 242,
+      "triangles": 261042,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -274,7 +335,7 @@
         "musicVolume": 0.32,
         "sfxVolume": 0.65,
         "chapter": 2,
-        "voices": 7,
+        "voices": 8,
         "loadedClips": 22,
         "playingTracks": 2,
         "loading": 1,
@@ -300,9 +361,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 61.943134848959524,
-      "luminanceDeviation": 39.89740943292449,
-      "heroPixels": 92.65122677605967,
+      "meanLuminance": 61.15156914323098,
+      "luminanceDeviation": 39.92350130241154,
+      "heroPixels": 92.65122677605973,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -310,8 +371,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 203,
-      "triangles": 248741,
+      "drawCalls": 212,
+      "triangles": 255116,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -363,10 +424,10 @@
         "right": 9.200000000000001
       },
       "visibleFraction": 1,
-      "clippedFraction": 0,
-      "meanLuminance": 68.5262603359367,
-      "luminanceDeviation": 38.717315125587646,
-      "heroPixels": 92.65122677605979,
+      "clippedFraction": 0.000013020833333333334,
+      "meanLuminance": 68.62386913802163,
+      "luminanceDeviation": 38.78696636113371,
+      "heroPixels": 92.65122677605973,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -374,8 +435,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 211,
-      "triangles": 252831,
+      "drawCalls": 234,
+      "triangles": 258818,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -428,9 +489,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 60.77747040885594,
-      "luminanceDeviation": 33.3943610718032,
-      "heroPixels": 92.65122677605967,
+      "meanLuminance": 59.46827331770875,
+      "luminanceDeviation": 33.45764463870125,
+      "heroPixels": 92.65122677605979,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -438,8 +499,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 225,
-      "triangles": 245844,
+      "drawCalls": 212,
+      "triangles": 251552,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -492,8 +553,8 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 65.02227062239857,
-      "luminanceDeviation": 33.17678977311179,
+      "meanLuminance": 65.52803643229696,
+      "luminanceDeviation": 33.66188468742653,
       "heroPixels": 74.12098142084784,
       "heroVisible": true,
       "animation": "idle",
@@ -502,8 +563,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 224,
-      "triangles": 272767,
+      "drawCalls": 250,
+      "triangles": 287186,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -554,11 +615,11 @@
         "left": -10.225980392156861,
         "right": 10.225980392156861
       },
-      "visibleFraction": 0.9881380208333334,
+      "visibleFraction": 0.9843098958333333,
       "clippedFraction": 0,
-      "meanLuminance": 37.85300489322958,
-      "luminanceDeviation": 33.97631760825733,
-      "heroPixels": 52.50236183976722,
+      "meanLuminance": 37.65104207291595,
+      "luminanceDeviation": 34.13615402059793,
+      "heroPixels": 52.50236183976719,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -566,8 +627,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 117,
-      "triangles": 122496,
+      "drawCalls": 124,
+      "triangles": 130609,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -615,9 +676,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0.000013020833333333334,
-      "meanLuminance": 73.1202473932334,
-      "luminanceDeviation": 37.4422864972849,
-      "heroPixels": 92.65122677605979,
+      "meanLuminance": 73.19065918490001,
+      "luminanceDeviation": 36.925589819669895,
+      "heroPixels": 92.65122677605973,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -625,8 +686,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 213,
-      "triangles": 259509,
+      "drawCalls": 237,
+      "triangles": 265272,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -679,9 +740,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 70.53481635416706,
-      "luminanceDeviation": 34.706248516026214,
-      "heroPixels": 92.65122677605967,
+      "meanLuminance": 69.01227830469254,
+      "luminanceDeviation": 33.13020000137332,
+      "heroPixels": 92.65122677605973,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -689,8 +750,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 223,
-      "triangles": 270072,
+      "drawCalls": 241,
+      "triangles": 274814,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -743,9 +804,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0.000013020833333333334,
-      "meanLuminance": 72.99506680209089,
-      "luminanceDeviation": 36.87968879199728,
-      "heroPixels": 92.65122677605984,
+      "meanLuminance": 73.05427215365194,
+      "luminanceDeviation": 36.903835869272584,
+      "heroPixels": 92.65122677605973,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -753,8 +814,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 239,
-      "triangles": 266580,
+      "drawCalls": 224,
+      "triangles": 254835,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -793,7 +854,7 @@
     },
     {
       "label": "performance-portal-locked",
-      "floor": 1,
+      "floor": 2,
       "quality": "low",
       "framebuffer": [
         1440,
@@ -805,11 +866,11 @@
         "left": -9.200000000000001,
         "right": 9.200000000000001
       },
-      "visibleFraction": 0.984453125,
+      "visibleFraction": 0.9864453125,
       "clippedFraction": 0,
-      "meanLuminance": 42.929335440105696,
-      "luminanceDeviation": 47.68813361345369,
-      "heroPixels": 92.65122677605979,
+      "meanLuminance": 48.32766643750186,
+      "luminanceDeviation": 48.69636026779804,
+      "heroPixels": 92.65122677605967,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -817,8 +878,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 120,
-      "triangles": 75979,
+      "drawCalls": 128,
+      "triangles": 82939,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -852,7 +913,7 @@
     },
     {
       "label": "performance-portal-unlocked",
-      "floor": 1,
+      "floor": 2,
       "quality": "low",
       "framebuffer": [
         1440,
@@ -864,11 +925,11 @@
         "left": -9.200000000000001,
         "right": 9.200000000000001
       },
-      "visibleFraction": 0.9848697916666667,
-      "clippedFraction": 0.0006901041666666667,
-      "meanLuminance": 49.157558098960415,
-      "luminanceDeviation": 56.7874038345553,
-      "heroPixels": 92.65122677605979,
+      "visibleFraction": 0.9874739583333333,
+      "clippedFraction": 0.0009375,
+      "meanLuminance": 59.10536575260703,
+      "luminanceDeviation": 60.184182758521985,
+      "heroPixels": 92.65122677605967,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -876,8 +937,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 172,
-      "triangles": 76627,
+      "drawCalls": 223,
+      "triangles": 84567,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -899,7 +960,7 @@
         "musicVolume": 0.32,
         "sfxVolume": 0.65,
         "chapter": 0,
-        "voices": 53,
+        "voices": 55,
         "loadedClips": 21,
         "playingTracks": 2,
         "loading": 0,
@@ -923,11 +984,11 @@
         "left": -10.225980392156861,
         "right": 10.225980392156861
       },
-      "visibleFraction": 0.9869791666666666,
+      "visibleFraction": 0.9865625,
       "clippedFraction": 0,
-      "meanLuminance": 37.59306154166646,
-      "luminanceDeviation": 33.56355789788603,
-      "heroPixels": 52.50236183976716,
+      "meanLuminance": 37.52622237500102,
+      "luminanceDeviation": 34.042532629903214,
+      "heroPixels": 52.50236183976722,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -935,8 +996,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 110,
-      "triangles": 119751,
+      "drawCalls": 122,
+      "triangles": 123174,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -982,11 +1043,11 @@
         "left": -12.659999999999998,
         "right": 12.659999999999998
       },
-      "visibleFraction": 0.9850651041666667,
+      "visibleFraction": 0.9829427083333333,
       "clippedFraction": 0,
-      "meanLuminance": 31.776118164062748,
-      "luminanceDeviation": 25.332758535992276,
-      "heroPixels": 39.46255955276618,
+      "meanLuminance": 32.74080620312594,
+      "luminanceDeviation": 26.322599527945563,
+      "heroPixels": 39.46255955276615,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -994,8 +1055,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 139,
-      "triangles": 131985,
+      "drawCalls": 121,
+      "triangles": 120762,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -1017,12 +1078,12 @@
         "musicVolume": 0.32,
         "sfxVolume": 0.65,
         "chapter": 0,
-        "voices": 8,
-        "loadedClips": 21,
-        "playingTracks": 2,
-        "loading": 0,
+        "voices": 6,
+        "loadedClips": 19,
+        "playingTracks": 0,
+        "loading": 2,
         "sampleFailures": 0,
-        "fallback": false
+        "fallback": true
       },
       "priorGlErrors": [],
       "glError": 0
@@ -1041,10 +1102,10 @@
         "left": -3.3501184834123223,
         "right": 3.3501184834123223
       },
-      "visibleFraction": 0.987734375,
+      "visibleFraction": 0.9888541666666667,
       "clippedFraction": 0,
-      "meanLuminance": 45.3624424114576,
-      "luminanceDeviation": 37.850349280059376,
+      "meanLuminance": 44.947764559896,
+      "luminanceDeviation": 37.39984640139123,
       "heroPixels": 68.90979364662343,
       "heroVisible": true,
       "animation": "idle",
@@ -1053,8 +1114,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 87,
-      "triangles": 86662,
+      "drawCalls": 84,
+      "triangles": 80091,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -1076,7 +1137,7 @@
         "musicVolume": 0.32,
         "sfxVolume": 0.65,
         "chapter": 0,
-        "voices": 5,
+        "voices": 6,
         "loadedClips": 21,
         "playingTracks": 2,
         "loading": 0,
@@ -1100,11 +1161,11 @@
         "left": -10.225980392156861,
         "right": 10.225980392156861
       },
-      "visibleFraction": 0.9795442708333333,
+      "visibleFraction": 0.9741015625,
       "clippedFraction": 0,
-      "meanLuminance": 41.19347523437486,
-      "luminanceDeviation": 25.57471996801661,
-      "heroPixels": 52.50236183976719,
+      "meanLuminance": 40.89738405468715,
+      "luminanceDeviation": 26.05405002350391,
+      "heroPixels": 52.50236183976716,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -1112,8 +1173,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 219,
-      "triangles": 271624,
+      "drawCalls": 209,
+      "triangles": 263329,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -1150,25 +1211,25 @@
     {
       "clip": "attack",
       "input": "Enter",
-      "boneRotationChange": 0.19554147748043862,
+      "boneRotationChange": 0.1952574948232867,
       "bones": 32
     },
     {
       "clip": "cast",
       "input": "1",
-      "boneRotationChange": 0.06604784858984432,
+      "boneRotationChange": 0.16585054650334663,
       "bones": 32
     },
     {
       "clip": "dodge",
       "input": "Space",
-      "boneRotationChange": 0.5803704226764487,
+      "boneRotationChange": 0.5805420790960785,
       "bones": 32
     },
     {
       "clip": "hit",
       "input": "scripted real damage event",
-      "boneRotationChange": 0.03513971213651457,
+      "boneRotationChange": 0.2832738744366488,
       "bones": 32
     }
   ],
@@ -1317,21 +1378,6 @@
       "id": "oracle",
       "triangles": 3498,
       "bytes": 274916
-    },
-    {
-      "id": "skeleton",
-      "triangles": 3500,
-      "bytes": 273032
-    },
-    {
-      "id": "wraith",
-      "triangles": 3498,
-      "bytes": 273936
-    },
-    {
-      "id": "brute",
-      "triangles": 3498,
-      "bytes": 303600
     }
   ],
   "cameraZoom": {
@@ -1376,6 +1422,7 @@
       ],
       "intensity": 1.8
     },
+    "guardianStatusClearedBeforeGateOpened": true,
     "scope": "Scripted kills exercise normal engine accounting; actual displayed ring material is inspected."
   },
   "textureLifetime": {
@@ -1407,10 +1454,7 @@
         "ranger",
         "arcanist",
         "oracle",
-        "skeleton",
-        "reaver",
-        "wraith",
-        "brute"
+        "reaver"
       ],
       "failed": {},
       "lodLoaded": [],
@@ -1447,10 +1491,7 @@
         "ranger",
         "arcanist",
         "oracle",
-        "skeleton",
-        "reaver",
-        "wraith",
-        "brute"
+        "reaver"
       ],
       "failed": {},
       "lodLoaded": [],
@@ -1482,21 +1523,15 @@
         "ranger",
         "arcanist",
         "oracle",
-        "skeleton",
-        "reaver",
-        "wraith",
-        "brute"
+        "reaver"
       ],
       "failed": {},
       "lodLoaded": [
-        "skeleton",
-        "ranger",
         "warden",
-        "wraith",
+        "ranger",
         "arcanist",
         "reaver",
-        "oracle",
-        "brute"
+        "oracle"
       ],
       "lodFailed": {},
       "postprocessing": {

@@ -409,6 +409,11 @@ export function magicSound(pan = 0) {
   bell(659, 0.5, 0.14);
   bell(988, 0.55, 0.08, 0.06);
 }
+export function bowSound(pan = 0) {
+  if (sample('bow', 0.5, pan, 0.94 + Math.random() * 0.12)) return;
+  noise(0.12, 0.15, 0, 2800);
+  note(460, 0.13, 'sine', 0.08, 0, effects, 0.004, 170);
+}
 export function levelUpSound() {
   if (sample('level', 0.48)) return;
   [62, 65, 69, 74, 77].forEach((n, i) => bell(midi(n), 0.65, 0.14, i * 0.09));
@@ -477,9 +482,7 @@ export function skillSound(kind = 'arcane', pan = 0) {
     swordSound();
     note(90, 0.3, 'triangle', 0.18, 0.04, effects, 0.005, 40);
   } else if (['ranger', 'rogue', 'arrow', 'bow', 'dash'].some((s) => String(kind).includes(s))) {
-    if (sample('bow', 0.5, pan, 0.94 + Math.random() * 0.12)) return;
-    noise(0.12, 0.15, 0, 2800);
-    note(460, 0.13, 'sine', 0.08, 0, effects, 0.004, 170);
+    bowSound(pan);
   } else if (
     ['cleric', 'paladin', 'templar', 'heal', 'holy'].some((s) => String(kind).includes(s))
   ) {

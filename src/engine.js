@@ -1,4 +1,5 @@
 import { CLASSES, CHAPTERS, ENEMIES, ITEMS, RARITIES } from './content.js';
+import { enemyPresentation } from './enemy-presentation.js';
 export const SAVE_VERSION = 2;
 export function rng(seed) {
   let a = seed >>> 0;
@@ -191,6 +192,12 @@ export class Game {
       xp: t.xp,
       boss: boss || !!t.boss,
       attackTime: 0,
+      castTime: 0,
+      rangedWindup: 0,
+      rangedAim: null,
+      specialWindup: 0,
+      summonWindup: 0,
+      summonPoint: null,
       attackCooldown: 1 + this.random(),
       specialCooldown: 3,
       phase: 1,
@@ -444,9 +451,30 @@ export class Game {
       damage,
       color,
       enemy,
+      kind: enemy
+        ? enemyPresentation(from)?.projectile || 'soul'
+        : from.classId === 'ranger'
+          ? 'arrow'
+          : 'arcane',
+      sourceType: enemy ? from.type : from.classId,
+      sourceHeight:
+        (enemyPresentation(from)?.body === 'spider'
+          ? 0.55
+          : enemyPresentation(from)?.body === 'hound'
+            ? 0.65
+            : 1.02) * (from.scale || 1),
+      originX: from.x,
+      originY: from.y,
+      aimDistance: d,
       radius: enemy ? 0.18 : 0.15,
       life: 2,
     });
+    if (enemy && !from.boss)
+      this.emit('enemyShot', {
+        kind: enemyPresentation(from)?.projectile || 'soul',
+        x: from.x,
+        y: from.y,
+      });
   }
   skill(index, point = null) {
     const s = this.class.skills[index],
@@ -700,6 +728,13 @@ export class Game {
     this.moveTarget = null;
     for (const e of this.enemies) {
       e.aggro = false;
+      e.rangedWindup = 0;
+      e.rangedAim = null;
+      e.specialWindup = 0;
+      e.summonWindup = 0;
+      e.summonPoint = null;
+      e.castTime = 0;
+      e.attackTime = 0;
       if (distance(e, this.hero) < 8) {
         e.x = e.homeX;
         e.y = e.homeY;
@@ -794,6 +829,7 @@ export class Game {
       }
     }
     e.attackTime = 0.7;
+    e.castTime = 0.7;
     this.emit('bossAttack');
   }
   tick(dt) {
@@ -866,6 +902,7 @@ export class Game {
       if (e.dead) continue;
       const d = distance(e, h);
       e.attackTime = Math.max(0, e.attackTime - dt);
+      e.castTime = Math.max(0, (e.castTime || 0) - dt);
       e.attackCooldown -= dt;
       e.specialCooldown -= dt;
       e.slow = Math.max(0, e.slow - dt);
@@ -873,8 +910,41 @@ export class Game {
       if (!e.aggro || d > 17) continue;
       combat = true;
       e.facing = Math.atan2(h.x - e.x, h.y - e.y);
-      if (e.boss && e.specialCooldown <= 0) {
-        this.bossAttack(e);
+      if (e.rangedWindup > 0) {
+        const aim = e.rangedAim;
+        if (aim) e.facing = Math.atan2(aim.x - e.x, aim.y - e.y);
+        e.rangedWindup = Math.max(0, e.rangedWindup - dt);
+        if (e.rangedWindup === 0) {
+          // Commit to the telegraphed aim: movement can dodge a prepared shot,
+          // and a newly obstructed line of sight cancels its release.
+          if (aim && this.lineOfSight(e, aim)) this.shoot(e, aim, e.damage, e.color, true, 4.5);
+          e.rangedAim = null;
+        }
+        continue;
+      }
+      if (e.specialWindup > 0) {
+        e.specialWindup = Math.max(0, e.specialWindup - dt);
+        if (e.specialWindup === 0) this.bossAttack(e);
+        continue;
+      }
+      if (e.summonWindup > 0) {
+        e.summonWindup = Math.max(0, e.summonWindup - dt);
+        if (e.summonWindup === 0) {
+          const p = e.summonPoint;
+          if (p && this.walkable(p.x, p.y) && this.enemies.filter((x) => !x.dead).length < 85) {
+            this.spawnEnemy(this.chapter.enemies[0], p.x, p.y);
+            e.summons++;
+            this.effect(p.x, p.y, e.color, 1, 'nova', 0.6);
+          }
+          e.summonPoint = null;
+        }
+        continue;
+      }
+      if (e.boss && e.specialCooldown <= 0 && e.windup <= 0 && e.chargeTime <= 0) {
+        e.specialWindup = 0.55;
+        e.castTime = 0.85;
+        e.attackTime = 0.85;
+        continue;
       }
       if (
         !e.boss &&
@@ -884,12 +954,12 @@ export class Game {
         this.enemies.filter((x) => !x.dead).length < 85
       ) {
         e.specialCooldown = 12;
-        e.summons++;
-        const p = { x: e.x + 1, y: e.y };
-        if (this.walkable(p.x, p.y)) {
-          this.spawnEnemy(this.chapter.enemies[0], p.x, p.y);
-          this.effect(p.x, p.y, e.color, 1, 'nova', 0.6);
-        }
+        e.castTime = 0.65;
+        e.summonWindup = 0.4;
+        e.summonPoint = { x: e.x + 1, y: e.y };
+        if (this.walkable(e.summonPoint.x, e.summonPoint.y))
+          this.effect(e.summonPoint.x, e.summonPoint.y, e.color, 0.65, 'ring', 0.4);
+        continue;
       }
       if (e.windup > 0) {
         e.windup = Math.max(0, e.windup - dt);
@@ -908,9 +978,12 @@ export class Game {
       if (d < range && this.lineOfSight(e, h)) {
         if (e.attackCooldown <= 0) {
           e.attackCooldown = e.boss ? 1.6 : ranged ? 2 : 1.25;
-          e.attackTime = 0.45;
-          if (ranged) this.shoot(e, h, e.damage, e.color, true, 4.5);
-          else {
+          e.attackTime = ranged ? 0.65 : 0.45;
+          if (ranged) {
+            e.rangedWindup = 0.32;
+            e.rangedAim = { x: h.x, y: h.y };
+            if (enemyPresentation(e)?.attackStyle === 'cast') e.castTime = 0.65;
+          } else {
             this.effects.push({
               id: uid(),
               x: e.x + Math.sin(e.facing) * 0.7,
@@ -1093,7 +1166,7 @@ export class Game {
         s.enemies.length <= 100 &&
         s.enemies.every(
           (e) =>
-            ENEMIES[e.type] &&
+            Object.hasOwn(ENEMIES, e.type) &&
             [
               'id',
               'x',
@@ -1130,7 +1203,21 @@ export class Game {
       ) {
         game.enemies = s.enemies.map((e) => ({
           ...e,
+          // Role/equipment belong to current content. Older journeys must not
+          // restore the former melee AI onto a newly authored archer.
+          behavior: ENEMIES[e.type].behavior,
+          range: ENEMIES[e.type].range,
+          shape: ENEMIES[e.type].shape,
+          color: ENEMIES[e.type].color,
+          scale: ENEMIES[e.type].scale,
           summons: clamp(finite(e.summons), 0, 2),
+          rangedWindup: 0,
+          rangedAim: null,
+          specialWindup: 0,
+          summonWindup: 0,
+          summonPoint: null,
+          castTime: 0,
+          attackTime: 0,
           windup: 0,
           chargeTime: 0,
           chargeX: 0,

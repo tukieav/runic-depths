@@ -1,12 +1,12 @@
 # Original Covenant character assets
 
-These eight original models were authored for Runic Depths with the reproducible
+These five original hero models were authored for Runic Depths with the reproducible
 Blender 4.5 LTS script `scripts/build-character-assets.py`. No third-party character
 geometry, textures or motion capture is used. The artwork and animation data in
 this directory are dedicated to the public domain under CC0-1.0.
 
 The five hero models are `warden`, `ranger`, `arcanist`, `reaver`, and `oracle`.
-Enemy base models are `skeleton`, `wraith`, and `brute`. Each GLB contains one
+Enemy-specific models are shipped separately in `assets/enemies/`; the old three generic enemy exports were retired in 2.3. Each hero GLB contains one
 skinned mesh, one material, a 32-bone articulated rig and eight embedded animation
 clips: `idle`, `walk`, `attack`, `attack_alt`, `cast`, `dodge`, `hit`, `death`.
 Animations are original keyframes with class-specific anticipation, contact and

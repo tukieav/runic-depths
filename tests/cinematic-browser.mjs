@@ -278,11 +278,7 @@ try {
       const lods = JSON.parse(
         await readFile(path.join(root, 'assets/models/lod/manifest.json'), 'utf8'),
       );
-      assert.equal(
-        lods.assets.length,
-        8,
-        'all character families have a packaged performance model',
-      );
+      assert.equal(lods.assets.length, 5, 'all five heroes have a packaged performance model');
       report.lods = [];
       for (const entry of lods.assets) {
         const body = await readFile(path.join(root, `assets/models/lod/${entry.id}.glb`));
@@ -529,6 +525,8 @@ try {
       await waitForDetail(page, 'low', 'performance portal model');
       await page.evaluate(() => {
         const { game, renderer } = window.__RUNIC;
+        game.floor = 2;
+        game.makeFloor();
         const portal = game.objects.find((object) => object.type === 'portal');
         game.mode = 'paused';
         game.hero.x = portal.x;
@@ -561,6 +559,29 @@ try {
       assert.equal(locked.displayed, true, 'portal is actually visible to the playing camera');
       assert.equal(locked.material, 'MeshLambertMaterial');
       await inspectFrame(page, 'performance-portal-locked');
+      await page.waitForFunction(() =>
+        /guardian remains|odnajdź strażnika/.test(
+          document.querySelector('#quest-count').textContent,
+        ),
+      );
+      await page.evaluate(() => {
+        const game = window.__RUNIC.game;
+        game.hurtEnemy(
+          game.enemies.find((enemy) => enemy.boss && !enemy.dead),
+          1e8,
+        );
+      });
+      await page.waitForFunction(
+        () =>
+          !/guardian remains|odnajdź strażnika/.test(
+            document.querySelector('#quest-count').textContent,
+          ),
+      );
+      assert.equal(
+        (await portalState()).unlocked,
+        false,
+        'defeating only the boss does not skip the encounter quota',
+      );
       await page.evaluate(() => {
         const { game, renderer } = window.__RUNIC;
         for (const enemy of [...game.enemies]) game.hurtEnemy(enemy, 1e8);
@@ -579,6 +600,7 @@ try {
       report.portal = {
         locked,
         unlocked,
+        guardianStatusClearedBeforeGateOpened: true,
         scope:
           'Scripted kills exercise normal engine accounting; actual displayed ring material is inspected.',
       };

@@ -1,11 +1,11 @@
 {
   "title": "Runic Depths: The Hollow Covenant",
-  "version": "2.2.0",
-  "generatedAt": "2026-09-06T08:09:32.589Z",
-  "fileCount": 75,
-  "uncompressedBytes": 18074744,
-  "zipBytes": 11641813,
-  "sha256": "d04aa17dbf8e14d79d0a2bf476e4f032475854696236b0aeca57b6465fc538ca",
+  "version": "2.3.0",
+  "generatedAt": "2026-09-06T18:26:58.527Z",
+  "fileCount": 136,
+  "uncompressedBytes": 20698564,
+  "zipBytes": 13283839,
+  "sha256": "d68dfb3ef0dfe87c3b47ae6e317f217ed9b6d0a82e769120860a735dee6b5536",
   "files": [
     {
       "path": "THREE-LICENSE.txt",
@@ -13,9 +13,14 @@
       "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
     },
     {
+      "path": "assets/MESHOPTIMIZER-LICENSE.txt",
+      "bytes": 1079,
+      "sha256": "f03037ca7bad1e3eb7f4a63fa6084a8baabd5ba30d3c239a9a7f35705d873e26"
+    },
+    {
       "path": "assets/PROVENANCE.md",
-      "bytes": 2354,
-      "sha256": "a384bb8a2fd5a72d57d9eaf8435541bef00651ca066898d065a0c5449e9412ae"
+      "bytes": 2970,
+      "sha256": "e89801853fea03c5b045d553b5b0de12a0f1deef95804625e6e73a7329ae98d1"
     },
     {
       "path": "assets/audio/PROVENANCE.md",
@@ -158,24 +163,349 @@
       "sha256": "cd51aa71b0d642ff32e969052863789cfb540c64fb816f64cef7431d2e1ddd78"
     },
     {
+      "path": "assets/enemies/README.md",
+      "bytes": 2181,
+      "sha256": "b3eab4a3a3794969d63df570074957c52bc96a27c3e07ae32870c5a6eb4bf487"
+    },
+    {
+      "path": "assets/enemies/abyss_jelly.glb",
+      "bytes": 56456,
+      "sha256": "d0e2dc10145d9b541e611c30afdc0e0d42a57d3d9a7ab77b43523caa30bf378e"
+    },
+    {
+      "path": "assets/enemies/bark_colossus.glb",
+      "bytes": 90900,
+      "sha256": "c2cd9fb6e9d3b81d6b7876a4a9a82a0621f5ab9d43be3fc0481fab7a12126585"
+    },
+    {
+      "path": "assets/enemies/bell_hound.glb",
+      "bytes": 61316,
+      "sha256": "2a08d066478f3dbbff9735e6519f17cbd60b79c576d1e7e5ccce4ffd7bafe8ed"
+    },
+    {
+      "path": "assets/enemies/bell_keeper.glb",
+      "bytes": 119096,
+      "sha256": "64f5f40c775e2514dd3d65819b72007d5d7afb3705afc6b67d889b8720397a91"
+    },
+    {
+      "path": "assets/enemies/candle_wisp.glb",
+      "bytes": 83984,
+      "sha256": "06d7676cae1c89615c88474bddd9e888fc32989591cf99b645092b01a0754812"
+    },
+    {
+      "path": "assets/enemies/chain_sentinel.glb",
+      "bytes": 139540,
+      "sha256": "d4717ab61c2df89db1d27bdbcb38745acb541f9694e4d139b76bd4e3f6e88c05"
+    },
+    {
+      "path": "assets/enemies/color.png",
+      "bytes": 415897,
+      "sha256": "c0d32cb0b5713bf040111b077783148e80fb4fb2d1a0367432adcaa0bebfb4fa"
+    },
+    {
+      "path": "assets/enemies/coral_maw.glb",
+      "bytes": 60956,
+      "sha256": "202999ab870328f2a6d478a3b71c4967cbab2aa42679b5e59147b9af37ed6151"
+    },
+    {
+      "path": "assets/enemies/crypt_crawler.glb",
+      "bytes": 73236,
+      "sha256": "77f697a49b20953b0fe2ca22d1352eb0dcaca90aedaf529568de7d7e86849125"
+    },
+    {
+      "path": "assets/enemies/drowned_king.glb",
+      "bytes": 122320,
+      "sha256": "c5c48b5a836065abc4884b2d10fd46b4a9f61e33f63b08ab55bbd2e455e6fa1c"
+    },
+    {
+      "path": "assets/enemies/echo_archon.glb",
+      "bytes": 88044,
+      "sha256": "a57969c14d709f1f6cfe362c6ae36b79ad9c73c317f18debdca5c92f2b2e697b"
+    },
+    {
+      "path": "assets/enemies/ember_channeler.glb",
+      "bytes": 127180,
+      "sha256": "af527dc2159c118de3a64c77e72f57971bf97d534b71d0d997ecdae265da3038"
+    },
+    {
+      "path": "assets/enemies/emission.png",
+      "bytes": 15264,
+      "sha256": "3b98fa7351c5fa51331f38bc67e1a60c74a858b67a6b077ef873cf6a693d7712"
+    },
+    {
+      "path": "assets/enemies/first_keeper.glb",
+      "bytes": 144584,
+      "sha256": "bcb565cea2767db0349af8eeb6409cb0fb782dfca75d9fc5338546e21ff81656"
+    },
+    {
+      "path": "assets/enemies/furnace_hound.glb",
+      "bytes": 60128,
+      "sha256": "f37293e8e7380a9e12d04d6dfcaf91ae4969ca11e5de4ea32f7ca6d4b86222e6"
+    },
+    {
+      "path": "assets/enemies/glass_oracle.glb",
+      "bytes": 90296,
+      "sha256": "6933de87bab89d61ba5932b7f4eb1794ca45b170fa53ce17f3aeed0877227ad7"
+    },
+    {
+      "path": "assets/enemies/glass_scribe.glb",
+      "bytes": 114272,
+      "sha256": "60344ccfea1083bbdbe03485234e04947b000e786fa35b6c40cc5abe92629e75"
+    },
+    {
+      "path": "assets/enemies/hollow_guard.glb",
+      "bytes": 98612,
+      "sha256": "ada0a088ae6d19c15d14cd69e140260f834338dcea6479b910765eda41645f1d"
+    },
+    {
+      "path": "assets/enemies/iron_judge.glb",
+      "bytes": 135628,
+      "sha256": "5c57d9b2475ae039c3f59ccf5ef81e6fbd164e5c647746e197c868bb57880a39"
+    },
+    {
+      "path": "assets/enemies/lod/abyss_jelly.glb",
+      "bytes": 56468,
+      "sha256": "9b728b61890daa5bbfce9a917fcfc4715cccd940e439ad7d2500a5280728f32e"
+    },
+    {
+      "path": "assets/enemies/lod/bark_colossus.glb",
+      "bytes": 63176,
+      "sha256": "cc2d641721e70c21a0f5af002f27a17bb678aa6fd67240f29555857029fa04fb"
+    },
+    {
+      "path": "assets/enemies/lod/bell_hound.glb",
+      "bytes": 34168,
+      "sha256": "34e516b4e37c637686bd53997c647db0659db20bf1f198d1d70185318531c07a"
+    },
+    {
+      "path": "assets/enemies/lod/bell_keeper.glb",
+      "bytes": 62896,
+      "sha256": "fb79edb923f7b61294d45a81c72d05d215a85a57fe93089a22cf31eafacd16a4"
+    },
+    {
+      "path": "assets/enemies/lod/candle_wisp.glb",
+      "bytes": 69532,
+      "sha256": "7e17583e8b521b267d1262d205d0813de482e547279e79d405aadec2b7bcd1a4"
+    },
+    {
+      "path": "assets/enemies/lod/chain_sentinel.glb",
+      "bytes": 64868,
+      "sha256": "f5aad5d825d8b407ececa8021b81da0883b9097d53fea50ed270b9aea712284d"
+    },
+    {
+      "path": "assets/enemies/lod/coral_maw.glb",
+      "bytes": 34456,
+      "sha256": "2d738fa2624ce59e689980a1c30bca06da502412dce703534ec4b344c1e27aac"
+    },
+    {
+      "path": "assets/enemies/lod/crypt_crawler.glb",
+      "bytes": 41140,
+      "sha256": "4e8edcc06e7c9d76090bb832c1142c4b2612142b6fd924320e7096fa8582369c"
+    },
+    {
+      "path": "assets/enemies/lod/drowned_king.glb",
+      "bytes": 65832,
+      "sha256": "f38881b0ebc957ae5191285d261e67b75f7f98308b8f12c8c7544cee8d151c47"
+    },
+    {
+      "path": "assets/enemies/lod/echo_archon.glb",
+      "bytes": 78424,
+      "sha256": "719dd0391546dd9b6573270c9bc57e7fc7013bcbc1969edb0c7b994396809bc7"
+    },
+    {
+      "path": "assets/enemies/lod/ember_channeler.glb",
+      "bytes": 71500,
+      "sha256": "98321af4ae2356e1dac6d289d3e609119e63aa407c331d3b1258b39e6371b922"
+    },
+    {
+      "path": "assets/enemies/lod/first_keeper.glb",
+      "bytes": 66412,
+      "sha256": "0e2df9c8658ef4a1bc719071db10c063ee3e5df5618d7b9a8af9a54f6587f291"
+    },
+    {
+      "path": "assets/enemies/lod/furnace_hound.glb",
+      "bytes": 33800,
+      "sha256": "4b56411c1105164853740296e83e7ee31d24a9bedaaba62e9c05db5941bc6595"
+    },
+    {
+      "path": "assets/enemies/lod/glass_oracle.glb",
+      "bytes": 79672,
+      "sha256": "d970bc955d2f9109910fb790e58b36e191ab0e00f2c78b529df699a3cc237e43"
+    },
+    {
+      "path": "assets/enemies/lod/glass_scribe.glb",
+      "bytes": 66500,
+      "sha256": "34f89ff0688d0fa3b258123c9e20362ccde491cbb9f49f8e81bc9e2f86136899"
+    },
+    {
+      "path": "assets/enemies/lod/hollow_guard.glb",
+      "bytes": 65064,
+      "sha256": "ed5bb58a879ae032874d723ec5ac09a85776e92c6226ae3f32df97235d991ad6"
+    },
+    {
+      "path": "assets/enemies/lod/iron_judge.glb",
+      "bytes": 64184,
+      "sha256": "357a4dc52a3fff9b2b1fab6a559e4de032dc81f52f45d2bc5978137c6fb19e4e"
+    },
+    {
+      "path": "assets/enemies/lod/mirror_knight.glb",
+      "bytes": 66064,
+      "sha256": "af5e2e22e5b169a543a5c76642607639a978cc6503f30fd034e2d7a4f10c4f91"
+    },
+    {
+      "path": "assets/enemies/lod/moss_caller.glb",
+      "bytes": 66836,
+      "sha256": "c6abbcf45cf7fa7e3172e9850ad085cc4cb9b5984278c267e9395d46c99f450e"
+    },
+    {
+      "path": "assets/enemies/lod/null_weaver.glb",
+      "bytes": 41984,
+      "sha256": "91773d59a8895d185d721673dc8e37fea69d98989dcc48e30a2107ea37ccc3f2"
+    },
+    {
+      "path": "assets/enemies/lod/prism_mote.glb",
+      "bytes": 54856,
+      "sha256": "0fb61ff5252cd0849dedaa9dd7f9d91fca03daab0b5f77ac06e529086046cf07"
+    },
+    {
+      "path": "assets/enemies/lod/root_matriarch.glb",
+      "bytes": 43912,
+      "sha256": "6f222b61dc2e3b985b9c41c06189c6c2ad83699c35f883be96f63f2060b53c15"
+    },
+    {
+      "path": "assets/enemies/lod/shard_skitter.glb",
+      "bytes": 42272,
+      "sha256": "6498601b4b9b8ce7b7ae099757b4c490d22bf819f8a634d1acf67a5fe5f3118e"
+    },
+    {
+      "path": "assets/enemies/lod/slag_titan.glb",
+      "bytes": 60636,
+      "sha256": "fd3923fd0d10114b95bae7b38e19d4c5d770ca9d2ba58293aef4ab6600c95abe"
+    },
+    {
+      "path": "assets/enemies/lod/spore_weaver.glb",
+      "bytes": 42440,
+      "sha256": "5cde45cb9b38e575cd9a6ab96e74ca1e1567c6321fbbf8533b825461017c4468"
+    },
+    {
+      "path": "assets/enemies/lod/star_devourer.glb",
+      "bytes": 36196,
+      "sha256": "fcb2ec84af6797ed297cc8d41445d4158def46c942070333cde78ddd36724d14"
+    },
+    {
+      "path": "assets/enemies/lod/thorn_lurker.glb",
+      "bytes": 72008,
+      "sha256": "20bed2f8ec17df68e72959048f14ce7cd2d8276fb5eb60dbfe81951bbdaaebb1"
+    },
+    {
+      "path": "assets/enemies/lod/tidebound.glb",
+      "bytes": 65292,
+      "sha256": "64b51798572503489c7c607dbd39f02a25bb465ef11e45ff47ca307b57a40d3f"
+    },
+    {
+      "path": "assets/enemies/lod/undertow_cantor.glb",
+      "bytes": 66012,
+      "sha256": "03a2e7b03a091e7cb5d5bcefe356f79f440160c81ef6a6ee19fabd26fc1e70f1"
+    },
+    {
+      "path": "assets/enemies/lod/void_paladin.glb",
+      "bytes": 66456,
+      "sha256": "11599e480c30d479c764344a720d623e289b1e815f2874088ecf2fa5c20e06f2"
+    },
+    {
+      "path": "assets/enemies/manifest.json",
+      "bytes": 80887,
+      "sha256": "3dcac1f0aede84b14e25cd8027dd71f7380df515f6aebbbac103f31322dff68b"
+    },
+    {
+      "path": "assets/enemies/mirror_knight.glb",
+      "bytes": 103684,
+      "sha256": "5d9c209540503029d0312fcdf6503523ef14632fd95c8d52b6918971ec2a6200"
+    },
+    {
+      "path": "assets/enemies/moss_caller.glb",
+      "bytes": 113344,
+      "sha256": "8ec26937864c027ffa35036cc399f5c511e4a839b0de45da1fa72bff1a7c8fdf"
+    },
+    {
+      "path": "assets/enemies/normal.png",
+      "bytes": 847531,
+      "sha256": "15bf08d376c17d6f72258f90705f16f6adc520fed691271ff538435a5e3caff1"
+    },
+    {
+      "path": "assets/enemies/null_weaver.glb",
+      "bytes": 105108,
+      "sha256": "6f41055fb911c6e372c8571b269c7352f00330f04ed488e8845c6c756c6e3d68"
+    },
+    {
+      "path": "assets/enemies/prism_mote.glb",
+      "bytes": 54844,
+      "sha256": "06db5a0373df2b94289ea2c8c9cf8ef26253b5cb182b30599a4e8a552c1f02ac"
+    },
+    {
+      "path": "assets/enemies/root_matriarch.glb",
+      "bytes": 90560,
+      "sha256": "df414d641a7aeb6f1b89320125fe62c066b3689d1404e66f69c6b729bf5cf56c"
+    },
+    {
+      "path": "assets/enemies/roughmetal.png",
+      "bytes": 396747,
+      "sha256": "3d5d86f8a5d5f41b11d673dfcca1eedea130f66184c689291ac8081af43f6178"
+    },
+    {
+      "path": "assets/enemies/shard_skitter.glb",
+      "bytes": 61816,
+      "sha256": "b569e46d7f21b598e47f2ded3629034bf88a8bf40690d234eed584a073582121"
+    },
+    {
+      "path": "assets/enemies/slag_titan.glb",
+      "bytes": 83940,
+      "sha256": "4784a1f70d0600f5b3160451215a7571d32c80a5212bc03f52e86a41b0a438df"
+    },
+    {
+      "path": "assets/enemies/spore_weaver.glb",
+      "bytes": 76256,
+      "sha256": "376844278630044d97dc2d151b6edf37803f6010217a2e39b0d4504b1ff11c85"
+    },
+    {
+      "path": "assets/enemies/star_devourer.glb",
+      "bytes": 68988,
+      "sha256": "8f5f07f9c9c2230f83c77576ead07aaa0991e36ead426121898e2b1e23fb5b31"
+    },
+    {
+      "path": "assets/enemies/thorn_lurker.glb",
+      "bytes": 129312,
+      "sha256": "43b0c4523468689d3832fee38d52f166b9beca987c9781cc0aca7360855b0f63"
+    },
+    {
+      "path": "assets/enemies/tidebound.glb",
+      "bytes": 119940,
+      "sha256": "8d48634dcaae6d9bba9f643c65e46b44a06cbfd63369891ce6d12f7145fad8f7"
+    },
+    {
+      "path": "assets/enemies/undertow_cantor.glb",
+      "bytes": 134104,
+      "sha256": "22e5cbf88ba4066a58e5c68f5f6fc16f2fd2c8eab2e404041ae77d0940f5b6e9"
+    },
+    {
+      "path": "assets/enemies/void_paladin.glb",
+      "bytes": 106732,
+      "sha256": "1c9101e370682266a3ca75ca7e3aedb92b6ba4739415fe23f75a79b881e285be"
+    },
+    {
       "path": "assets/hero-atlas.png",
       "bytes": 3000104,
       "sha256": "2b19f34df7749b321f080816215926b9b72e95a0fdf649e5725d35430198a8a3"
     },
     {
       "path": "assets/models/README.md",
-      "bytes": 2967,
-      "sha256": "0eee11b72795ceae318021baf446024ab1d7db774acb6c3f912e1384a9b903f6"
+      "bytes": 3043,
+      "sha256": "f9b24be5b4bf64deb944bb1ebcce6b7c99b15dbc74f41db1c9f6aae380401ef1"
     },
     {
       "path": "assets/models/arcanist.glb",
       "bytes": 1056516,
       "sha256": "49e3296737564b5677da9c0aae7e7be6e96daebf2b434179206a3d5894098729"
-    },
-    {
-      "path": "assets/models/brute.glb",
-      "bytes": 1214068,
-      "sha256": "1cb19141990a6d62ab63645d90345e24d74dd0bac644a6bb6727cd1a36773ce4"
     },
     {
       "path": "assets/models/lod/README.md",
@@ -188,14 +518,9 @@
       "sha256": "2eb34a703275b7c3bd8ac873b79d93f3a31573789a31c438e18d1a71d8a2dca1"
     },
     {
-      "path": "assets/models/lod/brute.glb",
-      "bytes": 303600,
-      "sha256": "b7616ac7c603ef3e8d822da3b53dfab2f99ecac5f9c8ab5bb14fc28a6e1a840c"
-    },
-    {
       "path": "assets/models/lod/manifest.json",
-      "bytes": 3436,
-      "sha256": "a06439fc7c6f6569aca9ef2b749446bd5e79200cfa98894fb8655941a1973f1b"
+      "bytes": 2231,
+      "sha256": "6fc51e4efbf0c56b061adfc1d7edc987ea59c98fe832f1a6936b8606c9c990fd"
     },
     {
       "path": "assets/models/lod/oracle.glb",
@@ -213,24 +538,14 @@
       "sha256": "70ddc15feb7ebc44d17f4f64ddac8cb8f9636e379fd404badb42f7fa6f775a53"
     },
     {
-      "path": "assets/models/lod/skeleton.glb",
-      "bytes": 273032,
-      "sha256": "4399bb61ed61da2a8d4645684c98e1c9e0ec82536ad9cecd97aaeba8595a8505"
-    },
-    {
       "path": "assets/models/lod/warden.glb",
       "bytes": 295592,
       "sha256": "0c1c3059a91e61eb65f7944edfa8049fbbeb32c2887644bbb157fdb9b2d99d0c"
     },
     {
-      "path": "assets/models/lod/wraith.glb",
-      "bytes": 273936,
-      "sha256": "683240c40d70bee922895ff773499e3c6cc5a19a63ae62da23fd3a67e063b941"
-    },
-    {
       "path": "assets/models/manifest.json",
-      "bytes": 2498,
-      "sha256": "13f573dd02d173b17e1051d799dacb0ffe674eb730ae20e0cc74d5399ae97046"
+      "bytes": 1633,
+      "sha256": "97084b420cea5af958c49a8541c16440873f6bd68668dd0f8fccf03fb29c173e"
     },
     {
       "path": "assets/models/oracle.glb",
@@ -248,19 +563,9 @@
       "sha256": "eab6709f3044054bd1d136ffd0528554a0200e56905c938a390bd1c92aff4ae1"
     },
     {
-      "path": "assets/models/skeleton.glb",
-      "bytes": 842036,
-      "sha256": "33bfd0aacc959cab3e4c7d498eef6e23f2ca3b60a9ca28804b0b22117fdbd4c8"
-    },
-    {
       "path": "assets/models/warden.glb",
       "bytes": 1061568,
       "sha256": "6c999f584ce0dd2da9d37586460884eedb62d5b9114e726a2bb47e92d432a6dc"
-    },
-    {
-      "path": "assets/models/wraith.glb",
-      "bytes": 939976,
-      "sha256": "745148ac10f71f8d50db644c6a6c69af26f713e2849c901ba08e1d8ea7a97c93"
     },
     {
       "path": "assets/props/README.md",
@@ -374,8 +679,8 @@
     },
     {
       "path": "bundle.js",
-      "bytes": 867808,
-      "sha256": "273c6d408f2d57f9173877c62e854cbf248250540332ca257d476892ca923477"
+      "bytes": 921836,
+      "sha256": "bb5ca9749d100cdeb4725b21d60396a65b1cc8570a4c8df680e01ec2cbc9c059"
     },
     {
       "path": "index.html",

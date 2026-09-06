@@ -1,0 +1,2174 @@
+{
+  "date": "2026-09-06T18:08:30.025Z",
+  "method": "Khronos glTF Validator over fully Meshopt-decoded GLBs with embedded original shared surfaces",
+  "assets": [
+    {
+      "id": "hollow_guard",
+      "detail": "high",
+      "bytes": 98612,
+      "sha256": "ada0a088ae6d19c15d14cd69e140260f834338dcea6479b910765eda41645f1d",
+      "decodedBytes": 1882888,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "hollow_guard",
+      "detail": "low",
+      "bytes": 65064,
+      "sha256": "ed5bb58a879ae032874d723ec5ac09a85776e92c6226ae3f32df97235d991ad6",
+      "decodedBytes": 1776068,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "crypt_crawler",
+      "detail": "high",
+      "bytes": 73236,
+      "sha256": "77f697a49b20953b0fe2ca22d1352eb0dcaca90aedaf529568de7d7e86849125",
+      "decodedBytes": 1847104,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "crypt_crawler",
+      "detail": "low",
+      "bytes": 41140,
+      "sha256": "4e8edcc06e7c9d76090bb832c1142c4b2612142b6fd924320e7096fa8582369c",
+      "decodedBytes": 1748948,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "candle_wisp",
+      "detail": "high",
+      "bytes": 83984,
+      "sha256": "06d7676cae1c89615c88474bddd9e888fc32989591cf99b645092b01a0754812",
+      "decodedBytes": 1833696,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "candle_wisp",
+      "detail": "low",
+      "bytes": 69532,
+      "sha256": "7e17583e8b521b267d1262d205d0813de482e547279e79d405aadec2b7bcd1a4",
+      "decodedBytes": 1789928,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "bell_hound",
+      "detail": "high",
+      "bytes": 61316,
+      "sha256": "2a08d066478f3dbbff9735e6519f17cbd60b79c576d1e7e5ccce4ffd7bafe8ed",
+      "decodedBytes": 1826160,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/13"
+        }
+      ],
+      "skins": 1,
+      "bones": 13,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "bell_hound",
+      "detail": "low",
+      "bytes": 34168,
+      "sha256": "34e516b4e37c637686bd53997c647db0659db20bf1f198d1d70185318531c07a",
+      "decodedBytes": 1739732,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/13"
+        }
+      ],
+      "skins": 1,
+      "bones": 13,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "thorn_lurker",
+      "detail": "high",
+      "bytes": 129312,
+      "sha256": "43b0c4523468689d3832fee38d52f166b9beca987c9781cc0aca7360855b0f63",
+      "decodedBytes": 1962544,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/33"
+        }
+      ],
+      "skins": 1,
+      "bones": 33,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "shoot",
+        "shoot_alt",
+        "walk"
+      ]
+    },
+    {
+      "id": "thorn_lurker",
+      "detail": "low",
+      "bytes": 72008,
+      "sha256": "20bed2f8ec17df68e72959048f14ce7cd2d8276fb5eb60dbfe81951bbdaaebb1",
+      "decodedBytes": 1786572,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/33"
+        }
+      ],
+      "skins": 1,
+      "bones": 33,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "shoot",
+        "shoot_alt",
+        "walk"
+      ]
+    },
+    {
+      "id": "spore_weaver",
+      "detail": "high",
+      "bytes": 76256,
+      "sha256": "376844278630044d97dc2d151b6edf37803f6010217a2e39b0d4504b1ff11c85",
+      "decodedBytes": 1857464,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "spore_weaver",
+      "detail": "low",
+      "bytes": 42440,
+      "sha256": "5cde45cb9b38e575cd9a6ab96e74ca1e1567c6321fbbf8533b825461017c4468",
+      "decodedBytes": 1750964,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "bark_colossus",
+      "detail": "high",
+      "bytes": 90900,
+      "sha256": "c2cd9fb6e9d3b81d6b7876a4a9a82a0621f5ab9d43be3fc0481fab7a12126585",
+      "decodedBytes": 1856148,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "bark_colossus",
+      "detail": "low",
+      "bytes": 63176,
+      "sha256": "cc2d641721e70c21a0f5af002f27a17bb678aa6fd67240f29555857029fa04fb",
+      "decodedBytes": 1772120,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "moss_caller",
+      "detail": "high",
+      "bytes": 113344,
+      "sha256": "8ec26937864c027ffa35036cc399f5c511e4a839b0de45da1fa72bff1a7c8fdf",
+      "decodedBytes": 1923396,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "moss_caller",
+      "detail": "low",
+      "bytes": 66836,
+      "sha256": "c6abbcf45cf7fa7e3172e9850ad085cc4cb9b5984278c267e9395d46c99f450e",
+      "decodedBytes": 1779800,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "mirror_knight",
+      "detail": "high",
+      "bytes": 103684,
+      "sha256": "5d9c209540503029d0312fcdf6503523ef14632fd95c8d52b6918971ec2a6200",
+      "decodedBytes": 1902556,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "mirror_knight",
+      "detail": "low",
+      "bytes": 66064,
+      "sha256": "af5e2e22e5b169a543a5c76642607639a978cc6503f30fd034e2d7a4f10c4f91",
+      "decodedBytes": 1778944,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "prism_mote",
+      "detail": "high",
+      "bytes": 54844,
+      "sha256": "06db5a0373df2b94289ea2c8c9cf8ef26253b5cb182b30599a4e8a552c1f02ac",
+      "decodedBytes": 1751984,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "prism_mote",
+      "detail": "low",
+      "bytes": 54856,
+      "sha256": "0fb61ff5252cd0849dedaa9dd7f9d91fca03daab0b5f77ac06e529086046cf07",
+      "decodedBytes": 1751984,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "shard_skitter",
+      "detail": "high",
+      "bytes": 61816,
+      "sha256": "b569e46d7f21b598e47f2ded3629034bf88a8bf40690d234eed584a073582121",
+      "decodedBytes": 1813364,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "shard_skitter",
+      "detail": "low",
+      "bytes": 42272,
+      "sha256": "6498601b4b9b8ce7b7ae099757b4c490d22bf819f8a634d1acf67a5fe5f3118e",
+      "decodedBytes": 1751552,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "glass_scribe",
+      "detail": "high",
+      "bytes": 114272,
+      "sha256": "60344ccfea1083bbdbe03485234e04947b000e786fa35b6c40cc5abe92629e75",
+      "decodedBytes": 1927708,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "glass_scribe",
+      "detail": "low",
+      "bytes": 66500,
+      "sha256": "34f89ff0688d0fa3b258123c9e20362ccde491cbb9f49f8e81bc9e2f86136899",
+      "decodedBytes": 1779136,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "chain_sentinel",
+      "detail": "high",
+      "bytes": 139540,
+      "sha256": "d4717ab61c2df89db1d27bdbcb38745acb541f9694e4d139b76bd4e3f6e88c05",
+      "decodedBytes": 2001864,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "chain_sentinel",
+      "detail": "low",
+      "bytes": 64868,
+      "sha256": "f5aad5d825d8b407ececa8021b81da0883b9097d53fea50ed270b9aea712284d",
+      "decodedBytes": 1776220,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "furnace_hound",
+      "detail": "high",
+      "bytes": 60128,
+      "sha256": "f37293e8e7380a9e12d04d6dfcaf91ae4969ca11e5de4ea32f7ca6d4b86222e6",
+      "decodedBytes": 1825636,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/13"
+        }
+      ],
+      "skins": 1,
+      "bones": 13,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "furnace_hound",
+      "detail": "low",
+      "bytes": 33800,
+      "sha256": "4b56411c1105164853740296e83e7ee31d24a9bedaaba62e9c05db5941bc6595",
+      "decodedBytes": 1738904,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/13"
+        }
+      ],
+      "skins": 1,
+      "bones": 13,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "slag_titan",
+      "detail": "high",
+      "bytes": 83940,
+      "sha256": "4784a1f70d0600f5b3160451215a7571d32c80a5212bc03f52e86a41b0a438df",
+      "decodedBytes": 1840228,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "slag_titan",
+      "detail": "low",
+      "bytes": 60636,
+      "sha256": "fd3923fd0d10114b95bae7b38e19d4c5d770ca9d2ba58293aef4ab6600c95abe",
+      "decodedBytes": 1766400,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "ember_channeler",
+      "detail": "high",
+      "bytes": 127180,
+      "sha256": "af527dc2159c118de3a64c77e72f57971bf97d534b71d0d997ecdae265da3038",
+      "decodedBytes": 1954904,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/33"
+        }
+      ],
+      "skins": 1,
+      "bones": 33,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "shoot",
+        "shoot_alt",
+        "walk"
+      ]
+    },
+    {
+      "id": "ember_channeler",
+      "detail": "low",
+      "bytes": 71500,
+      "sha256": "98321af4ae2356e1dac6d289d3e609119e63aa407c331d3b1258b39e6371b922",
+      "decodedBytes": 1785100,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/33"
+        }
+      ],
+      "skins": 1,
+      "bones": 33,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "shoot",
+        "shoot_alt",
+        "walk"
+      ]
+    },
+    {
+      "id": "tidebound",
+      "detail": "high",
+      "bytes": 119940,
+      "sha256": "8d48634dcaae6d9bba9f643c65e46b44a06cbfd63369891ce6d12f7145fad8f7",
+      "decodedBytes": 1948124,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "tidebound",
+      "detail": "low",
+      "bytes": 65292,
+      "sha256": "64b51798572503489c7c607dbd39f02a25bb465ef11e45ff47ca307b57a40d3f",
+      "decodedBytes": 1777216,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "abyss_jelly",
+      "detail": "high",
+      "bytes": 56456,
+      "sha256": "d0e2dc10145d9b541e611c30afdc0e0d42a57d3d9a7ab77b43523caa30bf378e",
+      "decodedBytes": 1756616,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "abyss_jelly",
+      "detail": "low",
+      "bytes": 56468,
+      "sha256": "9b728b61890daa5bbfce9a917fcfc4715cccd940e439ad7d2500a5280728f32e",
+      "decodedBytes": 1756616,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "coral_maw",
+      "detail": "high",
+      "bytes": 60956,
+      "sha256": "202999ab870328f2a6d478a3b71c4967cbab2aa42679b5e59147b9af37ed6151",
+      "decodedBytes": 1824724,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/13"
+        }
+      ],
+      "skins": 1,
+      "bones": 13,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "coral_maw",
+      "detail": "low",
+      "bytes": 34456,
+      "sha256": "2d738fa2624ce59e689980a1c30bca06da502412dce703534ec4b344c1e27aac",
+      "decodedBytes": 1740104,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/13"
+        }
+      ],
+      "skins": 1,
+      "bones": 13,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "undertow_cantor",
+      "detail": "high",
+      "bytes": 134104,
+      "sha256": "22e5cbf88ba4066a58e5c68f5f6fc16f2fd2c8eab2e404041ae77d0940f5b6e9",
+      "decodedBytes": 1982740,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "undertow_cantor",
+      "detail": "low",
+      "bytes": 66012,
+      "sha256": "03a2e7b03a091e7cb5d5bcefe356f79f440160c81ef6a6ee19fabd26fc1e70f1",
+      "decodedBytes": 1778432,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "void_paladin",
+      "detail": "high",
+      "bytes": 106732,
+      "sha256": "1c9101e370682266a3ca75ca7e3aedb92b6ba4739415fe23f75a79b881e285be",
+      "decodedBytes": 1908132,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "void_paladin",
+      "detail": "low",
+      "bytes": 66456,
+      "sha256": "11599e480c30d479c764344a720d623e289b1e815f2874088ecf2fa5c20e06f2",
+      "decodedBytes": 1779816,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "star_devourer",
+      "detail": "high",
+      "bytes": 68988,
+      "sha256": "8f5f07f9c9c2230f83c77576ead07aaa0991e36ead426121898e2b1e23fb5b31",
+      "decodedBytes": 1847664,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/13"
+        }
+      ],
+      "skins": 1,
+      "bones": 13,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "star_devourer",
+      "detail": "low",
+      "bytes": 36196,
+      "sha256": "fcb2ec84af6797ed297cc8d41445d4158def46c942070333cde78ddd36724d14",
+      "decodedBytes": 1743964,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/13"
+        }
+      ],
+      "skins": 1,
+      "bones": 13,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "null_weaver",
+      "detail": "high",
+      "bytes": 105108,
+      "sha256": "6f41055fb911c6e372c8571b269c7352f00330f04ed488e8845c6c756c6e3d68",
+      "decodedBytes": 1940908,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "null_weaver",
+      "detail": "low",
+      "bytes": 41984,
+      "sha256": "91773d59a8895d185d721673dc8e37fea69d98989dcc48e30a2107ea37ccc3f2",
+      "decodedBytes": 1750368,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "echo_archon",
+      "detail": "high",
+      "bytes": 88044,
+      "sha256": "a57969c14d709f1f6cfe362c6ae36b79ad9c73c317f18debdca5c92f2b2e697b",
+      "decodedBytes": 1846236,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "echo_archon",
+      "detail": "low",
+      "bytes": 78424,
+      "sha256": "719dd0391546dd9b6573270c9bc57e7fc7013bcbc1969edb0c7b994396809bc7",
+      "decodedBytes": 1817024,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "bell_keeper",
+      "detail": "high",
+      "bytes": 119096,
+      "sha256": "64f5f40c775e2514dd3d65819b72007d5d7afb3705afc6b67d889b8720397a91",
+      "decodedBytes": 1944456,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "bell_keeper",
+      "detail": "low",
+      "bytes": 62896,
+      "sha256": "fb79edb923f7b61294d45a81c72d05d215a85a57fe93089a22cf31eafacd16a4",
+      "decodedBytes": 1772044,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "root_matriarch",
+      "detail": "high",
+      "bytes": 90560,
+      "sha256": "df414d641a7aeb6f1b89320125fe62c066b3689d1404e66f69c6b729bf5cf56c",
+      "decodedBytes": 1898764,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "root_matriarch",
+      "detail": "low",
+      "bytes": 43912,
+      "sha256": "6f222b61dc2e3b985b9c41c06189c6c2ad83699c35f883be96f63f2060b53c15",
+      "decodedBytes": 1753360,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "glass_oracle",
+      "detail": "high",
+      "bytes": 90296,
+      "sha256": "6933de87bab89d61ba5932b7f4eb1794ca45b170fa53ce17f3aeed0877227ad7",
+      "decodedBytes": 1855248,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "glass_oracle",
+      "detail": "low",
+      "bytes": 79672,
+      "sha256": "d970bc955d2f9109910fb790e58b36e191ab0e00f2c78b529df699a3cc237e43",
+      "decodedBytes": 1821024,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/19"
+        }
+      ],
+      "skins": 1,
+      "bones": 19,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "iron_judge",
+      "detail": "high",
+      "bytes": 135628,
+      "sha256": "5c57d9b2475ae039c3f59ccf5ef81e6fbd164e5c647746e197c868bb57880a39",
+      "decodedBytes": 1995120,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "iron_judge",
+      "detail": "low",
+      "bytes": 64184,
+      "sha256": "357a4dc52a3fff9b2b1fab6a559e4de032dc81f52f45d2bc5978137c6fb19e4e",
+      "decodedBytes": 1775804,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "drowned_king",
+      "detail": "high",
+      "bytes": 122320,
+      "sha256": "c5c48b5a836065abc4884b2d10fd46b4a9f61e33f63b08ab55bbd2e455e6fa1c",
+      "decodedBytes": 1953744,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "drowned_king",
+      "detail": "low",
+      "bytes": 65832,
+      "sha256": "f38881b0ebc957ae5191285d261e67b75f7f98308b8f12c8c7544cee8d151c47",
+      "decodedBytes": 1778004,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "first_keeper",
+      "detail": "high",
+      "bytes": 144584,
+      "sha256": "bcb565cea2767db0349af8eeb6409cb0fb782dfca75d9fc5338546e21ff81656",
+      "decodedBytes": 2012872,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "first_keeper",
+      "detail": "low",
+      "bytes": 66412,
+      "sha256": "0e2df9c8658ef4a1bc719071db10c063ee3e5df5618d7b9a8af9a54f6587f291",
+      "decodedBytes": 1778484,
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+          "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+          "severity": 1,
+          "pointer": "/meshes/0/primitives/0/material"
+        },
+        {
+          "code": "NODE_SKINNED_MESH_NON_ROOT",
+          "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+          "severity": 1,
+          "pointer": "/nodes/32"
+        }
+      ],
+      "skins": 1,
+      "bones": 32,
+      "meshes": 1,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    }
+  ]
+}

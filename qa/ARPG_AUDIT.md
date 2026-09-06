@@ -22,19 +22,53 @@ These improvements retain a visibly stylized art style. They do **not** establis
 Diablo III visual parity, AAA animation quality, an official age rating or
 CrazyGames acceptance. See [art direction review](../docs/ART_DIRECTION.md).
 
-## Hardware capture evidence
+## Bestiary and combat presentation 2.3
 
-The final 2.2 marketing encounters were captured in headless Chrome using actual
+Thirty enemy identities now have individual original Blender-authored High and
+Performance GLBs, anatomy-specific rigs and four shared 1024px PBR atlases. The
+two archers carry bows, weighted bowstrings, quivers and arrows. Casters and
+organic ranged creatures retain their appropriate attack sources. Eight-legged
+spiders and articulated hounds replace the old static primitive bodies. Ranged
+AI prepares for 0.32 seconds before releasing a typed projectile; boss specials
+prepare for 0.55 seconds. Ordinary summoning prepares for 0.40 seconds with a floor marker before the helper appears. Restored older saves refresh enemy role data and clear pending summons. Garden
+moss disks and straight plant placeholders are replaced with modelled botanical
+dressing and guarded placement.
+
+Current source checks: **71/71 unit tests** and **6/6 campaign-soak checks** (five
+classes plus the corridor line-of-sight regression). All 60 enemy GLBs, fully
+Meshopt-decoded, have zero Khronos validation errors; each retains two advisory
+warnings about generated tangent space and a parented skinned mesh. The five
+retained hero models and five hero LODs likewise validate with zero errors.
+
+The final local build (`bundle.js` SHA-256 `bb5ca9749d100cdeb4725b21d60396a65b1cc8570a4c8df680e01ec2cbc9c059`)
+passed 9/9 graphics groups, 10/10 cinematic groups, 13/13 gameplay groups and
+5/5 enemy groups, with zero errors. Graphics, cinematic and enemy reports each
+verify all 136 shipping files; gameplay verifies the bundle, stylesheet and HTML.
+The enemy run used actual NVIDIA RTX 4090 and inspected 30 High models, 30 LODs,
+15 real ranged AI attacks and both deforming bowstrings. The other suites used
+SwiftShader. Platform integration passed 8/8 groups and real Chrome decoded all
+26 OGG samples. Media hashes also match this build.
+
+CI independently repeats all five browser suites, 71 unit tests and the campaign
+soak before packaging and Pages deployment. The status for a particular commit
+is recorded in [GitHub Actions](https://github.com/tukieav/runic-depths/actions);
+local results alone do not assert that an external deployment has completed.
+The repair ledger and remaining limitations are in
+[ENEMY_ART_REVIEW.md](../docs/ENEMY_ART_REVIEW.md).
+
+## Version 2.3 hardware capture evidence
+
+The current marketing encounters were captured in headless Chrome with actual
 ANGLE/OpenGL on NVIDIA GeForce RTX 4090, High quality, internal pixel ratio 1.
-The landscape and portrait takes measured 59.93 and 59.99 animation frames per
+The landscape and portrait takes measured 59.70 and 59.94 animation frames per
 second; approximately 17.5 seconds of simulation elapsed in 17.5 seconds of wall
-time. These are two scripted combat encounters on this powerful desktop GPU,
-not mobile/Chromebook acceptance or whole-campaign performance certification.
-`marketing/v2/manifest.json` records the actual WebGL renderer, timing and build
-hashes; the encoded videos are 30 fps. Software-renderer capture was rejected
-because it advanced the simulation much more slowly than real time.
+time. Both ended in playing mode with the guardian defeated and no browser errors.
+These are two staged encounters on this powerful desktop GPU, not mobile or
+Chromebook acceptance. `marketing/v2/manifest.json` records the renderer, timing
+and build hashes. Both silent H.264 files are 17.967 seconds, encoded at 30 fps;
+encoded frame rate is distinct from the observed browser frame rate.
 
-Performance mode now selects 3,500-triangle LODs and textured vertex-lit materials.
+Performance mode selects roughly 3,500-triangle hero LODs and enemy-specific LODs and textured vertex-lit materials.
 It retains full-detail models as the fallback when optional LOD downloads fail.
 Vertex-lit shading applies immediately while these optional models load; late
 arrivals replace geometry without blocking gameplay or resetting progress.
@@ -44,17 +78,18 @@ High quality retains PBR shading, full models and the postprocessing chain.
 
 ```sh
 npm run build
-node --test tests/engine.test.mjs tests/content.test.mjs tests/sdk.test.mjs tests/audio.test.mjs
+npm test
 node tests/arpg-browser.mjs
 node tests/audio-browser.mjs
 node tests/graphics-assets.mjs
 node tests/cinematic-browser.mjs
+node tests/enemy-browser.mjs
 BALANCE_SOAK=1 node --test --test-name-pattern='^combat soak:' tests/engine.test.mjs
 ```
 
 The browser test hosts the built `dist` directory on a temporary loopback port and closes its own server and Chrome instance. It uses `/usr/bin/google-chrome`, overridable through `CHROME_BIN`. WebGL rendering uses SwiftShader in headless Chrome. That proves browser functionality, not a physical mobile or Chromebook frame-rate target.
 
-Observed locally on 2026-09-06: **54/54 engine/content/SDK/audio tests**, **13/13 browser integration groups**, **9/9 graphics groups**, **10/10 cinematic groups**, **8/8 platform groups**, the separate real Chrome audio regression, and **5/5 autonomous combat campaigns** passed. Browser evidence uses Chrome 152.0.7977.75 and recorded zero runtime/console errors. Each later shipping rebuild must rerun the browser suite; `browser-results.json` binds the result to SHA-256 hashes of its actual bundle, stylesheet and HTML.
+Historical 2.2 results, not acceptance of the changed 2.3 files: **54/54 engine/content/SDK/audio tests**, **13/13 browser integration groups**, **9/9 graphics groups**, **10/10 cinematic groups**, **8/8 platform groups**, the separate real Chrome audio regression, and **5/5 autonomous combat campaigns** passed. Browser evidence uses Chrome 152.0.7977.75 and recorded zero runtime/console errors. Each later shipping rebuild must rerun the browser suite; `browser-results.json` binds the result to SHA-256 hashes of its actual bundle, stylesheet and HTML.
 
 ## Engine checks
 
@@ -70,15 +105,15 @@ Observed locally on 2026-09-06: **54/54 engine/content/SDK/audio tests**, **13/1
 
 The campaign gate test deliberately defeats enemies through engine calls. It verifies progression logic; it does not represent a human playthrough or prove long-term difficulty balance.
 
-The separate optional combat soak uses normal movement, attacks, abilities, dodge reactions, pickups, equipment, talents and potions. It never increases damage, health, experience or gold directly and never teleports the hero. The policy has knowledge of map/enemy state and aggressively spends talents and buys supplies, so it is stronger and faster than a new human player. Seed `84621`, 20 Hz simulation, all 12 depths:
+The separate optional combat soak uses normal movement, attacks, abilities, dodge reactions, pickups, equipment, talents and potions. It never increases damage, health, experience or gold directly and never teleports the hero. The policy has knowledge of map/enemy state and aggressively spends talents and buys supplies, so it is stronger and faster than a new human player. Current 2.3 measurements use seed `84621`, 20 Hz simulation and all 12 depths:
 
 | Class | Simulated seconds | Enemies defeated | Final level | Deaths |
 | --- | ---: | ---: | ---: | ---: |
-| Warden | 842 | 636 | 22 | 0 |
-| Ranger | 683 | 631 | 22 | 0 |
-| Arcanist | 1022 | 634 | 22 | 0 |
-| Reaver | 829 | 633 | 22 | 0 |
-| Oracle | 1144 | 633 | 22 | 0 |
+| Warden | 870 | 633 | 22 | 0 |
+| Ranger | 789 | 620 | 22 | 0 |
+| Arcanist | 1071 | 629 | 22 | 0 |
+| Reaver | 685 | 632 | 22 | 0 |
+| Oracle | 1150 | 632 | 22 | 0 |
 
 Raw result: [combat-soak.tap](arpg/combat-soak.tap). These results show an achievable combat path through the campaign for every class. They do not establish human completion times, retention, optimal difficulty or a Diablo-scale campaign length. Story reading and decision time are excluded.
 

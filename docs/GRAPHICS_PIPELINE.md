@@ -50,17 +50,46 @@ download. The platform expects Chrome/Edge compatibility and smooth operation on
 validated against transfer size, draw calls and physical-device measurements.
 [CrazyGames technical requirements](https://docs.crazygames.com/requirements/technical/).
 
-## Authored assets in this update
+## Authored assets in version 2.3
 
-The original character workshop is `scripts/build-character-assets.py`, run with
-Blender in background mode. It saves editable Blender scenes separately from the
-browser payload and exports GLB files into `assets/models/`. The five playable
-classes and the skeleton, wraith and brute families have UV-mapped meshes, weighted
-32-joint skeletons and idle, walk, two attack variants, cast, dodge, hit and death clips.
-Each model uses four 512px PBR maps and standard KHR_mesh_quantization for
-compact UVs, normals and weights; no runtime geometry decoder is required. The manifest records each
-export's mesh, skeleton, clip and byte counts; the runtime audit inspects the actual
-files and live skinning independently.
+The five playable heroes retain their original `assets/models/` GLBs: one skinned
+mesh, a 32-joint rig, four embedded 512px PBR maps and eight clips each. Their
+editable scenes and workshop remain in `source-art/characters/` and
+`scripts/build-character-assets.py`. The old skeleton, wraith and brute enemy
+exports are retired; enemies no longer choose a generic hero-style mesh by shape.
+
+`assets/enemies/manifest.json` lists 30 original identities, each with a High GLB
+and a separate Performance GLB. The exports currently contain **756–10,440
+triangles in High and 756–1,800 in Performance**. These are manifest measurements,
+not a claim of film-resolution assets; the smallest floating creatures need much
+less geometry than an armored boss. Rigs have 13, 19, 32 or 33 joints according to
+anatomy. Every model contains eight locomotion/action clips. The two archers also
+have `shoot` and `shoot_alt`, with vertices weighted to a real `bow_draw` joint.
+The 60 compressed GLBs total 4,658,232 bytes before shared texture files.
+
+Thirty editable `.blend` scenes live in `source-art/enemies/`.
+`scripts/build-enemy-assets.py` authors mesh layers, equipment, UV regions, vertex
+palettes and original animation curves. `scripts/optimize-enemy-assets.mjs`
+quantizes attributes and applies `EXT_meshopt_compression`; `src/enemy-assets.js`
+uses the Meshopt decoder shipped with Three.js. Unlike the retained hero packing,
+this enemy compression does require that bundled decoder. It makes no external
+CDN request. The artwork is original CC0-1.0; decoder/tool licenses are retained.
+
+All enemies share four 1024 × 1024 maps: color, tangent-space normal, packed
+roughness/metalness and emission. The atlas contains material regions, not a
+unique 1024px skin for every creature. Runtime parsing removes redundant image
+references and assigns six cached theme materials that share the four GPU
+textures. Per-vertex colors distinguish cloth, metal, bark, bone, coral and other
+surfaces. The manifest records individual file hashes and sizes; these must be
+rechecked if the workshop is rerun.
+
+`src/enemy-presentation.js` is the explicit identity/role contract. Thorn Lurker
+and Ember Channeler use bows, visible strings, quivers and arrows. Staff users,
+spirits and organic spitters retain their own attack sources. Every identity has
+its own export; boss-specific geometry includes Veyr's bell head, the Matriarch's
+branching crown, Ilyra's prismatic wings, Kord's anvil crown, Orren's coral crown
+and Aster's eclipse halo. These ornaments improve recognition; their quality
+still needs assessment in motion and at the normal gameplay camera.
 
 `scripts/build-surface-props.mjs` authors the sarcophagus and shrine as reusable
 GLB geometry with UVs. The game instantiates these props and applies the shared
@@ -91,7 +120,7 @@ The generated report records the exact bundle and asset hashes. Headless Chromiu
 with software WebGL provides integration evidence; its frame rate is not a
 physical mobile/Chromebook benchmark and it does not constitute portal approval.
 
-## Version 2.2 presentation
+## Retained cinematic rendering and version 2.3 combat presentation
 
 The high setting renders an HDR scene through depth-based contact occlusion,
 thresholded bloom, color grading, tone mapping and FXAA. This is a compact screen
@@ -103,6 +132,13 @@ Performance mode and devices without floating-point color buffers use direct
 rendering; the latter also skips the HDR environment probe.
 
 Original radial stone reliefs replace the flat archive and void floor markers.
+In the gardens, `src/garden-detail.js` replaces flat moss circles and straight
+plant placeholders with irregular low ground cover, curved tapering roots,
+folded fern leaves, mushroom caps/gills and shallow wall ivy. High and Performance
+have separate geometry caps. Complete transformed footprints keep tall plants
+inside blocked tiles and ground moss below six centimetres on walkable stone.
+Near-wall dressing follows the camera visibility treatment rather than leaving
+large foliage floating in front of the player.
 Exploration masks shade unseen dungeon surfaces. Static geometry is grouped by
 material and spatial cell so offscreen geometry can be culled. Nearest torch
 selection updates at four Hz. Camera zoom is adjustable from 0.8 to 1.35; the
@@ -116,13 +152,32 @@ sampled chapter music and combat effects are authored by
 procedural fallback. All these features are verified against the built game;
 they do not establish AAA production quality or portal acceptance.
 
+## Combat timing and projectiles
+
+Ordinary ranged AI records its aim and prepares for 0.32 seconds before releasing
+a projectile. The aim remains fixed if the hero sidesteps; a newly obstructed
+line of sight cancels release. Boss specials have a separate 0.55-second
+preparation. Casters pass actual `castTime` to their animation; bow users select
+shooting clips. Legacy saved enemies refresh presentation-relevant role data,
+including the Thorn Lurker's conversion to an archer. Enemy bow releases also
+select the matching sampled audio event.
+
+`src/projectile-presentation.js` renders arrows with shafts, heads and fletching,
+and distinct spore, prism, tide, thorn, soul and void shapes. `shoot` retains the
+source identity and a body/scale-based launch height. Projectile height blends
+toward the target while it travels. This corrects the universal knee-height
+projectile, but it is **not** exact sampling of an animated hand or bow socket;
+precise weapon attachment throughout each pose remains a refinement target.
+
 ## Performance models and materials
 
-High quality retains the full authored models and PBR lighting. Performance mode
-selects separate original 3,498–3,500-triangle GLBs with the same 32-joint rig and
-eight clips. Their 256px atlases and quantized attributes total about 2.18 MiB for
-all eight models. `scripts/build-character-lods.py` derives these optional assets
-from the editable high-detail scenes; the full exports are not overwritten.
+The five retained heroes have separate approximately 3,500-triangle LODs with
+32-joint rigs, eight clips and embedded 256px atlases, generated by
+`scripts/build-character-lods.py`. Enemy Performance assets are a separate set
+with their own 756–1,800-triangle budget and the same shared enemy surfaces and
+role-specific rigs as High. Quality reduction must preserve a bow as a bow and
+an eight-legged creature as eight-legged; it must not substitute a generic sword
+carrier.
 
 Performance materials retain color textures and emissive detail with vertex-lit
 Lambert shading. They avoid normal/roughness/environment fragment calculations,
@@ -139,3 +194,30 @@ actor disposes that skeleton while preserving shared mesh and surface resources.
 The animated portal owns its final displayed material in both quality settings,
 so unlocking updates the rendered color and glow. Browser regressions inspect
 GPU texture counts across rebuilds and actual locked/unlocked portal materials.
+
+## Acceptance evidence and remaining art debt
+
+`tests/enemy-presentation.test.mjs` checks complete identity coverage and semantic
+AI/weapon/projectile consistency. `tests/enemy-combat.test.mjs` checks real
+preparation, release, fixed aim, obstruction, pause/revival, legacy saves and boss
+special timing. `tests/enemy-browser.mjs` inspects actual GLB geometry, weighted
+bow vertices, animated rigs, typed projectiles, physical materials, all 30 LODs
+and deliberate asset failure. Its exact-build evidence is `qa/enemies/results.json`;
+`qa/enemies/all-30-contact-sheet.png` and individual close frames support visual
+review. `scripts/validate-enemy-assets.mjs` fully decodes Meshopt before Khronos
+glTF validation; its separate report is `qa/enemies/gltf-validation.json`.
+
+Final 2.3 browser/hash binding, CI, packaged file sizes and public deployment must
+be confirmed against the release artifacts. Existing green reports from an earlier
+build do not close that verification. No current CI outcome or physical low-end
+frame-rate measurement is asserted here.
+
+The renderer still uses repeated procedural room architecture and generated
+surface patterns; NPCs still reuse the Oracle model. The enemy assets are
+stylized procedural constructions. Humanoids still share similar heads, armored
+ribcages and proportions; Veyr and Kord reuse a recognizable golem base and
+rectangular hammer, and hounds share a core silhouette. Rounded segments can read
+as toy-like or robotic. Shared normal-map detail does not replace bespoke anatomy
+and individually finished surface work. There is no motion capture, cinematic
+facial performance, scan-based surface work or manual animation polish at AAA
+production scale. The concrete defect ledger is [ENEMY_ART_REVIEW.md](ENEMY_ART_REVIEW.md).

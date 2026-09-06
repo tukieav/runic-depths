@@ -1,45 +1,53 @@
+npm notice run runic-depths@2.3.0 test:campaign
+npm notice run BALANCE_SOAK=1 node --test --test-name-pattern="combat soak" tests/engine.test.mjs
 TAP version 13
-# {"combatSoak":"warden","completed":true,"floor":12,"seconds":842,"deaths":0,"level":22,"kills":636,"depthTimes":[{"floor":1,"seconds":53,"deaths":0},{"floor":2,"seconds":97,"deaths":0},{"floor":3,"seconds":138,"deaths":0},{"floor":4,"seconds":201,"deaths":0},{"floor":5,"seconds":271,"deaths":0},{"floor":6,"seconds":359,"deaths":0},{"floor":7,"seconds":446,"deaths":0},{"floor":8,"seconds":511,"deaths":0},{"floor":9,"seconds":580,"deaths":0},{"floor":10,"seconds":693,"deaths":0},{"floor":11,"seconds":760,"deaths":0}]}
-# {"combatSoak":"ranger","completed":true,"floor":12,"seconds":683,"deaths":0,"level":22,"kills":631,"depthTimes":[{"floor":1,"seconds":27,"deaths":0},{"floor":2,"seconds":95,"deaths":0},{"floor":3,"seconds":130,"deaths":0},{"floor":4,"seconds":173,"deaths":0},{"floor":5,"seconds":247,"deaths":0},{"floor":6,"seconds":291,"deaths":0},{"floor":7,"seconds":327,"deaths":0},{"floor":8,"seconds":392,"deaths":0},{"floor":9,"seconds":432,"deaths":0},{"floor":10,"seconds":520,"deaths":0},{"floor":11,"seconds":589,"deaths":0}]}
-# {"combatSoak":"arcanist","completed":true,"floor":12,"seconds":1022,"deaths":0,"level":22,"kills":634,"depthTimes":[{"floor":1,"seconds":55,"deaths":0},{"floor":2,"seconds":117,"deaths":0},{"floor":3,"seconds":186,"deaths":0},{"floor":4,"seconds":299,"deaths":0},{"floor":5,"seconds":362,"deaths":0},{"floor":6,"seconds":434,"deaths":0},{"floor":7,"seconds":511,"deaths":0},{"floor":8,"seconds":592,"deaths":0},{"floor":9,"seconds":687,"deaths":0},{"floor":10,"seconds":818,"deaths":0},{"floor":11,"seconds":908,"deaths":0}]}
-# {"combatSoak":"reaver","completed":true,"floor":12,"seconds":829,"deaths":0,"level":22,"kills":633,"depthTimes":[{"floor":1,"seconds":30,"deaths":0},{"floor":2,"seconds":110,"deaths":0},{"floor":3,"seconds":140,"deaths":0},{"floor":4,"seconds":241,"deaths":0},{"floor":5,"seconds":301,"deaths":0},{"floor":6,"seconds":365,"deaths":0},{"floor":7,"seconds":416,"deaths":0},{"floor":8,"seconds":510,"deaths":0},{"floor":9,"seconds":587,"deaths":0},{"floor":10,"seconds":667,"deaths":0},{"floor":11,"seconds":730,"deaths":0}]}
-# {"combatSoak":"oracle","completed":true,"floor":12,"seconds":1144,"deaths":0,"level":22,"kills":633,"depthTimes":[{"floor":1,"seconds":68,"deaths":0},{"floor":2,"seconds":166,"deaths":0},{"floor":3,"seconds":255,"deaths":0},{"floor":4,"seconds":339,"deaths":0},{"floor":5,"seconds":428,"deaths":0},{"floor":6,"seconds":511,"deaths":0},{"floor":7,"seconds":578,"deaths":0},{"floor":8,"seconds":673,"deaths":0},{"floor":9,"seconds":742,"deaths":0},{"floor":10,"seconds":870,"deaths":0},{"floor":11,"seconds":985,"deaths":0}]}
-# Subtest: combat soak: warden campaign
-ok 1 - combat soak: warden campaign
+# {"combatSoak":"warden","completed":true,"floor":12,"seconds":870,"deaths":0,"level":22,"kills":633,"depthTimes":[{"floor":1,"seconds":53,"deaths":0},{"floor":2,"seconds":97,"deaths":0},{"floor":3,"seconds":144,"deaths":0},{"floor":4,"seconds":228,"deaths":0},{"floor":5,"seconds":291,"deaths":0},{"floor":6,"seconds":352,"deaths":0},{"floor":7,"seconds":423,"deaths":0},{"floor":8,"seconds":523,"deaths":0},{"floor":9,"seconds":628,"deaths":0},{"floor":10,"seconds":723,"deaths":0},{"floor":11,"seconds":797,"deaths":0}]}
+# {"combatSoak":"ranger","completed":true,"floor":12,"seconds":789,"deaths":0,"level":22,"kills":620,"depthTimes":[{"floor":1,"seconds":27,"deaths":0},{"floor":2,"seconds":97,"deaths":0},{"floor":3,"seconds":137,"deaths":0},{"floor":4,"seconds":209,"deaths":0},{"floor":5,"seconds":268,"deaths":0},{"floor":6,"seconds":328,"deaths":0},{"floor":7,"seconds":365,"deaths":0},{"floor":8,"seconds":427,"deaths":0},{"floor":9,"seconds":511,"deaths":0},{"floor":10,"seconds":604,"deaths":0},{"floor":11,"seconds":682,"deaths":0}]}
+# {"combatSoak":"arcanist","completed":true,"floor":12,"seconds":1071,"deaths":0,"level":22,"kills":629,"depthTimes":[{"floor":1,"seconds":55,"deaths":0},{"floor":2,"seconds":115,"deaths":0},{"floor":3,"seconds":204,"deaths":0},{"floor":4,"seconds":297,"deaths":0},{"floor":5,"seconds":358,"deaths":0},{"floor":6,"seconds":441,"deaths":0},{"floor":7,"seconds":504,"deaths":0},{"floor":8,"seconds":591,"deaths":0},{"floor":9,"seconds":657,"deaths":0},{"floor":10,"seconds":797,"deaths":0},{"floor":11,"seconds":918,"deaths":0}]}
+# {"combatSoak":"reaver","completed":true,"floor":12,"seconds":685,"deaths":0,"level":22,"kills":632,"depthTimes":[{"floor":1,"seconds":32,"deaths":0},{"floor":2,"seconds":70,"deaths":0},{"floor":3,"seconds":106,"deaths":0},{"floor":4,"seconds":149,"deaths":0},{"floor":5,"seconds":232,"deaths":0},{"floor":6,"seconds":289,"deaths":0},{"floor":7,"seconds":339,"deaths":0},{"floor":8,"seconds":429,"deaths":0},{"floor":9,"seconds":479,"deaths":0},{"floor":10,"seconds":560,"deaths":0},{"floor":11,"seconds":615,"deaths":0}]}
+# {"combatSoak":"oracle","completed":true,"floor":12,"seconds":1150,"deaths":0,"level":22,"kills":632,"depthTimes":[{"floor":1,"seconds":68,"deaths":0},{"floor":2,"seconds":156,"deaths":0},{"floor":3,"seconds":243,"deaths":0},{"floor":4,"seconds":354,"deaths":0},{"floor":5,"seconds":449,"deaths":0},{"floor":6,"seconds":562,"deaths":0},{"floor":7,"seconds":654,"deaths":0},{"floor":8,"seconds":728,"deaths":0},{"floor":9,"seconds":804,"deaths":0},{"floor":10,"seconds":904,"deaths":0},{"floor":11,"seconds":1008,"deaths":0}]}
+# Subtest: line-of-sight sampling rejects the blocked corridor corner found in combat soak
+ok 1 - line-of-sight sampling rejects the blocked corridor corner found in combat soak
   ---
-  duration_ms: 304.544985
+  duration_ms: 1.546789
+  type: 'test'
+  ...
+# Subtest: combat soak: warden campaign
+ok 2 - combat soak: warden campaign
+  ---
+  duration_ms: 348.52583
   type: 'test'
   ...
 # Subtest: combat soak: ranger campaign
-ok 2 - combat soak: ranger campaign
+ok 3 - combat soak: ranger campaign
   ---
-  duration_ms: 213.669536
+  duration_ms: 265.130514
   type: 'test'
   ...
 # Subtest: combat soak: arcanist campaign
-ok 3 - combat soak: arcanist campaign
+ok 4 - combat soak: arcanist campaign
   ---
-  duration_ms: 276.823093
+  duration_ms: 301.760399
   type: 'test'
   ...
 # Subtest: combat soak: reaver campaign
-ok 4 - combat soak: reaver campaign
+ok 5 - combat soak: reaver campaign
   ---
-  duration_ms: 228.537565
+  duration_ms: 199.448091
   type: 'test'
   ...
 # Subtest: combat soak: oracle campaign
-ok 5 - combat soak: oracle campaign
+ok 6 - combat soak: oracle campaign
   ---
-  duration_ms: 315.089352
+  duration_ms: 299.458465
   type: 'test'
   ...
-1..5
-# tests 5
+1..6
+# tests 6
 # suites 0
-# pass 5
+# pass 6
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1379.082082
+# duration_ms 1458.542703

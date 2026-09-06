@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / 'source-art' / 'characters'
 OUT = ROOT / 'assets' / 'models' / 'lod'
 OUT.mkdir(parents=True, exist_ok=True)
-IDS = ['warden', 'ranger', 'arcanist', 'reaver', 'oracle', 'skeleton', 'wraith', 'brute']
+IDS = ['warden', 'ranger', 'arcanist', 'reaver', 'oracle']
 TARGET_TRIANGLES = 3500
 
 # Reuse precisely the shipping quantizer without executing its asset-generation

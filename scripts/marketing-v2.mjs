@@ -51,7 +51,7 @@ const browser = await chromium.launch({
     : ['--no-sandbox', '--enable-unsafe-swiftshader'],
 });
 const manifest = {
-  version: '2.2',
+  version: '2.3',
   createdAt: new Date().toISOString(),
   requirements: 'https://docs.crazygames.com/requirements/game-covers/',
   artwork: {
@@ -76,6 +76,8 @@ const manifest = {
         'bundle.css',
         'index.html',
         'assets/models/manifest.json',
+        'assets/models/lod/manifest.json',
+        'assets/enemies/manifest.json',
         'assets/textures/manifest.json',
         'assets/props/manifest.json',
         'assets/audio/manifest.json',
@@ -164,7 +166,18 @@ async function preview(name, width, height, openingCover) {
     },
     { captureQuality, capturePixelRatio },
   );
-  await page.waitForTimeout(1600);
+  await page.evaluate(async () => {
+    const { game, renderer } = window.__RUNIC;
+    await renderer.loadEnemyChapter(game);
+    renderer.build(game);
+    renderer.render(game, 0);
+    for (const enemy of game.enemies.filter((enemy) => !enemy.dead)) {
+      const visual = renderer.actors.get(enemy.id)?.visual;
+      if (visual?.stats.id !== enemy.type || visual.stats.detail === 'fallback')
+        throw new Error(`Marketing encounter asset missing: ${enemy.type}`);
+    }
+  });
+  await page.waitForTimeout(650);
   const coverData = `data:image/png;base64,${(await readFile(resolve(output, openingCover))).toString('base64')}`;
   await page.evaluate(async (source) => {
     const img = document.createElement('img');

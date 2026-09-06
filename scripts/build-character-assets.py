@@ -732,7 +732,7 @@ def create(kind):
     return {'id':kind,'vertices':len(mesh.data.vertices),'polygons':len(mesh.data.polygons),'bones':len(rig.data.bones),'clips':[a.name for a in actions],'bytes':os.path.getsize(os.path.join(OUT,kind+'.glb'))}
 
 records=[]
-for kind in ([os.environ['RUNIC_CHARACTER']] if os.environ.get('RUNIC_CHARACTER') else PALETTES):
+for kind in ([os.environ['RUNIC_CHARACTER']] if os.environ.get('RUNIC_CHARACTER') else ['warden','ranger','arcanist','reaver','oracle']):
     # Remove old actions so each GLB has exactly its own five clips.
     for action in list(bpy.data.actions):bpy.data.actions.remove(action)
     records.append(create(kind))

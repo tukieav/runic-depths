@@ -88,57 +88,6 @@
         "death"
       ],
       "bytes": 1067484
-    },
-    {
-      "id": "skeleton",
-      "vertices": 10594,
-      "polygons": 10102,
-      "bones": 32,
-      "clips": [
-        "idle",
-        "walk",
-        "attack",
-        "attack_alt",
-        "cast",
-        "dodge",
-        "hit",
-        "death"
-      ],
-      "bytes": 842036
-    },
-    {
-      "id": "wraith",
-      "vertices": 12930,
-      "polygons": 13636,
-      "bones": 32,
-      "clips": [
-        "idle",
-        "walk",
-        "attack",
-        "attack_alt",
-        "cast",
-        "dodge",
-        "hit",
-        "death"
-      ],
-      "bytes": 939976
-    },
-    {
-      "id": "brute",
-      "vertices": 15692,
-      "polygons": 16716,
-      "bones": 32,
-      "clips": [
-        "idle",
-        "walk",
-        "attack",
-        "attack_alt",
-        "cast",
-        "dodge",
-        "hit",
-        "death"
-      ],
-      "bytes": 1214068
     }
   ]
 }

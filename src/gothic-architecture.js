@@ -136,6 +136,9 @@ export function addGothicArchitecture({
   for (let i = 0; i < world.rooms.length; i++) {
     const room = world.rooms[i];
     for (const offset of [2, room.w - 3]) {
+      // Rootbound's first alcove belongs to modelled plants. A solid memorial
+      // bay at the same coordinates used to bury their geometry inside stone.
+      if (chapterIndex === 1 && offset === 2) continue;
       const x = room.x + offset,
         z = room.y - 1;
       if (isFloor(x, z) || !isFloor(x, z + 1)) continue;

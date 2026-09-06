@@ -1,13 +1,13 @@
 {
   "name": "runic-depths",
-  "version": "2.2.0",
-  "description": "Runic Depths: The Hollow Covenant \u2014 bilingual isometric 3D action RPG",
+  "version": "2.3.0",
+  "description": "Runic Depths: The Hollow Covenant — bilingual isometric 3D action RPG",
   "type": "module",
   "private": true,
   "scripts": {
     "build": "esbuild src/main.js --bundle --minify --outfile=dist/bundle.js --loader:.png=file --asset-names=assets/[name] && node scripts/pack.mjs",
     "dev": "npm run build && esbuild src/main.js --bundle --outfile=dist/bundle.js --loader:.png=file --asset-names=assets/[name] --watch --servedir=dist --serve=8485",
-    "test": "node --test tests/content.test.mjs tests/engine.test.mjs tests/sdk.test.mjs tests/audio.test.mjs",
+    "test": "node --test tests/content.test.mjs tests/engine.test.mjs tests/sdk.test.mjs tests/audio.test.mjs tests/enemy-presentation.test.mjs tests/enemy-combat.test.mjs",
     "test:browser": "npm run build && node tests/arpg-browser.mjs",
     "package": "npm run build && node scripts/release.mjs",
     "test:platform": "npm run build && node tests/platform-browser.mjs && node tests/audio-browser.mjs",
@@ -15,7 +15,8 @@
     "format": "prettier --write src/*.js src/style.css index.html scripts/pack.mjs scripts/release.mjs",
     "test:graphics": "npm run build && node tests/graphics-assets.mjs",
     "assets:surfaces": "python3 scripts/build-surface-assets.py && node scripts/build-surface-props.mjs",
-    "test:cinematic": "npm run build && node tests/cinematic-browser.mjs"
+    "test:cinematic": "npm run build && node tests/cinematic-browser.mjs",
+    "test:enemies": "npm run build && node tests/enemy-browser.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.12",

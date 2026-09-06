@@ -1,0 +1,56 @@
+{
+  "date": "2026-09-06T18:20:46.114Z",
+  "seed": 4109,
+  "floor": 3,
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "buildHashes": {
+    "bundle.js": "bb5ca9749d100cdeb4725b21d60396a65b1cc8570a4c8df680e01ec2cbc9c059",
+    "bundle.css": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5",
+    "index.html": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685"
+  },
+  "stats": {
+    "garden": {
+      "triangles": 16880,
+      "pieces": 232,
+      "rejectedFootprints": 2,
+      "budget": 18000
+    },
+    "walls": {
+      "triangles": 2464,
+      "decoratedWalls": 22,
+      "budget": 4000
+    }
+  },
+  "graphics": {
+    "quality": "high",
+    "gpu": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 4090/PCIe/SSE2, OpenGL ES 3.2)",
+    "postprocessing": {
+      "enabled": true,
+      "quality": "high",
+      "passes": [
+        "scene",
+        "contact-occlusion",
+        "hdr-bloom",
+        "color-grade",
+        "tone-map",
+        "fxaa"
+      ],
+      "width": 1600,
+      "height": 1000,
+      "pixelRatio": 1,
+      "fallbackReason": ""
+    },
+    "render": {
+      "frame": 5288,
+      "calls": 212,
+      "triangles": 203580,
+      "points": 65,
+      "lines": 0
+    }
+  },
+  "errors": [],
+  "sceneNote": "Actual game room, enemies cleared for environment inspection; not a combat or weak-device performance benchmark."
+}

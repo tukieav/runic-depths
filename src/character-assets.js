@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 
-const IDS = ['warden', 'ranger', 'arcanist', 'reaver', 'oracle', 'skeleton', 'wraith', 'brute'];
+const IDS = ['warden', 'ranger', 'arcanist', 'reaver', 'oracle'];
 const cache = new Map();
 const failures = new Map();
 const lodCache = new Map(),

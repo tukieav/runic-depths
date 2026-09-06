@@ -104,66 +104,6 @@
       ],
       "textureSize": 256,
       "bytes": 274916
-    },
-    {
-      "id": "skeleton",
-      "source": "source-art/characters/skeleton.blend",
-      "vertices": 1984,
-      "triangles": 3500,
-      "originalTriangles": 20720,
-      "bones": 32,
-      "clips": [
-        "attack",
-        "attack_alt",
-        "cast",
-        "death",
-        "dodge",
-        "hit",
-        "idle",
-        "walk"
-      ],
-      "textureSize": 256,
-      "bytes": 273032
-    },
-    {
-      "id": "wraith",
-      "source": "source-art/characters/wraith.blend",
-      "vertices": 2022,
-      "triangles": 3498,
-      "originalTriangles": 25298,
-      "bones": 32,
-      "clips": [
-        "attack",
-        "attack_alt",
-        "cast",
-        "death",
-        "dodge",
-        "hit",
-        "idle",
-        "walk"
-      ],
-      "textureSize": 256,
-      "bytes": 273936
-    },
-    {
-      "id": "brute",
-      "source": "source-art/characters/brute.blend",
-      "vertices": 2032,
-      "triangles": 3498,
-      "originalTriangles": 30814,
-      "bones": 32,
-      "clips": [
-        "attack",
-        "attack_alt",
-        "cast",
-        "death",
-        "dodge",
-        "hit",
-        "idle",
-        "walk"
-      ],
-      "textureSize": 256,
-      "bytes": 303600
     }
   ]
 }

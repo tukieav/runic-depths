@@ -125,8 +125,8 @@ async function inspect(page) {
       if (node.userData.propKind) info.props.push(node.userData.propKind);
     });
     for (const [id, enemy] of renderer.actors) {
-      if (id !== '$hero' && enemy.visual?.root.userData.characterAsset)
-        info.enemyAssets.push(enemy.visual.root.userData.characterAsset);
+      if (id !== '$hero' && enemy.visual?.stats.detail === 'high')
+        info.enemyAssets.push(enemy.visual.stats.id);
     }
     info.hero = { x: game.hero.x, y: game.hero.y, hp: game.hero.hp, time: game.time };
     info.animation = actor.visual?.root.userData.animation;
@@ -210,7 +210,16 @@ try {
           `${id}: UV and skin attributes`,
         );
         const clipNames = (gltf.animations || []).map((clip) => clip.name.toLowerCase());
-        for (const clip of ['idle', 'walk', 'attack', 'attack_alt', 'cast', 'dodge', 'hit', 'death']) {
+        for (const clip of [
+          'idle',
+          'walk',
+          'attack',
+          'attack_alt',
+          'cast',
+          'dodge',
+          'hit',
+          'death',
+        ]) {
           assert.ok(clipNames.includes(clip), `${id}: ${clip} clip`);
           const animation = gltf.animations.find((entry) => entry.name.toLowerCase() === clip);
           assert.ok(
@@ -353,10 +362,11 @@ try {
     const observedEnemies = new Set();
     for (const floor of [1, 3, 5, 7, 9, 11]) {
       // Scene setup only: this verifies rendering, not campaign completion or balance.
-      await page.evaluate((depth) => {
+      await page.evaluate(async (depth) => {
         const { game, renderer } = window.__RUNIC;
         game.floor = depth;
         game.makeFloor();
+        await renderer.loadEnemyChapter(game);
         renderer.build(game);
       }, floor);
       await page.waitForFunction(
@@ -400,7 +410,7 @@ try {
     }
     for (const prop of ['sarcophagus', 'shrine'])
       assert.ok(observedProps.has(prop), `${prop}: authored GLB instantiated in game scene`);
-    for (const enemy of ['skeleton', 'wraith', 'brute'])
+    for (const enemy of ['hollow_guard', 'crypt_crawler', 'candle_wisp', 'bell_hound'])
       assert.ok(
         observedEnemies.has(enemy),
         `${enemy}: authored enemy GLB instantiated in game scene`,

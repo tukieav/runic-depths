@@ -18,6 +18,8 @@ for (const file of [
   'bundle.js',
   'bundle.css',
   'assets/hero-atlas.png',
+  'assets/enemies/manifest.json',
+  'assets/MESHOPTIMIZER-LICENSE.txt',
   'THREE-LICENSE.txt',
 ])
   if (!files.includes(join(root, file))) throw Error(`Missing ${file}`);
@@ -68,6 +70,13 @@ const mediaNames = [
 ];
 const { existsSync } = await import('node:fs');
 if (mediaNames.every((name) => existsSync(join('marketing/v2', name)))) {
+  const mediaManifest = JSON.parse(readFileSync('marketing/v2/manifest.json', 'utf8'));
+  for (const [file, expected] of Object.entries(mediaManifest.buildHashes || {})) {
+    const actual = createHash('sha256')
+      .update(readFileSync(join(root, file)))
+      .digest('hex');
+    if (actual !== expected) throw Error(`Marketing media describe a different build: ${file}`);
+  }
   const kit = resolve('releases/runic-depths-submission-kit-v2.zip');
   const entries = [
     [target, 'runic-depths-covenant-v2.zip'],

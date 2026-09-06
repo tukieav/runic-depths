@@ -1,5 +1,10 @@
 import { addFloorRelief } from './floor-reliefs.js';
+import { addGardenDetail, addGardenAlcove, addGardenWall } from './garden-detail.js';
 import { createCombatPresentation } from './combat-presentation.js';
+import { enemyPresentation } from './enemy-presentation.js';
+import { loadEnemyAssets, createEnemyVisual, getEnemyAssetStatus } from './enemy-assets.js';
+import { createEnemyFallback } from './enemy-fallback.js';
+import { createProjectilePresentation, projectileHeight } from './projectile-presentation.js';
 import * as THREE from 'three';
 import { CinematicPipeline } from './cinematic-pipeline.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
@@ -307,13 +312,14 @@ export class DungeonRenderer {
     return this.materials.get(key);
   }
 
-  async loadAssets() {
+  async loadAssets(world) {
     let timer;
     await Promise.race([
       Promise.all([
         this.surfaces.ready,
         loadCharacterAssets(),
         loadPropAssets(this.surfaces),
+        world ? this.loadEnemyChapter(world) : Promise.resolve(),
         this.quality === 'low' ? this.refreshPerformanceAssets() : Promise.resolve(),
       ]),
       new Promise((resolve) => {
@@ -321,6 +327,43 @@ export class DungeonRenderer {
       }),
     ]);
     clearTimeout(timer);
+  }
+
+  loadEnemyChapter(world = this.world) {
+    const ids = [...new Set((world?.enemies || []).filter((e) => !e.dead).map((e) => e.type))];
+    return loadEnemyAssets({ ids, quality: this.quality });
+  }
+
+  requestEnemyChapter(world) {
+    const ids = [
+      ...new Set((world.enemies || []).filter((e) => !e.dead).map((e) => e.type)),
+    ].sort();
+    const key = `${this.quality}:${ids.join(',')}`;
+    if (this.enemyLoadKey === key) return;
+    this.enemyLoadKey = key;
+    const status = getEnemyAssetStatus();
+    const loaded = this.quality === 'low' ? status.lodLoaded : status.loaded;
+    if (ids.every((id) => loaded.includes(id))) return;
+    this.loadEnemyChapter(world).then(() => {
+      if (
+        this.disposed ||
+        this.world !== world ||
+        this.enemyLoadKey !== key ||
+        !this.initialized ||
+        this.renderer.getContext().isContextLost()
+      )
+        return;
+      // Only replace the streamed actor presentations; keep the scene, camera,
+      // hero animation and authoritative combat state untouched.
+      for (const [id, actor] of this.actors) {
+        if (id === '$hero') continue;
+        actor.visual?.dispose();
+        this.clearGroup(actor.root);
+        actor.root.removeFromParent();
+        this.actors.delete(id);
+      }
+      this.updateActors(world, 0, world.time);
+    });
   }
 
   refreshPerformanceAssets() {
@@ -366,6 +409,7 @@ export class DungeonRenderer {
   getGraphicsStatus() {
     return {
       characters: getCharacterAssetStatus(),
+      enemies: getEnemyAssetStatus(),
       props: { ...propAssetState },
       surfaces: { ...this.surfaces.state },
       shadows: this.renderer.shadowMap.enabled,
@@ -432,7 +476,7 @@ export class DungeonRenderer {
       // Switch expensive surface shading immediately, even while optional LOD
       // transfers are pending or have failed. The game remains interactive.
       if (this.world) this.build(this.world);
-      if (this.quality === 'low' && getCharacterAssetStatus().lodLoaded.length < 8)
+      if (this.quality === 'low' && getCharacterAssetStatus().lodLoaded.length < 5)
         this.refreshPerformanceAssets();
     }
   }
@@ -447,6 +491,7 @@ export class DungeonRenderer {
 
   build(world) {
     this.world = world;
+    this.requestEnemyChapter(world);
     this.heroCastUntil = 0;
     this.heroHitUntil = 0;
     this.impactShake = 0;
@@ -605,25 +650,7 @@ export class DungeonRenderer {
             batch.add(geo, mat, [px + dx, p[1], pz + dz], s, [r[0], r[1] + yaw, r[2]]);
           };
           if (chapterId === 'rootbound') {
-            add(GEO.cylinder, bark, [0, 0.58, 0.02], [0.07, 1.15, 0.08], [0, 0, 0.17]);
-            for (let j = 0; j < 3; j++) {
-              add(
-                GEO.cylinder,
-                bark,
-                [j % 2 ? -0.16 : 0.16, 0.38 + j * 0.28, 0.08],
-                [0.04, 0.43, 0.04],
-                [0, 0, j % 2 ? -0.8 : 0.8],
-              );
-              add(
-                GEO.gem,
-                leaves,
-                [j % 2 ? -0.3 : 0.3, 0.51 + j * 0.28, 0.06],
-                [0.19, 0.1, 0.1],
-                [0, 0, 0.2],
-              );
-            }
-            add(GEO.cylinder, trim, [0.26, 0.12, 0.19], [0.03, 0.2, 0.03]);
-            add(GEO.sphere, rune, [0.26, 0.24, 0.19], [0.14, 0.045, 0.11]);
+            addGardenWall({ batch, surface: this, add, seed: x * 41 + y });
           } else if (chapterId === 'glass_archive') {
             add(GEO.box, dark, [0, 0.62, 0.02], [0.75, 1.05, 0.1]);
             for (let j = 0; j < 3; j++) {
@@ -720,23 +747,7 @@ export class DungeonRenderer {
             );
         }
       } else if (chapterId === 'rootbound') {
-        const moss = this.material('#355546');
-        const paleMoss = this.material('#526b43');
-        for (let j = 0; j < 7; j++) {
-          const a = hash(j, ri) * Math.PI * 2;
-          const mx = cx + Math.cos(a) * insetX,
-            my = cy + Math.sin(a) * insetY;
-          if (isFloor(Math.round(mx), Math.round(my))) {
-            batch.add(
-              GEO.circle,
-              j % 2 ? moss : paleMoss,
-              [mx, 0.012, my],
-              [0.55 + hash(j, 7) * 0.6, 0.3 + hash(j, 2) * 0.5, 1],
-              [-Math.PI / 2, 0, a],
-            );
-            batch.add(GEO.box, bark, [mx, 0.023, my], [0.06, 0.024, 0.75], [0, a, 0]);
-          }
-        }
+        addGardenDetail({ batch, surface: this, room, roomIndex: ri, isFloor });
       } else if (chapterId === 'glass_archive') {
         addFloorRelief({
           batch,
@@ -860,21 +871,7 @@ export class DungeonRenderer {
               [0, j * 0.3, 0],
             );
         } else if (chapterId === 'rootbound') {
-          for (let j = 0; j < 3; j++) {
-            batch.add(
-              GEO.cylinder,
-              bark,
-              [alcoveX - 0.45 + j * 0.4, 0.42, z],
-              [0.085, 0.78 + j * 0.12, 0.08],
-              [0, 0, (j - 1) * 0.24],
-            );
-            batch.add(
-              GEO.gem,
-              leaves,
-              [alcoveX - 0.53 + j * 0.45, 0.89 + j * 0.12, z],
-              [0.3, 0.22, 0.25],
-            );
-          }
+          addGardenAlcove({ batch, surface: this, isFloor, x: alcoveX, z: alcoveY, seed: ri });
         } else {
           batch.add(GEO.box, bark, [alcoveX, 0.4, z], [1.65, 0.1, 0.43]);
           for (const sx of [-1, 1])
@@ -1001,20 +998,14 @@ export class DungeonRenderer {
     const isBeast = /beast|wolf|hound|rat|crawler/.test(shape);
     const isInsect = /spider|insect|swarm|scarab/.test(shape);
     const isBrute = /brute|golem|ogre|construct|troll|demon/.test(shape);
-    const assetId = hero
-      ? id
-      : /skeleton|bone|undead|humanoid/.test(shape)
-        ? 'skeleton'
-        : isWraith
-          ? 'wraith'
-          : isBrute
-            ? 'brute'
-            : null;
-    const visual = createCharacterVisual(assetId, { quality: this.quality });
+    const presentation = hero ? null : enemyPresentation(data);
+    const visual = hero
+      ? createCharacterVisual(id, { quality: this.quality })
+      : createEnemyVisual(data.type, { quality: this.quality }) || createEnemyFallback(data.type);
     if (visual) {
-      this.prepareCharacterVisual(visual, hero ? null : mainColor);
+      this.prepareCharacterVisual(visual);
       model.add(visual.root);
-      height = 1.65;
+      height = visual.stats.height || 1.65;
     } else {
       if (!hero && isBeast) {
         height = 0.72;
@@ -1280,6 +1271,7 @@ export class DungeonRenderer {
       root,
       model,
       visual,
+      presentation,
       weapon,
       leftLeg,
       rightLeg,
@@ -1657,7 +1649,9 @@ export class DungeonRenderer {
             {
               ...data,
               moving,
-              castTime: data.isHero ? Math.max(0, (this.heroCastUntil || 0) - world.time) : 0,
+              castTime: data.isHero
+                ? Math.max(0, (this.heroCastUntil || 0) - world.time)
+                : data.castTime || 0,
               hitTime: Math.max(
                 0,
                 Math.max(actor.hitUntil || 0, data.isHero ? this.heroHitUntil : 0) - world.time,
@@ -1749,21 +1743,11 @@ export class DungeonRenderer {
       active.add(id);
       let model = this.projectileModels.get(id);
       if (!model) {
-        const root = new THREE.Group();
-        const c = data.color || '#b4dcff';
-        this.mesh(GEO.gem, this.material(c, { emissive: 2 }), [0, 0, 0], [0.07, 0.08, 0.17], root);
-        this.mesh(
-          GEO.cone,
-          this.material(c, { basic: true, transparent: true, opacity: 0.22 }),
-          [0, 0, -0.24],
-          [0.09, 0.48, 0.09],
-          root,
-        ).rotation.x = Math.PI / 2;
-        this.dynamic.add(root);
-        model = { root };
+        model = createProjectilePresentation(this, data);
+        this.dynamic.add(model.root);
         this.projectileModels.set(id, model);
       }
-      model.root.position.set(data.x, 0.52, data.y);
+      model.root.position.set(data.x, projectileHeight(data), data.y);
       model.root.rotation.y = Math.atan2(data.vx || 0, data.vy || 0);
       model.root.scale.setScalar(Math.max(0.7, Math.min(2, (data.radius || 0.15) * 6)));
     });

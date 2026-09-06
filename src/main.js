@@ -115,8 +115,17 @@ function event(e) {
       announce();
       break;
     case 'attack':
-      e.ranged ? audio.magicSound() : audio.swordSound();
+      game.class.weapon === 'bow'
+        ? audio.bowSound()
+        : e.ranged
+          ? audio.magicSound()
+          : audio.swordSound();
       break;
+    case 'enemyShot': {
+      const pan = Math.max(-1, Math.min(1, (e.x - game.hero.x - (e.y - game.hero.y)) / 8));
+      e.kind === 'arrow' ? audio.bowSound(pan) : audio.magicSound(pan);
+      break;
+    }
     case 'skill':
       renderer?.playHeroAnimation('cast');
       audio.skillSound(e.kind);
@@ -328,6 +337,7 @@ function updateLanguage() {
 function renderHUD() {
   if (!game) return;
   const h = game.hero;
+  const guardianAlive = game.enemies.some((enemy) => enemy.boss && !enemy.dead);
   $('chapter-label').textContent =
     `${l(game.chapter.name)} · ${text('Depth', 'Poziom')} ${game.floor}`;
   $('quest-title').textContent = l(
@@ -341,8 +351,8 @@ function renderHUD() {
         '◆ Zejście otwarte. Znajdź złoty portal.',
       )
     : text(
-        `${Math.min(game.floorKills, game.requiredKills)} / ${game.requiredKills} echoes released${game.floor % 2 === 0 ? ' · guardian remains' : ''}`,
-        `${Math.min(game.floorKills, game.requiredKills)} / ${game.requiredKills} uwolnionych ech${game.floor % 2 === 0 ? ' · odnajdź strażnika' : ''}`,
+        `${Math.min(game.floorKills, game.requiredKills)} / ${game.requiredKills} echoes released${guardianAlive ? ' · guardian remains' : ''}`,
+        `${Math.min(game.floorKills, game.requiredKills)} / ${game.requiredKills} uwolnionych ech${guardianAlive ? ' · odnajdź strażnika' : ''}`,
       );
   $('hero-level').textContent = text(`LV ${h.level}`, `POZ ${h.level}`);
   for (const key of ['health', 'mana']) {
@@ -1012,7 +1022,7 @@ async function boot() {
       },
     });
     renderer.setQuality(prefs.quality);
-    await renderer.loadAssets();
+    await renderer.loadAssets(game);
     game = Game.restore(sdk.loadData(SAVE), event) || new Game({ onEvent: event });
     selectedClass = game.class.id;
     applyPrefs();

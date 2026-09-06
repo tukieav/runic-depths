@@ -23,6 +23,9 @@ jobs:
           - suite: cinematic
             command: node tests/cinematic-browser.mjs
             evidence: qa/cinematic
+          - suite: enemies
+            command: node tests/enemy-browser.mjs
+            evidence: qa/enemies
           - suite: gameplay
             command: node tests/arpg-browser.mjs
             evidence: qa/arpg
