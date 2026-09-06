@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { createServer } from 'node:http';
-import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
+import { readFile, readdir, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { ENEMIES, CHAPTERS } from '../src/content.js';
@@ -30,6 +30,17 @@ const report = {
   frames: [],
 };
 await mkdir(output, { recursive: true });
+// Failed or filtered runs must not publish old screenshots as current evidence.
+// Only this script's outputs are retired; retain independent garden/glTF audits.
+const ownedOutputs = [
+  ...Object.keys(ENEMIES).map((id) => `${id}.png`),
+  ...CHAPTERS.map((_, index) => `chapter-${index + 1}-gameplay.png`),
+  'all-30-contact-sheet.png',
+  'performance-equipment.png',
+  'missing-assets-fallback.png',
+  'results.json',
+];
+await Promise.all(ownedOutputs.map((name) => rm(path.join(output, name), { force: true })));
 async function hashTree(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const file = path.join(directory, entry.name);
