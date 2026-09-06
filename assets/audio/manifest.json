@@ -1,0 +1,244 @@
+{
+  "title": "The Bell Beneath \u2014 chamber score and sound design",
+  "author": "Original Runic Depths procedural composition",
+  "sampleRate": 32000,
+  "tempo": 70,
+  "loopSeconds": 27.428571428571427,
+  "generator": "scripts/build-audio-assets.py",
+  "assets": [
+    {
+      "id": "chapter-1",
+      "file": "chapter-1.ogg",
+      "seconds": 27.42856,
+      "bytes": 193522,
+      "sha256": "ab6a06e5c202c39e238551188ecd7c075aa620d562866cc0c28bd24b37ba33e9",
+      "loop": true,
+      "description": "Stone remembers"
+    },
+    {
+      "id": "chapter-2",
+      "file": "chapter-2.ogg",
+      "seconds": 27.42856,
+      "bytes": 192961,
+      "sha256": "40abd67c73b30e2dc936ca714559e534ea93abd544005ef2c477e9f428096c63",
+      "loop": true,
+      "description": "Roots of the forgotten"
+    },
+    {
+      "id": "chapter-3",
+      "file": "chapter-3.ogg",
+      "seconds": 27.42856,
+      "bytes": 200190,
+      "sha256": "001933891dfb5df9a4065a831b648a9a4a47c2436fe106aeef6462aa42c6d821",
+      "loop": true,
+      "description": "The glass archive"
+    },
+    {
+      "id": "chapter-4",
+      "file": "chapter-4.ogg",
+      "seconds": 27.42856,
+      "bytes": 199402,
+      "sha256": "db2058a6c8023f2912f14c328e322392b25b6c106fd89e655be5929ef41a6f70",
+      "loop": true,
+      "description": "Embers of judgement"
+    },
+    {
+      "id": "chapter-5",
+      "file": "chapter-5.ogg",
+      "seconds": 27.42856,
+      "bytes": 200482,
+      "sha256": "488864290b47c80676a64f1c4b57d8778178259b28d4a4c07836f7ee53a634a3",
+      "loop": true,
+      "description": "The drowned covenant"
+    },
+    {
+      "id": "chapter-6",
+      "file": "chapter-6.ogg",
+      "seconds": 27.42856,
+      "bytes": 193624,
+      "sha256": "8a12d67ea54207a80b5722111be77708a874d361ceccb03a553179a9f9c684f4",
+      "loop": true,
+      "description": "Light beneath the heart"
+    },
+    {
+      "id": "combat-stem",
+      "file": "combat-stem.ogg",
+      "seconds": 27.42856,
+      "bytes": 223266,
+      "sha256": "f0985c03ed4e8a6d8d39f3341d197351a34b30945b4630bfbeabc537b20be272",
+      "loop": true,
+      "description": "Synchronized low war drums and frame drums; eight bars at 70 BPM"
+    },
+    {
+      "id": "blade-1",
+      "file": "blade-1.ogg",
+      "seconds": 0.42,
+      "bytes": 8296,
+      "sha256": "bc6e53446a24603c76ef9c2b8e19da1c0e662f08e4c2415286824b99b868b979",
+      "loop": false,
+      "description": "Layered air displacement, steel modal ring and contact"
+    },
+    {
+      "id": "step-1",
+      "file": "step-1.ogg",
+      "seconds": 0.23,
+      "bytes": 6253,
+      "sha256": "a5cbd773a24444643083493c19a1d8b08fa8a4b57166ce2ffc6ce955539e2a2e",
+      "loop": false,
+      "description": "Leather sole, heel body and stone grit"
+    },
+    {
+      "id": "blade-2",
+      "file": "blade-2.ogg",
+      "seconds": 0.42,
+      "bytes": 8064,
+      "sha256": "7f391cc462b687436369f71a6e2427654374c55285934911ef586f6077efc015",
+      "loop": false,
+      "description": "Layered air displacement, steel modal ring and contact"
+    },
+    {
+      "id": "step-2",
+      "file": "step-2.ogg",
+      "seconds": 0.23,
+      "bytes": 6227,
+      "sha256": "9d3e77569a00bdb6b3c49f6dabb99c8e037da8ea6945512bcfffc69d4b2b7809",
+      "loop": false,
+      "description": "Leather sole, heel body and stone grit"
+    },
+    {
+      "id": "blade-3",
+      "file": "blade-3.ogg",
+      "seconds": 0.42,
+      "bytes": 8378,
+      "sha256": "cd35f59d1c439a2f3d9fad65e1abab5b9e2d31dfbd7fd607309dc3c7c7c38124",
+      "loop": false,
+      "description": "Layered air displacement, steel modal ring and contact"
+    },
+    {
+      "id": "step-3",
+      "file": "step-3.ogg",
+      "seconds": 0.23,
+      "bytes": 6200,
+      "sha256": "6d9111152dee16591255c665497e2c3c898fe9bfb004920b6639d3bf4d58d939",
+      "loop": false,
+      "description": "Leather sole, heel body and stone grit"
+    },
+    {
+      "id": "impact",
+      "file": "impact.ogg",
+      "seconds": 0.55,
+      "bytes": 8923,
+      "sha256": "0ecec56d6f7e17c6fa8213a9cbe46d669f4704fae1ff30b7aec72ba63b56996f",
+      "loop": false,
+      "description": "Weighted low body impact and dry transient"
+    },
+    {
+      "id": "bow",
+      "file": "bow.ogg",
+      "seconds": 0.5,
+      "bytes": 8932,
+      "sha256": "44fbc9318bebbe26b79c86ba1e763abda08002d92fe93967b6e08bd23dcfb525",
+      "loop": false,
+      "description": "Taut string snap and wooden limb resonance"
+    },
+    {
+      "id": "magic-1",
+      "file": "magic-1.ogg",
+      "seconds": 1.8,
+      "bytes": 20009,
+      "sha256": "445a120940c6d27242cb36d4219cf1b2cc659290b8d9751a82111e20dff2f067",
+      "loop": false,
+      "description": "Crystalline spell resonance, air swell and subharmonic release"
+    },
+    {
+      "id": "magic-2",
+      "file": "magic-2.ogg",
+      "seconds": 1.8,
+      "bytes": 20080,
+      "sha256": "a8d5a91ea6d9bad545547ae5894ffb048db8b4319f5375345e42837932b3fe03",
+      "loop": false,
+      "description": "Crystalline spell resonance, air swell and subharmonic release"
+    },
+    {
+      "id": "magic-3",
+      "file": "magic-3.ogg",
+      "seconds": 1.8,
+      "bytes": 19995,
+      "sha256": "e654c3a7fd1c40380fbfbb0c28cba2beb8982a3007fee53338d2f569ebc83f3f",
+      "loop": false,
+      "description": "Crystalline spell resonance, air swell and subharmonic release"
+    },
+    {
+      "id": "creature-1",
+      "file": "creature-1.ogg",
+      "seconds": 0.85,
+      "bytes": 11146,
+      "sha256": "1e14632d61f85a196da222b2bcc24ce3f732f7ce44a09291bf059038e5b98841",
+      "loop": false,
+      "description": "Nonverbal fantastical creature breath and formant growl; no human recording"
+    },
+    {
+      "id": "creature-2",
+      "file": "creature-2.ogg",
+      "seconds": 1.05,
+      "bytes": 13016,
+      "sha256": "fa4ee851ce1aabd2621a5172db5e1419dbc751cc3641577b9e1c534ab60d5b17",
+      "loop": false,
+      "description": "Nonverbal fantastical creature breath and formant growl; no human recording"
+    },
+    {
+      "id": "loot",
+      "file": "loot.ogg",
+      "seconds": 0.65,
+      "bytes": 9250,
+      "sha256": "170de3f8bdf000e9bf76baf6ad46df3be8d3b3173fa233f2c46d373eeace6aac",
+      "loop": false,
+      "description": "Original resonant metal/glass UI or reward motif"
+    },
+    {
+      "id": "rare",
+      "file": "rare.ogg",
+      "seconds": 2.0,
+      "bytes": 18520,
+      "sha256": "5340e035ab972c72bdf0ebb283140d60a61e2b683890496b98ea37a4cb4cb90d",
+      "loop": false,
+      "description": "Original resonant metal/glass UI or reward motif"
+    },
+    {
+      "id": "level",
+      "file": "level.ogg",
+      "seconds": 2.4,
+      "bytes": 22621,
+      "sha256": "2c0d58e07308c10fdd40ce26b414a8bea60997440fbc06f03461d2293f0c6ee3",
+      "loop": false,
+      "description": "Original resonant metal/glass UI or reward motif"
+    },
+    {
+      "id": "potion",
+      "file": "potion.ogg",
+      "seconds": 1.0,
+      "bytes": 12267,
+      "sha256": "216d6aab6b1f9f666087d4895a10e34704dad6f6a4aadb25f9d92262251e0415",
+      "loop": false,
+      "description": "Original resonant metal/glass UI or reward motif"
+    },
+    {
+      "id": "ui",
+      "file": "ui.ogg",
+      "seconds": 0.16,
+      "bytes": 5879,
+      "sha256": "cd51aa71b0d642ff32e969052863789cfb540c64fb816f64cef7431d2e1ddd78",
+      "loop": false,
+      "description": "Original resonant metal/glass UI or reward motif"
+    },
+    {
+      "id": "boss",
+      "file": "boss.ogg",
+      "seconds": 3.0,
+      "bytes": 28453,
+      "sha256": "451b396018c05606601796abe1973572f1bac05e2eb3615d0f2c365c567224ca",
+      "loop": false,
+      "description": "Low brass threat swell and chamber impact"
+    }
+  ]
+}

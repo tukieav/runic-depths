@@ -1,4 +1,6 @@
-// Original procedural score, "The Bell Beneath". No downloaded music or samples.
+// Original offline-rendered chamber score and designed Foley, "The Bell Beneath".
+// Compressed local samples load only after a user gesture. Procedural fallback
+// keeps older browsers and interrupted downloads playable without errors.
 // Scheduling follows the game frame: no audio timers keep running in hidden tabs.
 let ctx = null;
 let master = null,
@@ -15,6 +17,35 @@ let chapter = 0,
   beat = 0,
   nextBeat = 0;
 const voices = new Set();
+const clips = new Map(),
+  pendingClips = new Map(),
+  failedClips = new Set();
+const tracks = new Map();
+const SAMPLE_NAMES = [
+  'blade-1',
+  'blade-2',
+  'blade-3',
+  'step-1',
+  'step-2',
+  'step-3',
+  'impact',
+  'bow',
+  'magic-1',
+  'magic-2',
+  'magic-3',
+  'creature-1',
+  'creature-2',
+  'loot',
+  'rare',
+  'level',
+  'potion',
+  'ui',
+  'boss',
+];
+let sampleBase = null,
+  transportStart = 0,
+  transportOffset = 0,
+  variation = 0;
 const clamp = (v, fallback = 0) =>
   Number.isFinite(Number(v)) ? Math.max(0, Math.min(1, Number(v))) : fallback;
 const midi = (n) => 440 * 2 ** ((n - 69) / 12);
@@ -71,6 +102,11 @@ export function getAudioStatus() {
     sfxVolume,
     chapter,
     voices: voices.size,
+    loadedClips: clips.size,
+    playingTracks: tracks.size,
+    loading: pendingClips.size,
+    sampleFailures: failedClips.size,
+    fallback: !clips.has(`chapter-${chapter + 1}`),
   };
 }
 function resumeContext() {
@@ -109,6 +145,7 @@ export function unlockAudio() {
       master.connect(limiter);
       limiter.connect(ctx.destination);
       nextBeat = ctx.currentTime + 0.08;
+      transportStart = ctx.currentTime;
       globalThis.document?.addEventListener('pointerup', resumeContext, { passive: true });
       globalThis.document?.addEventListener('touchend', resumeContext, { passive: true });
       refreshGains();
@@ -123,9 +160,91 @@ export function unlockAudio() {
       return false;
     }
   }
+  if (paused && ctx) transportStart = ctx.currentTime;
   paused = false;
   resumeContext();
+  loadAudioAssets();
   return true;
+}
+function loadClip(name) {
+  if (!sampleBase || clips.has(name) || pendingClips.has(name) || failedClips.has(name)) return;
+  const task = Promise.resolve()
+    .then(async () => {
+      const response = await fetch(new URL(`${name}.ogg`, sampleBase));
+      if (!response.ok) throw new Error('Audio asset unavailable');
+      const buffer = await ctx.decodeAudioData(await response.arrayBuffer());
+      clips.set(name, buffer);
+    })
+    .catch(() => failedClips.add(name))
+    .finally(() => pendingClips.delete(name));
+  pendingClips.set(name, task);
+}
+function loadAudioAssets() {
+  if (!ctx || typeof fetch !== 'function') return;
+  if (!sampleBase) {
+    try {
+      const base = new URL('assets/audio/', globalThis.document?.baseURI);
+      if (!['http:', 'https:'].includes(base.protocol)) return;
+      sampleBase = base;
+    } catch {
+      return;
+    }
+  }
+  for (const name of SAMPLE_NAMES) loadClip(name);
+  loadClip('combat-stem');
+  loadClip(`chapter-${chapter + 1}`);
+}
+// Samples are deliberately varied without allocating new AudioBuffers per hit.
+function sample(name, gain = 0.5, pan = 0, pitch = 1) {
+  if (!canPlay() || sfxVolume <= 0 || voices.size >= 56 || !clips.has(name)) return false;
+  const source = ctx.createBufferSource(),
+    envelope = ctx.createGain();
+  source.buffer = clips.get(name);
+  source.playbackRate.value = pitch;
+  envelope.gain.value = gain;
+  source.connect(envelope);
+  const panner = ctx.createStereoPanner?.();
+  if (panner) {
+    panner.pan.value = Math.max(-1, Math.min(1, Number(pan) || 0));
+    envelope.connect(panner);
+    panner.connect(effects);
+  } else envelope.connect(effects);
+  register(source, panner ? [envelope, panner] : [envelope]);
+  source.start(ctx.currentTime);
+  return true;
+}
+function varied(prefix, count, gain, pan = 0) {
+  variation++;
+  return sample(`${prefix}-${1 + (variation % count)}`, gain, pan, 0.96 + (variation % 7) * 0.012);
+}
+function stopTrack(key, fade = false) {
+  const track = tracks.get(key);
+  if (!track) return;
+  tracks.delete(key);
+  try {
+    if (fade) {
+      track.envelope.gain.setTargetAtTime(0, ctx.currentTime, 0.3);
+      track.source.stop(ctx.currentTime + 1.5);
+    } else track.source.stop();
+  } catch {
+    /* Ended or interrupted. */
+  }
+}
+function startTrack(key, name, gain) {
+  if (!clips.has(name) || tracks.get(key)?.name === name) return;
+  stopTrack(key, true);
+  const source = ctx.createBufferSource(),
+    envelope = ctx.createGain();
+  source.buffer = clips.get(name);
+  source.loop = true;
+  source.connect(envelope);
+  envelope.connect(music);
+  envelope.gain.setValueAtTime(0, ctx.currentTime);
+  envelope.gain.setTargetAtTime(gain, ctx.currentTime, 0.65);
+  register(source, [envelope]);
+  tracks.set(key, { source, envelope, name });
+  const offset = (transportOffset + ctx.currentTime - transportStart) % source.buffer.duration;
+  source.start(ctx.currentTime, Math.max(0, offset));
 }
 function clearVoices() {
   for (const node of voices) {
@@ -139,8 +258,10 @@ function clearVoices() {
   voices.clear();
 }
 export function pauseAudio() {
+  if (!paused && ctx) transportOffset += ctx.currentTime - transportStart;
   paused = true;
   clearVoices();
+  tracks.clear();
   if (ctx && ctx.state !== 'closed') {
     try {
       Promise.resolve(ctx.suspend()).catch(() => {});
@@ -150,6 +271,7 @@ export function pauseAudio() {
   }
 }
 export function resumeAudio() {
+  if (paused && ctx) transportStart = ctx.currentTime;
   paused = false;
   if (ctx) nextBeat = ctx.currentTime + 0.08;
   resumeContext();
@@ -229,11 +351,19 @@ export function setMood(chapterIndex, combatIntensity = 0) {
     chapter = next;
     beat = 0;
     if (ctx) nextBeat = ctx.currentTime + 0.1;
+    if (sampleBase) loadClip(`chapter-${chapter + 1}`);
   }
   intensity = clamp(combatIntensity);
 }
 export function updateAudio(_dt) {
   if (!canPlay() || musicVolume <= 0) return;
+  if (clips.has(`chapter-${chapter + 1}`)) {
+    startTrack('score', `chapter-${chapter + 1}`, 0.74);
+    startTrack('combat', 'combat-stem', intensity * 0.43);
+    const combat = tracks.get('combat');
+    if (combat) combat.envelope.gain.setTargetAtTime(intensity * 0.43, ctx.currentTime, 0.9);
+    return;
+  }
   const score = SCORES[chapter];
   const stepLength = 60 / (score.tempo + intensity * 22) / 2;
   if (nextBeat < ctx.currentTime - 0.15) nextBeat = ctx.currentTime + 0.025;
@@ -269,42 +399,56 @@ export function updateAudio(_dt) {
     nextBeat += stepLength;
   }
 }
-export function swordSound() {
+export function swordSound(pan = 0) {
+  if (varied('blade', 3, 0.52, pan)) return;
   noise(0.085, 0.18, 0, 2100);
   note(175, 0.11, 'triangle', 0.14, 0.015, effects, 0.003, 65);
 }
-export function magicSound() {
+export function magicSound(pan = 0) {
+  if (varied('magic', 3, 0.4, pan)) return;
   bell(659, 0.5, 0.14);
   bell(988, 0.55, 0.08, 0.06);
 }
 export function levelUpSound() {
+  if (sample('level', 0.48)) return;
   [62, 65, 69, 74, 77].forEach((n, i) => bell(midi(n), 0.65, 0.14, i * 0.09));
 }
-export function stepSound() {
+export function stepSound(pan = 0) {
+  if (varied('step', 3, 0.14, pan)) return;
   noise(0.045, 0.035, 0, 360);
   note(82, 0.045, 'sine', 0.03);
 }
 export function chestSound() {
+  if (sample('rare', 0.4)) return;
   [67, 74, 79].forEach((n, i) => bell(midi(n), 0.5, 0.12, i * 0.075));
 }
 export function hurtSound() {
+  if (sample('impact', 0.5, 0, 0.88 + Math.random() * 0.15)) return;
   note(125, 0.16, 'triangle', 0.17, 0, effects, 0.006, 60);
   noise(0.075, 0.07, 0, 480);
 }
 export function potionSound() {
+  if (sample('potion', 0.42)) return;
   [64, 71, 76].forEach((n, i) => note(midi(n), 0.16, 'sine', 0.1, i * 0.07));
 }
 export function stairsSound() {
+  if (sample('rare', 0.3, 0, 0.65)) return;
   [69, 65, 62, 57].forEach((n, i) => bell(midi(n), 0.5, 0.08, i * 0.1));
 }
 export function gameOverSound() {
+  if (sample('boss', 0.48, 0, 0.72)) return;
   [62, 57, 53, 50].forEach((n, i) => note(midi(n), 0.8, 'triangle', 0.1, i * 0.17, effects, 0.06));
 }
-export function monsterDieSound() {
+export function monsterDieSound(pan = 0) {
+  if (varied('creature', 2, 0.24, pan)) {
+    sample('impact', 0.18, pan, 0.85);
+    return;
+  }
   noise(0.11, 0.1, 0, 750);
   note(210, 0.17, 'triangle', 0.075, 0, effects, 0.005, 75);
 }
 export function uiSound() {
+  if (sample('ui', 0.14)) return;
   note(740, 0.075, 'sine', 0.055);
 }
 export function lootSound(rarity = 'common') {
@@ -312,24 +456,37 @@ export function lootSound(rarity = 'common') {
     typeof rarity === 'number'
       ? rarity >= 2
       : ['rare', 'epic', 'legendary', 'mythic'].includes(rarity);
+  if (sample(rare ? 'rare' : 'loot', rare ? 0.38 : 0.26)) return;
   bell(rare ? 880 : 659, rare ? 0.8 : 0.3, 0.12);
   if (rare) bell(1320, 0.8, 0.08, 0.09);
 }
 export function bossSound() {
+  if (sample('boss', 0.56)) return;
   [38, 45, 50].forEach((n, i) => note(midi(n), 1.6, 'triangle', 0.14, i * 0.12, effects, 0.2));
 }
-export function skillSound(kind = 'arcane') {
-  if (['warrior', 'knight', 'melee', 'whirlwind', 'shield'].some((s) => String(kind).includes(s))) {
+export function skillSound(kind = 'arcane', pan = 0) {
+  if (
+    ['warden', 'reaver', 'warrior', 'knight', 'melee', 'whirlwind', 'shield', 'cleave'].some((s) =>
+      String(kind).includes(s),
+    )
+  ) {
+    if (varied('blade', 3, 0.6, pan)) {
+      sample('impact', 0.36, pan, 0.7);
+      return;
+    }
     swordSound();
     note(90, 0.3, 'triangle', 0.18, 0.04, effects, 0.005, 40);
   } else if (['ranger', 'rogue', 'arrow', 'bow', 'dash'].some((s) => String(kind).includes(s))) {
+    if (sample('bow', 0.5, pan, 0.94 + Math.random() * 0.12)) return;
     noise(0.12, 0.15, 0, 2800);
     note(460, 0.13, 'sine', 0.08, 0, effects, 0.004, 170);
   } else if (
     ['cleric', 'paladin', 'templar', 'heal', 'holy'].some((s) => String(kind).includes(s))
   ) {
+    if (sample('magic-3', 0.42, pan, 0.82)) return;
     [62, 69, 74].forEach((n, i) => bell(midi(n), 0.7, 0.1, i * 0.04));
   } else if (['shadow', 'necromancer', 'hex'].some((s) => String(kind).includes(s))) {
+    if (sample('magic-2', 0.4, pan, 0.68)) return;
     note(180, 0.5, 'triangle', 0.1, 0, effects, 0.05, 440);
     bell(622, 0.7, 0.08, 0.08);
   } else magicSound();

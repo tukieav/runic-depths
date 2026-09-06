@@ -183,7 +183,7 @@ try {
     assert.equal(count, 15);
   });
   await check(
-    'all shipping character GLBs contain UVs, weighted skeletons, textures and five animation clips',
+    'all shipping character GLBs contain UVs, weighted skeletons, textures and eight animation clips',
     async () => {
       const manifest = JSON.parse(
         await readFile(path.join(root, 'assets/models/manifest.json'), 'utf8'),
@@ -210,7 +210,7 @@ try {
           `${id}: UV and skin attributes`,
         );
         const clipNames = (gltf.animations || []).map((clip) => clip.name.toLowerCase());
-        for (const clip of ['idle', 'walk', 'attack', 'cast', 'death']) {
+        for (const clip of ['idle', 'walk', 'attack', 'attack_alt', 'cast', 'dodge', 'hit', 'death']) {
           assert.ok(clipNames.includes(clip), `${id}: ${clip} clip`);
           const animation = gltf.animations.find((entry) => entry.name.toLowerCase() === clip);
           assert.ok(

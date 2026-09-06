@@ -6,6 +6,38 @@ This report concerns the rebuilt real-time, WebGL action RPG. Earlier `ROUND*` a
 
 The 2026-09-06 update adds eight original Blender-authored skinned GLB characters, five animation clips per model, fifteen authored PBR surface maps, two GLB props, modelled gothic architecture, directional shadows and environment lighting. See [graphics pipeline](../docs/GRAPHICS_PIPELINE.md). `npm run test:graphics` verifies binary assets and their actual usage in the shipping scene, real animation changes under input, decoded maps, placement across chapters, and aborted or stalled asset fallbacks. The current graphics report is `qa/graphics/results.json`; its SHA-256 manifest identifies the exact build. Physical-device performance and external platform acceptance remain separate.
 
+## Cinematic update 2.2
+
+The follow-up adds 32-joint character rigs and eight clips per model, 512px
+character PBR atlases, class-specific layered equipment, hit and dodge responses,
+tapered blade ribbons, ballistic impact sparks, varied architectural niches,
+HDR bloom, depth-based contact shading, grading, exploration darkness and camera
+zoom. Original sampled audio contains six chapter scores, a synchronized drum
+layer and nineteen effects. Procedural audio and direct rendering remain fallback
+paths. The final-frame browser suite is `tests/cinematic-browser.mjs`; results in
+`qa/cinematic/results.json` bind screenshots, rendered pixels, bone changes,
+quality switching and missing-HDR-extension fallback to the exact built files.
+
+These improvements retain a visibly stylized art style. They do **not** establish
+Diablo III visual parity, AAA animation quality, an official age rating or
+CrazyGames acceptance. See [art direction review](../docs/ART_DIRECTION.md).
+
+## Hardware capture evidence
+
+The final 2.2 marketing encounters were captured in headless Chrome using actual
+ANGLE/OpenGL on NVIDIA GeForce RTX 4090, High quality, internal pixel ratio 1.
+The landscape and portrait takes measured 59.25 and 59.86 animation frames per
+second; approximately 17.5 seconds of simulation elapsed in 17.5 seconds of wall
+time. These are two scripted combat encounters on this powerful desktop GPU,
+not mobile/Chromebook acceptance or whole-campaign performance certification.
+`marketing/v2/manifest.json` records the actual WebGL renderer, timing and build
+hashes; the encoded videos are 30 fps. Software-renderer capture was rejected
+because it advanced the simulation much more slowly than real time.
+
+Performance mode now selects 3,500-triangle LODs and textured vertex-lit materials.
+It retains full-detail models as the fallback when optional LOD downloads fail.
+High quality retains PBR shading, full models and the postprocessing chain.
+
 ## Repeatable local checks
 
 ```sh
@@ -13,12 +45,14 @@ npm run build
 node --test tests/engine.test.mjs tests/content.test.mjs tests/sdk.test.mjs tests/audio.test.mjs
 node tests/arpg-browser.mjs
 node tests/audio-browser.mjs
+node tests/graphics-assets.mjs
+node tests/cinematic-browser.mjs
 BALANCE_SOAK=1 node --test --test-name-pattern='^combat soak:' tests/engine.test.mjs
 ```
 
 The browser test hosts the built `dist` directory on a temporary loopback port and closes its own server and Chrome instance. It uses `/usr/bin/google-chrome`, overridable through `CHROME_BIN`. WebGL rendering uses SwiftShader in headless Chrome. That proves browser functionality, not a physical mobile or Chromebook frame-rate target.
 
-Observed locally on 2026-09-05: **54/54 engine/content/SDK/audio tests**, **13/13 browser integration groups**, the separate real Chrome audio regression, and **5/5 autonomous combat campaigns** passed. Browser evidence uses Chrome 152.0.7977.75 and recorded zero runtime/console errors. Each later shipping rebuild must rerun the browser suite; `browser-results.json` binds the result to SHA-256 hashes of its actual bundle, stylesheet and HTML.
+Observed locally on 2026-09-06: **54/54 engine/content/SDK/audio tests**, **13/13 browser integration groups**, **9/9 graphics groups**, **9/9 cinematic groups**, **8/8 platform groups**, the separate real Chrome audio regression, and **5/5 autonomous combat campaigns** passed. Browser evidence uses Chrome 152.0.7977.75 and recorded zero runtime/console errors. Each later shipping rebuild must rerun the browser suite; `browser-results.json` binds the result to SHA-256 hashes of its actual bundle, stylesheet and HTML.
 
 ## Engine checks
 

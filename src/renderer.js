@@ -1,4 +1,7 @@
+import { addFloorRelief } from './floor-reliefs.js';
+import { createCombatPresentation } from './combat-presentation.js';
 import * as THREE from 'three';
+import { CinematicPipeline } from './cinematic-pipeline.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -6,6 +9,7 @@ import { addGothicArchitecture } from './gothic-architecture.js';
 import { createSurfaceLibrary } from './surface-assets.js';
 import {
   loadCharacterAssets,
+  loadCharacterLODs,
   createCharacterVisual,
   getCharacterAssetStatus,
 } from './character-assets.js';
@@ -62,12 +66,15 @@ function transformGeometry(geometry, position, scale, rotation = [0, 0, 0]) {
 
 /** A small material/geometry batch, used for architecture and character bodies. */
 class Batch {
-  constructor(renderer) {
+  constructor(renderer, spatial = false) {
     this.renderer = renderer;
+    this.spatial = spatial;
     this.groups = new Map();
   }
   add(geometry, material, position, scale, rotation) {
-    const key = material.uuid;
+    const key =
+      material.uuid +
+      (this.spatial ? `:${Math.floor(position[0] / 12)}:${Math.floor(position[2] / 12)}` : '');
     if (!this.groups.has(key)) this.groups.set(key, { material, geometries: [] });
     this.groups.get(key).geometries.push(transformGeometry(geometry, position, scale, rotation));
   }
@@ -78,7 +85,7 @@ class Batch {
       geometries.forEach((g) => g.dispose());
       if (!geometry) continue;
       geometry.computeBoundingSphere();
-      const mesh = new THREE.Mesh(geometry, material);
+      const mesh = new THREE.Mesh(geometry, this.renderer.presentMaterial(material));
       mesh.userData.ownedGeometry = true;
       mesh.castShadow = material.userData.shadowCaster !== false && !material.transparent;
       mesh.receiveShadow = !material.isMeshBasicMaterial;
@@ -96,6 +103,7 @@ export class DungeonRenderer {
       alpha: false,
       powerPreference: 'high-performance',
     });
+    this.renderer.info.autoReset = false;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.2;
@@ -126,6 +134,12 @@ export class DungeonRenderer {
     this.effectModels = new Map();
     this.torches = [];
     this.quality = 'high';
+    this.zoom = 1;
+    this.pipeline = new CinematicPipeline(this.renderer, this.scene, this.camera);
+    this.revealUniform = { value: null };
+    this.revealSize = { value: new THREE.Vector2(1, 1) };
+    this.impactShake = 0;
+    this.heroHitUntil = 0;
     this.initialized = false;
     this.scene.add(new THREE.HemisphereLight('#a6bfd8', '#30232b', 1.35));
     const sun = new THREE.DirectionalLight('#ffe3ba', 3.2);
@@ -158,10 +172,23 @@ export class DungeonRenderer {
     });
     this._contextLost = (event) => {
       event.preventDefault();
+      // Retire GPU handles while their context is lost. Deleting these after
+      // restoration would send stale handles to the replacement context.
+      this.pipeline?.dispose();
+      this.pipeline = null;
+      this.lightingProbe?.dispose();
+      this.lightingProbe = null;
+      this.scene.environment = null;
+      this.retireSceneGpuResources();
       onContextLost?.();
     };
     this._contextRestored = () => {
       this.createLightingProbe();
+      this.pipeline = new CinematicPipeline(this.renderer, this.scene, this.camera);
+      this.pipeline.enabled = this.quality === 'high';
+      this.resize();
+      for (const actor of this.actors.values()) this.prepareCharacterVisual(actor.visual);
+      for (const object of this.objectModels.values()) this.prepareCharacterVisual(object.visual);
       onContextRestored?.();
     };
     canvas.addEventListener('webglcontextlost', this._contextLost);
@@ -171,8 +198,37 @@ export class DungeonRenderer {
     this.resize();
   }
 
+  retireSceneGpuResources() {
+    // Keep CPU geometry and decoded images, but remove old-context disposal
+    // listeners before Three.js creates its replacement WebGL resource caches.
+    const geometries = new Set(Object.values(GEO));
+    const materials = new Set(this.materials.values());
+    const textures = new Set();
+    this.scene.traverse((node) => {
+      if (node.geometry) geometries.add(node.geometry);
+      if (node.material) for (const material of [].concat(node.material)) materials.add(material);
+      if (node.skeleton?.boneTexture) textures.add(node.skeleton.boneTexture);
+    });
+    for (const material of materials) {
+      for (const value of Object.values(material)) if (value?.isTexture) textures.add(value);
+      for (const uniform of Object.values(material.uniforms || {}))
+        if (uniform.value?.isTexture) textures.add(uniform.value);
+    }
+    textures.add(this.revealUniform.value);
+    for (const geometry of geometries) geometry.dispose();
+    for (const material of materials) material.dispose();
+    for (const texture of textures) texture?.dispose();
+    this.sun.shadow.map?.dispose();
+    this.sun.shadow.map = null;
+  }
+
   createLightingProbe() {
     this.lightingProbe?.dispose();
+    if (!this.renderer.extensions.has('EXT_color_buffer_float')) {
+      this.lightingProbe = null;
+      this.scene.environment = null;
+      return;
+    }
     const environment = new RoomEnvironment();
     const pmrem = new THREE.PMREMGenerator(this.renderer);
     this.lightingProbe = pmrem.fromScene(environment, 0.04, 0.1, 100, { size: 128 });
@@ -215,6 +271,31 @@ export class DungeonRenderer {
     return this.materials.get(key);
   }
 
+  presentMaterial(material) {
+    if (this.quality !== 'low' || !material.isMeshStandardMaterial) return material;
+    const key = `performance:${material.uuid}`;
+    if (!this.materials.has(key)) {
+      const simple = new THREE.MeshLambertMaterial({
+        color: material.color,
+        map: material.map,
+        emissive: material.emissive,
+        emissiveMap: material.emissiveMap,
+        emissiveIntensity: material.emissiveIntensity,
+        transparent: material.transparent,
+        opacity: material.opacity,
+        side: material.side,
+        depthWrite: material.depthWrite,
+        vertexColors: material.vertexColors,
+        flatShading: material.flatShading,
+      });
+      simple.name = `${material.name || 'surface'}-performance`;
+      simple.userData.surfaceKind = material.userData.surfaceKind;
+      simple.userData.shadowCaster = material.userData.shadowCaster;
+      this.materials.set(key, simple);
+    }
+    return this.materials.get(key);
+  }
+
   stoneMaterial(value, kind = 'masonry') {
     const c = color(value);
     const key = `surface:${kind}:${c.getHexString()}`;
@@ -229,7 +310,12 @@ export class DungeonRenderer {
   async loadAssets() {
     let timer;
     await Promise.race([
-      Promise.all([this.surfaces.ready, loadCharacterAssets(), loadPropAssets(this.surfaces)]),
+      Promise.all([
+        this.surfaces.ready,
+        loadCharacterAssets(),
+        loadPropAssets(this.surfaces),
+        this.quality === 'low' ? loadCharacterLODs() : Promise.resolve(),
+      ]),
       new Promise((resolve) => {
         timer = setTimeout(resolve, 6000);
       }),
@@ -242,7 +328,7 @@ export class DungeonRenderer {
     visual.root.traverse((node) => {
       if (!node.isMesh) return;
       if (tint !== null) {
-        const key = `character-tint:${visual.stats.id}:${color(tint).getHexString()}`;
+        const key = `character-tint:${visual.stats.detail}:${visual.stats.id}:${color(tint).getHexString()}`;
         if (!this.materials.has(key)) {
           const material = node.material.clone();
           material.color.lerp(color(tint), 0.22);
@@ -250,8 +336,11 @@ export class DungeonRenderer {
         }
         node.material = this.materials.get(key);
       }
+      node.material = Array.isArray(node.material)
+        ? node.material.map((mat) => this.presentMaterial(mat))
+        : this.presentMaterial(node.material);
       for (const material of [].concat(node.material)) {
-        material.envMap = this.lightingProbe.texture;
+        material.envMap = this.quality === 'high' ? this.lightingProbe?.texture || null : null;
         material.envMapIntensity = 0.58;
         material.needsUpdate = true;
       }
@@ -260,6 +349,10 @@ export class DungeonRenderer {
 
   playHeroAnimation(name) {
     if (name === 'cast') this.heroCastUntil = (this.world?.time || 0) + 0.6;
+    if (name === 'hit') {
+      this.heroHitUntil = (this.world?.time || 0) + 0.36;
+      this.impactShake = 0.065;
+    }
   }
 
   getGraphicsStatus() {
@@ -274,7 +367,7 @@ export class DungeonRenderer {
   }
 
   mesh(geometry, material, position = [0, 0, 0], scale = [1, 1, 1], parent = null) {
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new THREE.Mesh(geometry, this.presentMaterial(material));
     mesh.position.set(...position);
     mesh.scale.set(...scale);
     mesh.castShadow = !material.transparent && !material.isMeshBasicMaterial;
@@ -291,8 +384,9 @@ export class DungeonRenderer {
       Math.min(window.devicePixelRatio || 1, this.quality === 'low' ? 1 : 1.5),
     );
     this.renderer.setSize(width, height, false);
+    this.pipeline?.resize(width, height, this.renderer.getPixelRatio());
     const aspect = width / height;
-    const vertical = aspect < 1 ? 18 : 15;
+    const vertical = (aspect < 1 ? 14.5 : height < 500 ? 11.7 : 11.5) / this.zoom;
     this.camera.left = (-vertical * aspect) / 2;
     this.camera.right = (vertical * aspect) / 2;
     this.camera.top = vertical / 2;
@@ -300,14 +394,39 @@ export class DungeonRenderer {
     this.camera.updateProjectionMatrix();
   }
 
+  setZoom(zoom) {
+    this.zoom = Math.max(0.8, Math.min(1.35, zoom));
+    this.resize();
+  }
+
+  postprocessingStatus() {
+    return (
+      this.pipeline?.status() || {
+        enabled: false,
+        quality: this.quality,
+        passes: [],
+        fallbackReason: 'WebGL context lost',
+      }
+    );
+  }
+
   setQuality(quality) {
+    const previous = this.quality;
     this.quality = quality === 'low' ? 'low' : 'high';
     this.renderer.shadowMap.enabled = this.quality === 'high';
+    if (this.pipeline) this.pipeline.enabled = this.quality === 'high';
     this.sun.castShadow = this.quality === 'high';
     this.torchLights.forEach((light) => {
       light.visible = this.quality === 'high';
     });
     this.resize();
+    if (previous !== this.quality && this.initialized) {
+      if (this.quality === 'low')
+        loadCharacterLODs().then(() => {
+          if (!this.disposed && this.quality === 'low' && this.world) this.build(this.world);
+        });
+      else if (this.world) this.build(this.world);
+    }
   }
 
   clearGroup(group) {
@@ -321,6 +440,11 @@ export class DungeonRenderer {
   build(world) {
     this.world = world;
     this.heroCastUntil = 0;
+    this.heroHitUntil = 0;
+    this.impactShake = 0;
+    this.nearestTorches = null;
+    this.nextRevealUpdate = 0;
+    this.nextTorchUpdate = 0;
     for (const actor of this.actors.values()) actor.visual?.dispose();
     for (const object of this.objectModels.values()) object.visual?.dispose();
     this.clearGroup(this.static);
@@ -345,7 +469,7 @@ export class DungeonRenderer {
     const height = map.length;
     const width = map[0]?.length || 0;
     const isFloor = (x, y) => y >= 0 && y < height && x >= 0 && x < width && map[y][x] === 0;
-    const batch = new Batch(this);
+    const batch = new Batch(this, true);
     const floors = Array.from({ length: 5 }, (_, i) =>
       this.stoneMaterial(floorColor.clone().multiplyScalar(0.9 + i * 0.07), 'flagstone'),
     );
@@ -606,20 +730,14 @@ export class DungeonRenderer {
           }
         }
       } else if (chapterId === 'glass_archive') {
-        const mosaic = this.material('#565077');
-        for (let j = -2; j <= 2; j++)
-          for (let k = -2; k <= 2; k++) {
-            if ((j + k) % 2 === 0)
-              batch.add(
-                GEO.box,
-                mosaic,
-                [cx + j * 0.8, 0.008, cy + k * 0.8],
-                [0.41, 0.012, 0.41],
-                [0, Math.PI / 4, 0],
-              );
-          }
-        batch.add(GEO.box, gold, [cx, 0.017, cy], [0.027, 0.01, Math.min(5, room.h - 2)]);
-        batch.add(GEO.box, gold, [cx, 0.017, cy], [Math.min(5, room.w - 2), 0.01, 0.027]);
+        addFloorRelief({
+          batch,
+          surface: this,
+          x: cx,
+          z: cy,
+          size: Math.min(room.w, room.h) * 0.23,
+          seed: ri,
+        });
       } else if (chapterId === 'iron_court') {
         for (const sx of [-1, 1]) {
           batch.add(GEO.box, dark, [cx + sx * insetX, 0.003, cy], [0.36, 0.02, room.h - 2]);
@@ -650,17 +768,17 @@ export class DungeonRenderer {
           );
         }
       } else if (chapterId === 'starless_heart') {
-        const starStone = this.material('#554667');
-        for (let j = 0; j < 8; j++) {
-          const a = (j * Math.PI) / 4;
-          const sx = cx + Math.cos(a) * insetX,
-            sy = cy + Math.sin(a) * insetY;
-          batch.add(GEO.box, starStone, [sx, 0.012, sy], [0.45, 0.014, 0.45], [0, Math.PI / 4, 0]);
-          batch.add(GEO.box, rune, [sx, 0.025, sy], [0.25, 0.008, 0.017]);
-          batch.add(GEO.box, rune, [sx, 0.025, sy], [0.017, 0.008, 0.25]);
-        }
+        addFloorRelief({
+          batch,
+          surface: this,
+          x: cx,
+          z: cy,
+          size: Math.min(room.w, room.h) * 0.25,
+          voidTheme: true,
+          seed: ri,
+        });
       }
-      if (room.w >= 7 && room.h >= 7) {
+      if (room.w >= 7 && room.h >= 7 && !['glass_archive', 'starless_heart'].includes(chapterId)) {
         // Inlaid geometric seals establish a visual center without hiding loot.
         const size = Math.min(room.w, room.h) * 0.23;
         for (let i = 0; i < 8; i++) {
@@ -768,6 +886,14 @@ export class DungeonRenderer {
       surface: this,
     });
     batch.finish(this.static);
+    this.createExploration(world);
+    this.static.traverse((node) => {
+      if (!node.isMesh) return;
+      node.material = Array.isArray(node.material)
+        ? node.material.map((mat) => this.presentMaterial(mat))
+        : this.presentMaterial(node.material);
+      for (const mat of [].concat(node.material)) this.applyExplorationMaterial(mat);
+    });
     this.createEmbers();
     this.target.set(world.hero?.x || 0, 0, world.hero?.y || 0);
     this.camera.position.copy(this.target).add(this.cameraOffset);
@@ -876,7 +1002,7 @@ export class DungeonRenderer {
           : isBrute
             ? 'brute'
             : null;
-    const visual = createCharacterVisual(assetId);
+    const visual = createCharacterVisual(assetId, { quality: this.quality });
     if (visual) {
       this.prepareCharacterVisual(visual, hero ? null : mainColor);
       model.add(visual.root);
@@ -1192,7 +1318,7 @@ export class DungeonRenderer {
         this.ring(0.56, 0.045, accent, group, 0.23);
       } else {
         // A freestanding engraved gateway, with concentric, drifting energy arcs.
-        const energy = accent.clone();
+        const energy = this.presentMaterial(accent).clone();
         object.portalMaterial = energy;
         for (const sx of [-1, 1]) {
           batch.add(GEO.box, stone, [sx * 0.73, 0.77, 0], [0.21, 1.18, 0.24], [0, 0, -sx * 0.14]);
@@ -1326,7 +1452,7 @@ export class DungeonRenderer {
       );
       object.animated.push(object.spark);
     } else if (data.type === 'npc') {
-      object.visual = createCharacterVisual('oracle');
+      object.visual = createCharacterVisual('oracle', { quality: this.quality });
       this.prepareCharacterVisual(object.visual);
       if (object.visual) {
         object.visual.root.rotation.y = 0.55;
@@ -1354,6 +1480,12 @@ export class DungeonRenderer {
       );
     }
     batch.finish(group);
+    group.traverse((node) => {
+      if (node.isMesh)
+        node.material = Array.isArray(node.material)
+          ? node.material.map((mat) => this.presentMaterial(mat))
+          : this.presentMaterial(node.material);
+    });
     group.position.set(data.x, 0, data.y);
     this.dynamic.add(group);
     return object;
@@ -1398,6 +1530,64 @@ export class DungeonRenderer {
     }
   }
 
+  createExploration(world) {
+    this.revealUniform.value?.dispose();
+    const height = world.map.length,
+      width = world.map[0].length;
+    this.revealSize.value.set(width, height);
+    this.revealPixels = new Uint8Array(width * height);
+    const texture = new THREE.DataTexture(this.revealPixels, width, height, THREE.RedFormat);
+    texture.minFilter = texture.magFilter = THREE.LinearFilter;
+    texture.unpackAlignment = 1;
+    this.revealUniform.value = texture;
+    this.updateExploration(world, true);
+  }
+
+  applyExplorationMaterial(material) {
+    if (material.userData.explorationShader) return;
+    material.userData.explorationShader = true;
+    const previous = material.onBeforeCompile;
+    material.onBeforeCompile = (shader) => {
+      previous.call(material, shader);
+      shader.uniforms.revealMap = this.revealUniform;
+      shader.uniforms.revealSize = this.revealSize;
+      shader.vertexShader = 'varying vec3 vExplorePosition;\n' + shader.vertexShader;
+      shader.vertexShader = shader.vertexShader.replace(
+        '#include <project_vertex>',
+        '#include <project_vertex>\nvExplorePosition=(modelMatrix*vec4(transformed,1.)).xyz;',
+      );
+      shader.fragmentShader =
+        'uniform sampler2D revealMap; uniform vec2 revealSize; varying vec3 vExplorePosition;\n' +
+        shader.fragmentShader;
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <opaque_fragment>',
+        'float exploredLight=texture2D(revealMap,(vExplorePosition.xz+.5)/revealSize).r;\noutgoingLight*=mix(.07,1.,smoothstep(.04,.96,exploredLight));\n#include <opaque_fragment>',
+      );
+    };
+    material.customProgramCacheKey = () => 'exploration-v1';
+    material.needsUpdate = true;
+  }
+
+  updateExploration(world, force = false) {
+    if (!this.revealPixels || (!force && world.time < this.nextRevealUpdate)) return;
+    this.nextRevealUpdate = world.time + 0.2;
+    const { x: width, y: height } = this.revealSize.value;
+    for (let y = 0; y < height; y++)
+      for (let x = 0; x < width; x++) {
+        // Reveal the enclosing walls with the room, keeping unexplored corridors dark.
+        let revealed = !world.explored || !!world.explored[y]?.[x];
+        if (!revealed && world.map[y][x] !== 0)
+          for (let dy = -1; dy <= 1 && !revealed; dy++)
+            for (let dx = -1; dx <= 1; dx++)
+              if (world.explored[y + dy]?.[x + dx]) {
+                revealed = true;
+                break;
+              }
+        this.revealPixels[y * width + x] = revealed ? 255 : 0;
+      }
+    this.revealUniform.value.needsUpdate = true;
+  }
+
   isExplored(world, x, y) {
     const explored = world.explored;
     if (Array.isArray(explored) && Array.isArray(explored[0]))
@@ -1433,6 +1623,11 @@ export class DungeonRenderer {
         actor = this.createActor(data, data.isHero);
         this.actors.set(id, actor);
       }
+      if (Number.isFinite(actor.previousHp) && data.hp < actor.previousHp) {
+        actor.hitUntil = world.time + 0.36;
+        if (data.isHero) this.impactShake = 0.065;
+      }
+      actor.previousHp = data.hp;
       const dx = data.x - actor.previousX,
         dy = data.y - actor.previousY;
       const moving = dx * dx + dy * dy > 0.00001;
@@ -1455,6 +1650,10 @@ export class DungeonRenderer {
               ...data,
               moving,
               castTime: data.isHero ? Math.max(0, (this.heroCastUntil || 0) - world.time) : 0,
+              hitTime: Math.max(
+                0,
+                Math.max(actor.hitUntil || 0, data.isHero ? this.heroHitUntil : 0) - world.time,
+              ),
               reducedMotion: reduced,
             },
             world.mode === 'paused' ? 0 : dt,
@@ -1584,7 +1783,7 @@ export class DungeonRenderer {
         mesh.userData.ownedMaterial = true;
         const burst = new THREE.Group();
         root.add(burst);
-        for (let j = 0; j < (warning ? 0 : 6); j++) {
+        for (let j = 0; j < (warning ? 0 : 3); j++) {
           const a = (j * Math.PI) / 3;
           const shard = this.mesh(
             GEO.gem,
@@ -1633,8 +1832,15 @@ export class DungeonRenderer {
           mesh.geometry.dispose();
           mesh.geometry = new THREE.RingGeometry(0.63, 1, 24, 1, -0.85, 2.4);
         }
+        const accent =
+          warning || data.type === 'totem' ? null : createCombatPresentation(data.type, c);
+        if (accent) root.add(accent.group);
+        if (data.type === 'slash' || data.type === 'hit') {
+          mesh.visible = false;
+          burst.visible = false;
+        }
         this.dynamic.add(root);
-        model = { root, mesh, material, burst, fill, countdown, crystal, type: data.type };
+        model = { root, mesh, material, burst, fill, countdown, crystal, accent, type: data.type };
         this.effectModels.set(id, model);
       }
       const remaining = Math.max(0, Math.min(1, (data.life ?? 1) / (data.maxLife || 1)));
@@ -1658,6 +1864,7 @@ export class DungeonRenderer {
       }
       if (model.type === 'slash')
         model.root.rotation.y = data.facing ?? data.angle ?? world.hero.facing ?? 0;
+      model.accent?.update(1 - remaining, world.settings?.reducedMotion);
       model.burst.position.y = (1 - remaining) * 0.35;
       model.burst.rotation.y = world.settings?.reducedMotion ? 0 : time * 0.6;
     });
@@ -1665,7 +1872,8 @@ export class DungeonRenderer {
   }
 
   render(world, dt = 0.016) {
-    if (!world?.map || !world.hero) return;
+    if (!world?.map || !world.hero || !this.pipeline || this.renderer.getContext().isContextLost())
+      return;
     if (!this.initialized) this.build(world);
     this.world = world;
     dt = Math.max(0, Math.min(0.1, dt));
@@ -1674,10 +1882,16 @@ export class DungeonRenderer {
     const snap = world.settings?.reducedMotion || this.target.distanceTo(target) > 12;
     this.target.lerp(target, snap ? 1 : 1 - Math.exp(-dt * 8));
     this.camera.position.copy(this.target).add(this.cameraOffset);
+    if (!world.settings?.reducedMotion && this.impactShake > 0.001) {
+      this.camera.position.x += Math.sin(time * 73) * this.impactShake;
+      this.camera.position.y += Math.cos(time * 61) * this.impactShake * 0.6;
+    }
+    this.impactShake *= Math.exp(-dt * 15);
     this.camera.lookAt(this.target);
     this.sun.position.set(world.hero.x - 7, 13, world.hero.y + 9);
     this.sun.target.position.set(world.hero.x, 0, world.hero.y);
     this.heroLight.position.set(world.hero.x, 2.3, world.hero.y);
+    this.updateExploration(world);
     this.updateActors(world, dt, time);
     this.syncObjects(world);
     this.updateDrops(world, time);
@@ -1704,15 +1918,19 @@ export class DungeonRenderer {
       torch.group.scale.set(flicker, flicker, flicker);
     }
     if (this.quality === 'high') {
-      const nearest = [...torches]
-        .sort(
-          (a, b) =>
-            (a.x - world.hero.x) ** 2 +
-            (a.z - world.hero.y) ** 2 -
-            (b.x - world.hero.x) ** 2 -
-            (b.z - world.hero.y) ** 2,
-        )
-        .slice(0, 3);
+      if (!this.nearestTorches || time >= this.nextTorchUpdate) {
+        this.nextTorchUpdate = time + 0.25;
+        this.nearestTorches = [...torches]
+          .sort(
+            (a, b) =>
+              (a.x - world.hero.x) ** 2 +
+              (a.z - world.hero.y) ** 2 -
+              (b.x - world.hero.x) ** 2 -
+              (b.z - world.hero.y) ** 2,
+          )
+          .slice(0, 3);
+      }
+      const nearest = this.nearestTorches;
       this.torchLights.forEach((light, i) => {
         const torch = nearest[i];
         light.visible = !!torch;
@@ -1738,7 +1956,8 @@ export class DungeonRenderer {
       }
       positions.needsUpdate = true;
     }
-    this.renderer.render(this.scene, this.camera);
+    this.renderer.info.reset();
+    this.pipeline.render(dt);
   }
 
   screenToWorld(clientX, clientY) {
@@ -1764,6 +1983,7 @@ export class DungeonRenderer {
   }
 
   dispose() {
+    this.disposed = true;
     window.removeEventListener('resize', this._resize);
     this.canvas.removeEventListener('webglcontextlost', this._contextLost);
     this.canvas.removeEventListener('webglcontextrestored', this._contextRestored);
@@ -1776,6 +1996,8 @@ export class DungeonRenderer {
     disposePropAssets();
     this.surfaces.dispose();
     this.lightingProbe?.dispose();
+    this.pipeline?.dispose();
+    this.revealUniform.value?.dispose();
     this.renderer.dispose();
   }
 }

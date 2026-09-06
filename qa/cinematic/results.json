@@ -1,0 +1,1332 @@
+{
+  "generatedAt": "2026-09-06T07:40:38.722Z",
+  "scope": "Built game, Chromium software WebGL, scripted visual fixtures. No physical-device performance or AAA/portal certification.",
+  "buildHashes": {
+    "THREE-LICENSE.txt": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+    "assets/PROVENANCE.md": "a384bb8a2fd5a72d57d9eaf8435541bef00651ca066898d065a0c5449e9412ae",
+    "assets/audio/PROVENANCE.md": "15bae2dd3d1097654ef063713542b84643aeabfa87bf68947a367fc73286ee78",
+    "assets/audio/blade-1.ogg": "bc6e53446a24603c76ef9c2b8e19da1c0e662f08e4c2415286824b99b868b979",
+    "assets/audio/blade-2.ogg": "7f391cc462b687436369f71a6e2427654374c55285934911ef586f6077efc015",
+    "assets/audio/blade-3.ogg": "cd35f59d1c439a2f3d9fad65e1abab5b9e2d31dfbd7fd607309dc3c7c7c38124",
+    "assets/audio/boss.ogg": "451b396018c05606601796abe1973572f1bac05e2eb3615d0f2c365c567224ca",
+    "assets/audio/bow.ogg": "44fbc9318bebbe26b79c86ba1e763abda08002d92fe93967b6e08bd23dcfb525",
+    "assets/audio/chapter-1.ogg": "ab6a06e5c202c39e238551188ecd7c075aa620d562866cc0c28bd24b37ba33e9",
+    "assets/audio/chapter-2.ogg": "40abd67c73b30e2dc936ca714559e534ea93abd544005ef2c477e9f428096c63",
+    "assets/audio/chapter-3.ogg": "001933891dfb5df9a4065a831b648a9a4a47c2436fe106aeef6462aa42c6d821",
+    "assets/audio/chapter-4.ogg": "db2058a6c8023f2912f14c328e322392b25b6c106fd89e655be5929ef41a6f70",
+    "assets/audio/chapter-5.ogg": "488864290b47c80676a64f1c4b57d8778178259b28d4a4c07836f7ee53a634a3",
+    "assets/audio/chapter-6.ogg": "8a12d67ea54207a80b5722111be77708a874d361ceccb03a553179a9f9c684f4",
+    "assets/audio/combat-stem.ogg": "f0985c03ed4e8a6d8d39f3341d197351a34b30945b4630bfbeabc537b20be272",
+    "assets/audio/creature-1.ogg": "1e14632d61f85a196da222b2bcc24ce3f732f7ce44a09291bf059038e5b98841",
+    "assets/audio/creature-2.ogg": "fa4ee851ce1aabd2621a5172db5e1419dbc751cc3641577b9e1c534ab60d5b17",
+    "assets/audio/impact.ogg": "0ecec56d6f7e17c6fa8213a9cbe46d669f4704fae1ff30b7aec72ba63b56996f",
+    "assets/audio/level.ogg": "2c0d58e07308c10fdd40ce26b414a8bea60997440fbc06f03461d2293f0c6ee3",
+    "assets/audio/loot.ogg": "170de3f8bdf000e9bf76baf6ad46df3be8d3b3173fa233f2c46d373eeace6aac",
+    "assets/audio/magic-1.ogg": "445a120940c6d27242cb36d4219cf1b2cc659290b8d9751a82111e20dff2f067",
+    "assets/audio/magic-2.ogg": "a8d5a91ea6d9bad545547ae5894ffb048db8b4319f5375345e42837932b3fe03",
+    "assets/audio/magic-3.ogg": "e654c3a7fd1c40380fbfbb0c28cba2beb8982a3007fee53338d2f569ebc83f3f",
+    "assets/audio/manifest.json": "79d6cebc55095e716dec19f911a5800bd936cbafd91b50730ca2f955e55267c1",
+    "assets/audio/potion.ogg": "216d6aab6b1f9f666087d4895a10e34704dad6f6a4aadb25f9d92262251e0415",
+    "assets/audio/rare.ogg": "5340e035ab972c72bdf0ebb283140d60a61e2b683890496b98ea37a4cb4cb90d",
+    "assets/audio/step-1.ogg": "a5cbd773a24444643083493c19a1d8b08fa8a4b57166ce2ffc6ce955539e2a2e",
+    "assets/audio/step-2.ogg": "9d3e77569a00bdb6b3c49f6dabb99c8e037da8ea6945512bcfffc69d4b2b7809",
+    "assets/audio/step-3.ogg": "6d9111152dee16591255c665497e2c3c898fe9bfb004920b6639d3bf4d58d939",
+    "assets/audio/ui.ogg": "cd51aa71b0d642ff32e969052863789cfb540c64fb816f64cef7431d2e1ddd78",
+    "assets/hero-atlas.png": "2b19f34df7749b321f080816215926b9b72e95a0fdf649e5725d35430198a8a3",
+    "assets/models/README.md": "0eee11b72795ceae318021baf446024ab1d7db774acb6c3f912e1384a9b903f6",
+    "assets/models/arcanist.glb": "49e3296737564b5677da9c0aae7e7be6e96daebf2b434179206a3d5894098729",
+    "assets/models/brute.glb": "1cb19141990a6d62ab63645d90345e24d74dd0bac644a6bb6727cd1a36773ce4",
+    "assets/models/lod/README.md": "c3ff5f19cd000bd7087b84f048ee740f4ab1d2b985797f5a26d7fc79d3216757",
+    "assets/models/lod/arcanist.glb": "2eb34a703275b7c3bd8ac873b79d93f3a31573789a31c438e18d1a71d8a2dca1",
+    "assets/models/lod/brute.glb": "b7616ac7c603ef3e8d822da3b53dfab2f99ecac5f9c8ab5bb14fc28a6e1a840c",
+    "assets/models/lod/manifest.json": "a06439fc7c6f6569aca9ef2b749446bd5e79200cfa98894fb8655941a1973f1b",
+    "assets/models/lod/oracle.glb": "9e375eb6a82096db015a8396033c9ca2ab38137f2f9ceb71b9c769e4e5b1c347",
+    "assets/models/lod/ranger.glb": "159cd1d3abc310b8cb885c0799b07fccee3846db0e7d4bb901481ac3e93e39f4",
+    "assets/models/lod/reaver.glb": "70ddc15feb7ebc44d17f4f64ddac8cb8f9636e379fd404badb42f7fa6f775a53",
+    "assets/models/lod/skeleton.glb": "4399bb61ed61da2a8d4645684c98e1c9e0ec82536ad9cecd97aaeba8595a8505",
+    "assets/models/lod/warden.glb": "0c1c3059a91e61eb65f7944edfa8049fbbeb32c2887644bbb157fdb9b2d99d0c",
+    "assets/models/lod/wraith.glb": "683240c40d70bee922895ff773499e3c6cc5a19a63ae62da23fd3a67e063b941",
+    "assets/models/manifest.json": "13f573dd02d173b17e1051d799dacb0ffe674eb730ae20e0cc74d5399ae97046",
+    "assets/models/oracle.glb": "b30e34cb099528f045c1b910b1f7247c7b2d486bed62d921ca844c20ee2ec858",
+    "assets/models/ranger.glb": "5f3481c89f93ba30565a6aa26fdd2e6290257d505b6367f763dea6f09eec486a",
+    "assets/models/reaver.glb": "eab6709f3044054bd1d136ffd0528554a0200e56905c938a390bd1c92aff4ae1",
+    "assets/models/skeleton.glb": "33bfd0aacc959cab3e4c7d498eef6e23f2ca3b60a9ca28804b0b22117fdbd4c8",
+    "assets/models/warden.glb": "6c999f584ce0dd2da9d37586460884eedb62d5b9114e726a2bb47e92d432a6dc",
+    "assets/models/wraith.glb": "745148ac10f71f8d50db644c6a6c69af26f713e2849c901ba08e1d8ea7a97c93",
+    "assets/props/README.md": "c198d806811b2930deefb43b29a9986aef49dbd62efc79601c058992d3f92dde",
+    "assets/props/manifest.json": "24f8fb5bf7cd5def2b35ffe6aef7e48ec0a7e3a2c7a0360a0ca512e715ca93de",
+    "assets/props/sarcophagus.glb": "6deb9218d1cd81a9ace50141f80f8f7f86d57782e9d7f1c18e9ba6b5702d7105",
+    "assets/props/shrine.glb": "b53c70f7837d4d1ce81f3abf35b04d855344dbd2bca11f3a4d8aab88d17e9cee",
+    "assets/textures/README.md": "b7c1166a7fa74194460bb9545ad44e0324efb8b59ac90f3e5acac0c4962a3a13",
+    "assets/textures/cloth-albedo.webp": "10db88c9252541799a0f54b6b65c4280ae982d1af42e215fd542c106709f46c7",
+    "assets/textures/cloth-normal.webp": "58d86a803ae87929dcfcddc8ca161d7f7128741e3566d105de58f14c680b2421",
+    "assets/textures/cloth-roughness.webp": "1e68c3497495521e04f9f7a189c92704943311a73900fd689b1dc27ceec2b878",
+    "assets/textures/flagstone-albedo.webp": "0050ad7f4bb8ea4561c635c4a14b32bf7f1cd8c84e2e2efb6e633d5e3724a072",
+    "assets/textures/flagstone-normal.webp": "60bb06b618007061ab9004af060e603eec28ec8e684e215b904a5016e2306d9c",
+    "assets/textures/flagstone-roughness.webp": "bb77539aa3e5a5603ab9059b5a985c09245921cf2a3c16766189e7c17f1957d0",
+    "assets/textures/manifest.json": "d673eb80b31fa21470fb78ae1473c77b609215142a6e3a1fe110b62d00d80cb5",
+    "assets/textures/masonry-albedo.webp": "1ac136337d4c3941a2d68606cfba81a70eb81149e41e0577f4581e0100ff02ce",
+    "assets/textures/masonry-normal.webp": "22fec4893c8f16bb82bbc936e322c18b440a04c379261c2649697583fd750323",
+    "assets/textures/masonry-roughness.webp": "a60be6346f2dfdd4089a9296ecaa99728cf5162524d407bbf54fe300fb782847",
+    "assets/textures/metal-albedo.webp": "cbe47e1eca90da6d71775b0f5a020ff5dcbc7eeb2cdb1ffc66f90bd9435ff7f3",
+    "assets/textures/metal-normal.webp": "41318aef623897e529e752a73acb5abff71df85720406dba15a38e089b3809b1",
+    "assets/textures/metal-roughness.webp": "5faad190f6d5375f6df8d1f7837d27d5271894c45bccc22b32865415fd8ec293",
+    "assets/textures/runestone-albedo.webp": "07266d76ebd5a757eb133e03534597ac89a2db8ab149d032572595160b41ec60",
+    "assets/textures/runestone-normal.webp": "49cde2a4770d3f6f9570b256ed4dad07a2aafbd3bfb8229a825ee938b85be882",
+    "assets/textures/runestone-roughness.webp": "bd82af98e274b6201908edd8ca5a2669df179abd25eba5ca140d96630ff470c3",
+    "bundle.css": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5",
+    "bundle.js": "7d1bc25bf4bad2084324cecdd4b3afbe37833a6c783540160aceb875b689a32c",
+    "index.html": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685"
+  },
+  "passed": [
+    "five classes use articulated rigs and decoded color normal roughness emissive maps",
+    "six chapter compositions render visible final frames on desktop",
+    "high and low quality survive repeated switching and resize",
+    "real attack cast dodge and damage select distinct animated poses",
+    "postprocessed scene survives WebGL context restoration",
+    "performance portal visibly changes from locked to unlocked after real kill events",
+    "rebuilding a warmed character and NPC scene does not accumulate GPU textures",
+    "touch landscape and portrait preserve scene and combat control visibility",
+    "missing floating-point color targets keeps direct-render gameplay visible"
+  ],
+  "errors": [],
+  "frames": [
+    {
+      "label": "chapter-1-desktop",
+      "floor": 1,
+      "quality": "high",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0,
+      "meanLuminance": 69.54302238281777,
+      "luminanceDeviation": 33.73686846423962,
+      "heroPixels": 92.65122677605984,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 30090,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 240,
+      "triangles": 281583,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 2,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "chapter-2-desktop",
+      "floor": 3,
+      "quality": "high",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0,
+      "meanLuminance": 71.79971111718883,
+      "luminanceDeviation": 41.5225176465864,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 30090,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 237,
+      "triangles": 253318,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 1,
+        "voices": 7,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 1,
+        "sampleFailures": 0,
+        "fallback": true
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "chapter-3-desktop",
+      "floor": 5,
+      "quality": "high",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0,
+      "meanLuminance": 68.14525826041681,
+      "luminanceDeviation": 36.28936820494405,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 30090,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 230,
+      "triangles": 250371,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 2,
+        "voices": 7,
+        "loadedClips": 22,
+        "playingTracks": 2,
+        "loading": 1,
+        "sampleFailures": 0,
+        "fallback": true
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "chapter-4-desktop",
+      "floor": 7,
+      "quality": "high",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0,
+      "meanLuminance": 64.88894701302364,
+      "luminanceDeviation": 44.68372763099717,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 30090,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 198,
+      "triangles": 241512,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 3,
+        "voices": 7,
+        "loadedClips": 23,
+        "playingTracks": 2,
+        "loading": 1,
+        "sampleFailures": 0,
+        "fallback": true
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "chapter-5-desktop",
+      "floor": 9,
+      "quality": "high",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0,
+      "meanLuminance": 68.19918085937441,
+      "luminanceDeviation": 39.38878693919953,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 30090,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 211,
+      "triangles": 251136,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 4,
+        "voices": 7,
+        "loadedClips": 24,
+        "playingTracks": 2,
+        "loading": 1,
+        "sampleFailures": 0,
+        "fallback": true
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "chapter-6-desktop",
+      "floor": 11,
+      "quality": "high",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0,
+      "meanLuminance": 60.687834765624686,
+      "luminanceDeviation": 33.64846857380777,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 30090,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 230,
+      "triangles": 249758,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 5,
+        "voices": 7,
+        "loadedClips": 25,
+        "playingTracks": 2,
+        "loading": 1,
+        "sampleFailures": 0,
+        "fallback": true
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "quality-high-1280x720",
+      "floor": 1,
+      "quality": "high",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -10.222222222222221,
+        "right": 10.222222222222221
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0,
+      "meanLuminance": 65.7615572708344,
+      "luminanceDeviation": 33.61977064497185,
+      "heroPixels": 74.12098142084778,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 26458,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 236,
+      "triangles": 284924,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1280,
+        "height": 720,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 2,
+        "loadedClips": 26,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "quality-low-907x510",
+      "floor": 1,
+      "quality": "low",
+      "framebuffer": [
+        907,
+        510
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -10.225980392156861,
+        "right": 10.225980392156861
+      },
+      "visibleFraction": 0.9855729166666667,
+      "clippedFraction": 0,
+      "meanLuminance": 37.44685553385387,
+      "luminanceDeviation": 34.120124075113466,
+      "heroPixels": 52.50236183976716,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "low",
+      "characterTriangles": 3500,
+      "heroMaterials": [
+        "MeshLambertMaterial"
+      ],
+      "drawCalls": 120,
+      "triangles": 128664,
+      "postprocessing": {
+        "enabled": false,
+        "quality": "low",
+        "passes": [
+          "scene"
+        ],
+        "width": 907,
+        "height": 510,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 2,
+        "loadedClips": 26,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "quality-high-1440x900",
+      "floor": 1,
+      "quality": "high",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0.000013020833333333334,
+      "meanLuminance": 73.58908275521199,
+      "luminanceDeviation": 36.84518086157755,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 26458,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 226,
+      "triangles": 266064,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 2,
+        "loadedClips": 26,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "context-restored",
+      "floor": 1,
+      "quality": "high",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0,
+      "meanLuminance": 70.56990837760452,
+      "luminanceDeviation": 34.696802595536234,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 29734,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 228,
+      "triangles": 269549,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 2,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "context-restored-new-journey",
+      "floor": 1,
+      "quality": "high",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 1,
+      "clippedFraction": 0.000013020833333333334,
+      "meanLuminance": 73.34472771875747,
+      "luminanceDeviation": 36.83465249540788,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 26458,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 227,
+      "triangles": 257493,
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 2,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "performance-portal-locked",
+      "floor": 1,
+      "quality": "low",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 0.9842708333333333,
+      "clippedFraction": 0,
+      "meanLuminance": 43.473918390625904,
+      "luminanceDeviation": 47.651356254900094,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "low",
+      "characterTriangles": 3500,
+      "heroMaterials": [
+        "MeshLambertMaterial"
+      ],
+      "drawCalls": 130,
+      "triangles": 70633,
+      "postprocessing": {
+        "enabled": false,
+        "quality": "low",
+        "passes": [
+          "scene"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 2,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "performance-portal-unlocked",
+      "floor": 1,
+      "quality": "low",
+      "framebuffer": [
+        1440,
+        900
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -9.200000000000001,
+        "right": 9.200000000000001
+      },
+      "visibleFraction": 0.9845963541666667,
+      "clippedFraction": 0.0009114583333333333,
+      "meanLuminance": 49.50168247916861,
+      "luminanceDeviation": 56.771964722272884,
+      "heroPixels": 92.65122677605967,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "low",
+      "characterTriangles": 3500,
+      "heroMaterials": [
+        "MeshLambertMaterial"
+      ],
+      "drawCalls": 161,
+      "triangles": 70409,
+      "postprocessing": {
+        "enabled": false,
+        "quality": "low",
+        "passes": [
+          "scene"
+        ],
+        "width": 1440,
+        "height": 900,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 53,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "touch-844x390",
+      "floor": 1,
+      "quality": "low",
+      "framebuffer": [
+        844,
+        390
+      ],
+      "camera": {
+        "top": 5.85,
+        "bottom": -5.85,
+        "left": -12.659999999999998,
+        "right": 12.659999999999998
+      },
+      "visibleFraction": 0.9865625,
+      "clippedFraction": 0,
+      "meanLuminance": 33.74920281770946,
+      "luminanceDeviation": 26.90190305545578,
+      "heroPixels": 39.46255955276621,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "low",
+      "characterTriangles": 3498,
+      "heroMaterials": [
+        "MeshLambertMaterial"
+      ],
+      "drawCalls": 124,
+      "triangles": 124590,
+      "postprocessing": {
+        "enabled": false,
+        "quality": "low",
+        "passes": [
+          "scene"
+        ],
+        "width": 844,
+        "height": 390,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 6,
+        "loadedClips": 19,
+        "playingTracks": 0,
+        "loading": 2,
+        "sampleFailures": 0,
+        "fallback": true
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "touch-390x844",
+      "floor": 1,
+      "quality": "low",
+      "framebuffer": [
+        390,
+        844
+      ],
+      "camera": {
+        "top": 7.25,
+        "bottom": -7.25,
+        "left": -3.3501184834123223,
+        "right": 3.3501184834123223
+      },
+      "visibleFraction": 0.9888020833333333,
+      "clippedFraction": 0,
+      "meanLuminance": 44.86829419010308,
+      "luminanceDeviation": 37.36769939053367,
+      "heroPixels": 68.90979364662354,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "low",
+      "characterTriangles": 3498,
+      "heroMaterials": [
+        "MeshLambertMaterial"
+      ],
+      "drawCalls": 82,
+      "triangles": 80720,
+      "postprocessing": {
+        "enabled": false,
+        "quality": "low",
+        "passes": [
+          "scene"
+        ],
+        "width": 390,
+        "height": 844,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 7,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
+      "label": "no-float-color-target-fallback",
+      "floor": 1,
+      "quality": "high",
+      "framebuffer": [
+        907,
+        510
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -10.225980392156861,
+        "right": 10.225980392156861
+      },
+      "visibleFraction": 0.9786979166666666,
+      "clippedFraction": 0,
+      "meanLuminance": 40.86530394531184,
+      "luminanceDeviation": 25.59372507153844,
+      "heroPixels": 52.50236183976725,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "high",
+      "characterTriangles": 26458,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "drawCalls": 208,
+      "triangles": 269369,
+      "postprocessing": {
+        "enabled": false,
+        "quality": "low",
+        "passes": [
+          "scene"
+        ],
+        "width": 907,
+        "height": 510,
+        "pixelRatio": 1,
+        "fallbackReason": "HDR color buffers unavailable; direct rendering"
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 2,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    }
+  ],
+  "motion": [
+    {
+      "clip": "attack",
+      "input": "Enter",
+      "boneRotationChange": 0.19554147748043862,
+      "bones": 32
+    },
+    {
+      "clip": "cast",
+      "input": "1",
+      "boneRotationChange": 0.16585054650334613,
+      "bones": 32
+    },
+    {
+      "clip": "dodge",
+      "input": "Space",
+      "boneRotationChange": 0.5804061375684392,
+      "bones": 32
+    },
+    {
+      "clip": "hit",
+      "input": "scripted real damage event",
+      "boneRotationChange": 0.035351939747731556,
+      "bones": 32
+    }
+  ],
+  "characters": [
+    {
+      "id": "warden",
+      "bones": 32,
+      "materials": [
+        {
+          "vertices": 23234,
+          "color": 512,
+          "normal": 512,
+          "roughness": 512,
+          "emissive": 512
+        }
+      ],
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "ranger",
+      "bones": 32,
+      "materials": [
+        {
+          "vertices": 21496,
+          "color": 512,
+          "normal": 512,
+          "roughness": 512,
+          "emissive": 512
+        }
+      ],
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "arcanist",
+      "bones": 32,
+      "materials": [
+        {
+          "vertices": 21774,
+          "color": 512,
+          "normal": 512,
+          "roughness": 512,
+          "emissive": 512
+        }
+      ],
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "reaver",
+      "bones": 32,
+      "materials": [
+        {
+          "vertices": 27319,
+          "color": 512,
+          "normal": 512,
+          "roughness": 512,
+          "emissive": 512
+        }
+      ],
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    },
+    {
+      "id": "oracle",
+      "bones": 32,
+      "materials": [
+        {
+          "vertices": 22051,
+          "color": 512,
+          "normal": 512,
+          "roughness": 512,
+          "emissive": 512
+        }
+      ],
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ]
+    }
+  ],
+  "filter": null,
+  "browser": "152.0.7977.75",
+  "lods": [
+    {
+      "id": "warden",
+      "triangles": 3500,
+      "bytes": 295592
+    },
+    {
+      "id": "ranger",
+      "triangles": 3498,
+      "bytes": 278796
+    },
+    {
+      "id": "arcanist",
+      "triangles": 3498,
+      "bytes": 277480
+    },
+    {
+      "id": "reaver",
+      "triangles": 3498,
+      "bytes": 305256
+    },
+    {
+      "id": "oracle",
+      "triangles": 3498,
+      "bytes": 274916
+    },
+    {
+      "id": "skeleton",
+      "triangles": 3500,
+      "bytes": 273032
+    },
+    {
+      "id": "wraith",
+      "triangles": 3498,
+      "bytes": 273936
+    },
+    {
+      "id": "brute",
+      "triangles": 3498,
+      "bytes": 303600
+    }
+  ],
+  "cameraZoom": {
+    "viewport": [
+      821,
+      462
+    ],
+    "worldHeightWide": 14.624999999999998,
+    "worldHeightClose": 9,
+    "restoredZoom": 1.3
+  },
+  "portal": {
+    "locked": {
+      "unlocked": false,
+      "displayed": true,
+      "material": "MeshLambertMaterial",
+      "color": [
+        0.12213877222015301,
+        0.5209955731953768,
+        0.5583403896257968
+      ],
+      "emissive": [
+        0.12213877222015301,
+        0.5209955731953768,
+        0.5583403896257968
+      ],
+      "intensity": 0.55
+    },
+    "unlocked": {
+      "unlocked": true,
+      "displayed": true,
+      "material": "MeshLambertMaterial",
+      "color": [
+        0.8713671191959567,
+        0.5775804404214573,
+        0.1878207722902346
+      ],
+      "emissive": [
+        0.8713671191959567,
+        0.5775804404214573,
+        0.1878207722902346
+      ],
+      "intensity": 1.8
+    },
+    "scope": "Scripted kills exercise normal engine accounting; actual displayed ring material is inspected."
+  },
+  "textureLifetime": {
+    "baseline": 53,
+    "repeatedSceneTextures": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+    ],
+    "tolerance": 2
+  }
+}

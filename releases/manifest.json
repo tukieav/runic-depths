@@ -1,11 +1,11 @@
 {
   "title": "Runic Depths: The Hollow Covenant",
-  "version": "2.1.0",
-  "generatedAt": "2026-09-06T03:31:19.464Z",
-  "fileCount": 37,
-  "uncompressedBytes": 9991363,
-  "zipBytes": 6394219,
-  "sha256": "56869bfa76802b60b4fee31089824ac58d0bdecebe72799763e7fab8a23036a5",
+  "version": "2.2.0",
+  "generatedAt": "2026-09-06T07:44:01.182Z",
+  "fileCount": 75,
+  "uncompressedBytes": 18074511,
+  "zipBytes": 11641741,
+  "sha256": "6be00b446841709e0e4ecab4b0fc9f09ab2f3b2d71ee209a694d43c98615b65e",
   "files": [
     {
       "path": "THREE-LICENSE.txt",
@@ -14,8 +14,148 @@
     },
     {
       "path": "assets/PROVENANCE.md",
-      "bytes": 1726,
-      "sha256": "879950daa2a9b540da8676466256709c33b4112da06254ca38a946857dea2d60"
+      "bytes": 2354,
+      "sha256": "a384bb8a2fd5a72d57d9eaf8435541bef00651ca066898d065a0c5449e9412ae"
+    },
+    {
+      "path": "assets/audio/PROVENANCE.md",
+      "bytes": 1458,
+      "sha256": "15bae2dd3d1097654ef063713542b84643aeabfa87bf68947a367fc73286ee78"
+    },
+    {
+      "path": "assets/audio/blade-1.ogg",
+      "bytes": 8296,
+      "sha256": "bc6e53446a24603c76ef9c2b8e19da1c0e662f08e4c2415286824b99b868b979"
+    },
+    {
+      "path": "assets/audio/blade-2.ogg",
+      "bytes": 8064,
+      "sha256": "7f391cc462b687436369f71a6e2427654374c55285934911ef586f6077efc015"
+    },
+    {
+      "path": "assets/audio/blade-3.ogg",
+      "bytes": 8378,
+      "sha256": "cd35f59d1c439a2f3d9fad65e1abab5b9e2d31dfbd7fd607309dc3c7c7c38124"
+    },
+    {
+      "path": "assets/audio/boss.ogg",
+      "bytes": 28453,
+      "sha256": "451b396018c05606601796abe1973572f1bac05e2eb3615d0f2c365c567224ca"
+    },
+    {
+      "path": "assets/audio/bow.ogg",
+      "bytes": 8932,
+      "sha256": "44fbc9318bebbe26b79c86ba1e763abda08002d92fe93967b6e08bd23dcfb525"
+    },
+    {
+      "path": "assets/audio/chapter-1.ogg",
+      "bytes": 193522,
+      "sha256": "ab6a06e5c202c39e238551188ecd7c075aa620d562866cc0c28bd24b37ba33e9"
+    },
+    {
+      "path": "assets/audio/chapter-2.ogg",
+      "bytes": 192961,
+      "sha256": "40abd67c73b30e2dc936ca714559e534ea93abd544005ef2c477e9f428096c63"
+    },
+    {
+      "path": "assets/audio/chapter-3.ogg",
+      "bytes": 200190,
+      "sha256": "001933891dfb5df9a4065a831b648a9a4a47c2436fe106aeef6462aa42c6d821"
+    },
+    {
+      "path": "assets/audio/chapter-4.ogg",
+      "bytes": 199402,
+      "sha256": "db2058a6c8023f2912f14c328e322392b25b6c106fd89e655be5929ef41a6f70"
+    },
+    {
+      "path": "assets/audio/chapter-5.ogg",
+      "bytes": 200482,
+      "sha256": "488864290b47c80676a64f1c4b57d8778178259b28d4a4c07836f7ee53a634a3"
+    },
+    {
+      "path": "assets/audio/chapter-6.ogg",
+      "bytes": 193624,
+      "sha256": "8a12d67ea54207a80b5722111be77708a874d361ceccb03a553179a9f9c684f4"
+    },
+    {
+      "path": "assets/audio/combat-stem.ogg",
+      "bytes": 223266,
+      "sha256": "f0985c03ed4e8a6d8d39f3341d197351a34b30945b4630bfbeabc537b20be272"
+    },
+    {
+      "path": "assets/audio/creature-1.ogg",
+      "bytes": 11146,
+      "sha256": "1e14632d61f85a196da222b2bcc24ce3f732f7ce44a09291bf059038e5b98841"
+    },
+    {
+      "path": "assets/audio/creature-2.ogg",
+      "bytes": 13016,
+      "sha256": "fa4ee851ce1aabd2621a5172db5e1419dbc751cc3641577b9e1c534ab60d5b17"
+    },
+    {
+      "path": "assets/audio/impact.ogg",
+      "bytes": 8923,
+      "sha256": "0ecec56d6f7e17c6fa8213a9cbe46d669f4704fae1ff30b7aec72ba63b56996f"
+    },
+    {
+      "path": "assets/audio/level.ogg",
+      "bytes": 22621,
+      "sha256": "2c0d58e07308c10fdd40ce26b414a8bea60997440fbc06f03461d2293f0c6ee3"
+    },
+    {
+      "path": "assets/audio/loot.ogg",
+      "bytes": 9250,
+      "sha256": "170de3f8bdf000e9bf76baf6ad46df3be8d3b3173fa233f2c46d373eeace6aac"
+    },
+    {
+      "path": "assets/audio/magic-1.ogg",
+      "bytes": 20009,
+      "sha256": "445a120940c6d27242cb36d4219cf1b2cc659290b8d9751a82111e20dff2f067"
+    },
+    {
+      "path": "assets/audio/magic-2.ogg",
+      "bytes": 20080,
+      "sha256": "a8d5a91ea6d9bad545547ae5894ffb048db8b4319f5375345e42837932b3fe03"
+    },
+    {
+      "path": "assets/audio/magic-3.ogg",
+      "bytes": 19995,
+      "sha256": "e654c3a7fd1c40380fbfbb0c28cba2beb8982a3007fee53338d2f569ebc83f3f"
+    },
+    {
+      "path": "assets/audio/manifest.json",
+      "bytes": 7648,
+      "sha256": "79d6cebc55095e716dec19f911a5800bd936cbafd91b50730ca2f955e55267c1"
+    },
+    {
+      "path": "assets/audio/potion.ogg",
+      "bytes": 12267,
+      "sha256": "216d6aab6b1f9f666087d4895a10e34704dad6f6a4aadb25f9d92262251e0415"
+    },
+    {
+      "path": "assets/audio/rare.ogg",
+      "bytes": 18520,
+      "sha256": "5340e035ab972c72bdf0ebb283140d60a61e2b683890496b98ea37a4cb4cb90d"
+    },
+    {
+      "path": "assets/audio/step-1.ogg",
+      "bytes": 6253,
+      "sha256": "a5cbd773a24444643083493c19a1d8b08fa8a4b57166ce2ffc6ce955539e2a2e"
+    },
+    {
+      "path": "assets/audio/step-2.ogg",
+      "bytes": 6227,
+      "sha256": "9d3e77569a00bdb6b3c49f6dabb99c8e037da8ea6945512bcfffc69d4b2b7809"
+    },
+    {
+      "path": "assets/audio/step-3.ogg",
+      "bytes": 6200,
+      "sha256": "6d9111152dee16591255c665497e2c3c898fe9bfb004920b6639d3bf4d58d939"
+    },
+    {
+      "path": "assets/audio/ui.ogg",
+      "bytes": 5879,
+      "sha256": "cd51aa71b0d642ff32e969052863789cfb540c64fb816f64cef7431d2e1ddd78"
     },
     {
       "path": "assets/hero-atlas.png",
@@ -24,53 +164,103 @@
     },
     {
       "path": "assets/models/README.md",
-      "bytes": 1821,
-      "sha256": "7b083815b43ee83f5eac49bdf6ef0ca00a38f0e7b5306c02707a8b1308028191"
+      "bytes": 2967,
+      "sha256": "0eee11b72795ceae318021baf446024ab1d7db774acb6c3f912e1384a9b903f6"
     },
     {
       "path": "assets/models/arcanist.glb",
-      "bytes": 517880,
-      "sha256": "9c2d4600c720123c60178e222dd63d6d589167c00aec7b659569e144bba2077a"
+      "bytes": 1056516,
+      "sha256": "49e3296737564b5677da9c0aae7e7be6e96daebf2b434179206a3d5894098729"
     },
     {
       "path": "assets/models/brute.glb",
-      "bytes": 590500,
-      "sha256": "509a37be475f79155de10e2f9c967d31025fcdc181168aa1ab0dae589fbc3cfe"
+      "bytes": 1214068,
+      "sha256": "1cb19141990a6d62ab63645d90345e24d74dd0bac644a6bb6727cd1a36773ce4"
+    },
+    {
+      "path": "assets/models/lod/README.md",
+      "bytes": 1059,
+      "sha256": "c3ff5f19cd000bd7087b84f048ee740f4ab1d2b985797f5a26d7fc79d3216757"
+    },
+    {
+      "path": "assets/models/lod/arcanist.glb",
+      "bytes": 277480,
+      "sha256": "2eb34a703275b7c3bd8ac873b79d93f3a31573789a31c438e18d1a71d8a2dca1"
+    },
+    {
+      "path": "assets/models/lod/brute.glb",
+      "bytes": 303600,
+      "sha256": "b7616ac7c603ef3e8d822da3b53dfab2f99ecac5f9c8ab5bb14fc28a6e1a840c"
+    },
+    {
+      "path": "assets/models/lod/manifest.json",
+      "bytes": 3436,
+      "sha256": "a06439fc7c6f6569aca9ef2b749446bd5e79200cfa98894fb8655941a1973f1b"
+    },
+    {
+      "path": "assets/models/lod/oracle.glb",
+      "bytes": 274916,
+      "sha256": "9e375eb6a82096db015a8396033c9ca2ab38137f2f9ceb71b9c769e4e5b1c347"
+    },
+    {
+      "path": "assets/models/lod/ranger.glb",
+      "bytes": 278796,
+      "sha256": "159cd1d3abc310b8cb885c0799b07fccee3846db0e7d4bb901481ac3e93e39f4"
+    },
+    {
+      "path": "assets/models/lod/reaver.glb",
+      "bytes": 305256,
+      "sha256": "70ddc15feb7ebc44d17f4f64ddac8cb8f9636e379fd404badb42f7fa6f775a53"
+    },
+    {
+      "path": "assets/models/lod/skeleton.glb",
+      "bytes": 273032,
+      "sha256": "4399bb61ed61da2a8d4645684c98e1c9e0ec82536ad9cecd97aaeba8595a8505"
+    },
+    {
+      "path": "assets/models/lod/warden.glb",
+      "bytes": 295592,
+      "sha256": "0c1c3059a91e61eb65f7944edfa8049fbbeb32c2887644bbb157fdb9b2d99d0c"
+    },
+    {
+      "path": "assets/models/lod/wraith.glb",
+      "bytes": 273936,
+      "sha256": "683240c40d70bee922895ff773499e3c6cc5a19a63ae62da23fd3a67e063b941"
     },
     {
       "path": "assets/models/manifest.json",
-      "bytes": 2044,
-      "sha256": "5b02f7947e42ca45aeaaa558aae03399cb0131ee7f641fd0555b6ff42e154fda"
+      "bytes": 2498,
+      "sha256": "13f573dd02d173b17e1051d799dacb0ffe674eb730ae20e0cc74d5399ae97046"
     },
     {
       "path": "assets/models/oracle.glb",
-      "bytes": 557000,
-      "sha256": "137f3aaad05439f54aa45eacb4ed171649e6ab334cfa3824a3ab658d5567b4c3"
+      "bytes": 1067484,
+      "sha256": "b30e34cb099528f045c1b910b1f7247c7b2d486bed62d921ca844c20ee2ec858"
     },
     {
       "path": "assets/models/ranger.glb",
-      "bytes": 555344,
-      "sha256": "564cd22559e4193a571a37db19f6f58cc9a0cf5193d003801c16a93e16c06ca0"
+      "bytes": 1045316,
+      "sha256": "5f3481c89f93ba30565a6aa26fdd2e6290257d505b6367f763dea6f09eec486a"
     },
     {
       "path": "assets/models/reaver.glb",
-      "bytes": 533432,
-      "sha256": "8c1b20868ce0e70c59aaf655ebf0f45ec0a0e9e23bfd35dc049e8cf81d6cd159"
+      "bytes": 1222836,
+      "sha256": "eab6709f3044054bd1d136ffd0528554a0200e56905c938a390bd1c92aff4ae1"
     },
     {
       "path": "assets/models/skeleton.glb",
-      "bytes": 574116,
-      "sha256": "1d6c6674006b438230112fd4bdda8d77b47d1a0eda4546e46abebd4ffb830990"
+      "bytes": 842036,
+      "sha256": "33bfd0aacc959cab3e4c7d498eef6e23f2ca3b60a9ca28804b0b22117fdbd4c8"
     },
     {
       "path": "assets/models/warden.glb",
-      "bytes": 529332,
-      "sha256": "6144f401e72f33611925dd1ecd0c998e3a5c050e25855c4730d1d296821596fe"
+      "bytes": 1061568,
+      "sha256": "6c999f584ce0dd2da9d37586460884eedb62d5b9114e726a2bb47e92d432a6dc"
     },
     {
       "path": "assets/models/wraith.glb",
-      "bytes": 499888,
-      "sha256": "6e201b79fa6ae6efca218f07eef488fabd58bd1f11c3a0e7d07d357c7722b1fe"
+      "bytes": 939976,
+      "sha256": "745148ac10f71f8d50db644c6a6c69af26f713e2849c901ba08e1d8ea7a97c93"
     },
     {
       "path": "assets/props/README.md",
@@ -184,8 +374,8 @@
     },
     {
       "path": "bundle.js",
-      "bytes": 821128,
-      "sha256": "484b97e2464832ab07874b41ad3680efce092b6e8c7cfefa63d713daf162c31e"
+      "bytes": 867575,
+      "sha256": "7d1bc25bf4bad2084324cecdd4b3afbe37833a6c783540160aceb875b689a32c"
     },
     {
       "path": "index.html",

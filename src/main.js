@@ -39,6 +39,7 @@ let prefs = {
   music: 0.32,
   sfx: 0.65,
   muted: false,
+  zoom: 1,
   quality: matchMedia('(pointer:coarse)').matches ? 'low' : 'high',
   reducedMotion: matchMedia('(prefers-reduced-motion:reduce)').matches,
   tutorial: false,
@@ -101,6 +102,7 @@ function applyPrefs() {
   audio.setMusicVolume(prefs.music);
   audio.setSfxVolume(prefs.sfx);
   renderer?.setQuality(prefs.quality);
+  renderer?.setZoom(Number(prefs.zoom) || 1);
   if (game) game.settings.reducedMotion = prefs.reducedMotion;
   document.body.classList.toggle('reduce-motion', prefs.reducedMotion);
   $('audio-button').textContent = prefs.muted ? '♪̸' : '♫';
@@ -123,6 +125,7 @@ function event(e) {
       audio.skillSound('dash');
       break;
     case 'hurt':
+      renderer?.playHeroAnimation('hit');
       audio.hurtSound();
       $('damage-flash').classList.add('active');
       setTimeout(() => $('damage-flash').classList.remove('active'), 180);
@@ -673,7 +676,7 @@ function renderPanel() {
         'The dungeon waits. Your progress is saved automatically.',
         'Loch czeka. Twój postęp zapisuje się automatycznie.',
       ),
-      `<div class="button-row">${btn('close', text('Return to the depths', 'Wróć do głębin'), 'primary')}${btn('characters', text('Choose hero', 'Wybierz bohatera'))}${btn('journal', text('Read the chronicle', 'Czytaj kronikę'))}</div><div class="divider"></div><div class="settings-row"><label for="setting-lang">${text('Language', 'Język')}</label><select id="setting-lang"><option value="en" ${lang === 'en' ? 'selected' : ''}>English</option><option value="pl" ${lang === 'pl' ? 'selected' : ''}>Polski</option></select></div><div class="settings-row"><label for="setting-music">${text('Music', 'Muzyka')}</label><input id="setting-music" type="range" min="0" max="1" step=".05" value="${prefs.music}"></div><div class="settings-row"><label for="setting-sfx">${text('Sound effects', 'Efekty dźwiękowe')}</label><input id="setting-sfx" type="range" min="0" max="1" step=".05" value="${prefs.sfx}"></div><div class="settings-row"><label for="setting-quality">${text('Graphics', 'Grafika')}</label><select id="setting-quality"><option value="high" ${prefs.quality === 'high' ? 'selected' : ''}>${text('High', 'Wysoka')}</option><option value="low" ${prefs.quality === 'low' ? 'selected' : ''}>${text('Performance', 'Wydajność')}</option></select></div><div class="settings-row"><label for="setting-motion">${text('Reduce motion', 'Ogranicz animacje')}</label><input id="setting-motion" type="checkbox" ${prefs.reducedMotion ? 'checked' : ''}></div><div class="divider"></div><p class="intro">${text('WASD / arrows — move · Left click — walk or attack · Hold Enter — attack · 1, 2, 3 — abilities · Space — dodge · Q — potion · E — interact · I — inventory · J — journal · T — talents · Esc — pause.', 'WASD / strzałki — ruch · Lewy przycisk myszy — ruch lub atak · Przytrzymaj Enter — atak · 1, 2, 3 — umiejętności · Spacja — unik · Q — mikstura · E — interakcja · I — ekwipunek · J — dziennik · T — talenty · Esc — pauza.')}</p><p class="credits">${text('Fantasy combat without gore. No purchases or advertisements. Original campaign & procedural art. Three.js · MIT license.', 'Walka fantasy bez drastycznych scen. Bez zakupów i reklam. Autorska kampania i grafika proceduralna. Three.js · licencja MIT.')}</p>`,
+      `<div class="button-row">${btn('close', text('Return to the depths', 'Wróć do głębin'), 'primary')}${btn('characters', text('Choose hero', 'Wybierz bohatera'))}${btn('journal', text('Read the chronicle', 'Czytaj kronikę'))}</div><div class="divider"></div><div class="settings-row"><label for="setting-lang">${text('Language', 'Język')}</label><select id="setting-lang"><option value="en" ${lang === 'en' ? 'selected' : ''}>English</option><option value="pl" ${lang === 'pl' ? 'selected' : ''}>Polski</option></select></div><div class="settings-row"><label for="setting-music">${text('Music', 'Muzyka')}</label><input id="setting-music" type="range" min="0" max="1" step=".05" value="${prefs.music}"></div><div class="settings-row"><label for="setting-sfx">${text('Sound effects', 'Efekty dźwiękowe')}</label><input id="setting-sfx" type="range" min="0" max="1" step=".05" value="${prefs.sfx}"></div><div class="settings-row"><label for="setting-quality">${text('Graphics', 'Grafika')}</label><select id="setting-quality"><option value="high" ${prefs.quality === 'high' ? 'selected' : ''}>${text('High', 'Wysoka')}</option><option value="low" ${prefs.quality === 'low' ? 'selected' : ''}>${text('Performance', 'Wydajność')}</option></select></div><div class="settings-row"><label for="setting-zoom">${text('Camera zoom', 'Przybliżenie kamery')}</label><input id="setting-zoom" type="range" min=".8" max="1.35" step=".05" value="${prefs.zoom || 1}"></div><div class="settings-row"><label for="setting-motion">${text('Reduce motion', 'Ogranicz animacje')}</label><input id="setting-motion" type="checkbox" ${prefs.reducedMotion ? 'checked' : ''}></div><div class="divider"></div><p class="intro">${text('WASD / arrows — move · Left click — walk or attack · Hold Enter — attack · 1, 2, 3 — abilities · Space — dodge · Q — potion · E — interact · I — inventory · J — journal · T — talents · Esc — pause.', 'WASD / strzałki — ruch · Lewy przycisk myszy — ruch lub atak · Przytrzymaj Enter — atak · 1, 2, 3 — umiejętności · Spacja — unik · Q — mikstura · E — interakcja · I — ekwipunek · J — dziennik · T — talenty · Esc — pauza.')}</p><p class="credits">${text('Fantasy combat without gore. No purchases or advertisements. Original campaign & procedural art. Three.js · MIT license.', 'Walka fantasy bez drastycznych scen. Bez zakupów i reklam. Autorska kampania i grafika proceduralna. Three.js · licencja MIT.')}</p>`,
     );
   }
   $('modal-root').innerHTML = html;
@@ -740,6 +743,7 @@ $('modal-root').addEventListener('input', (e) => {
   if (el.id === 'setting-music') prefs.music = Number(el.value);
   if (el.id === 'setting-sfx') prefs.sfx = Number(el.value);
   if (el.id === 'setting-quality') prefs.quality = el.value;
+  if (el.id === 'setting-zoom') prefs.zoom = Number(el.value);
   if (el.id === 'setting-motion') prefs.reducedMotion = el.checked;
   applyPrefs();
   persistPrefs();
@@ -1007,6 +1011,7 @@ async function boot() {
         toast(text('Scene restored. Resume when ready.', 'Scena odtworzona. Możesz wznowić grę.'));
       },
     });
+    renderer.setQuality(prefs.quality);
     await renderer.loadAssets();
     game = Game.restore(sdk.loadData(SAVE), event) || new Game({ onEvent: event });
     selectedClass = game.class.id;

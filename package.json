@@ -1,6 +1,6 @@
 {
   "name": "runic-depths",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Runic Depths: The Hollow Covenant \u2014 bilingual isometric 3D action RPG",
   "type": "module",
   "private": true,
@@ -14,7 +14,8 @@
     "test:campaign": "BALANCE_SOAK=1 node --test --test-name-pattern=\"combat soak\" tests/engine.test.mjs",
     "format": "prettier --write src/*.js src/style.css index.html scripts/pack.mjs scripts/release.mjs",
     "test:graphics": "npm run build && node tests/graphics-assets.mjs",
-    "assets:surfaces": "python3 scripts/build-surface-assets.py && node scripts/build-surface-props.mjs"
+    "assets:surfaces": "python3 scripts/build-surface-assets.py && node scripts/build-surface-props.mjs",
+    "test:cinematic": "npm run build && node tests/cinematic-browser.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.12",

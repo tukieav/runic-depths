@@ -6,115 +6,139 @@
   "assets": [
     {
       "id": "warden",
-      "vertices": 4625,
-      "polygons": 4506,
-      "bones": 16,
+      "vertices": 13527,
+      "polygons": 14444,
+      "bones": 32,
       "clips": [
         "idle",
         "walk",
         "attack",
+        "attack_alt",
         "cast",
+        "dodge",
+        "hit",
         "death"
       ],
-      "bytes": 529332
+      "bytes": 1061568
     },
     {
       "id": "ranger",
-      "vertices": 4761,
-      "polygons": 4629,
-      "bones": 16,
+      "vertices": 14848,
+      "polygons": 15561,
+      "bones": 32,
       "clips": [
         "idle",
         "walk",
         "attack",
+        "attack_alt",
         "cast",
+        "dodge",
+        "hit",
         "death"
       ],
-      "bytes": 555344
+      "bytes": 1045316
     },
     {
       "id": "arcanist",
-      "vertices": 4491,
-      "polygons": 4356,
-      "bones": 16,
+      "vertices": 15188,
+      "polygons": 15773,
+      "bones": 32,
       "clips": [
         "idle",
         "walk",
         "attack",
+        "attack_alt",
         "cast",
+        "dodge",
+        "hit",
         "death"
       ],
-      "bytes": 517880
+      "bytes": 1056516
     },
     {
       "id": "reaver",
-      "vertices": 4699,
-      "polygons": 4604,
-      "bones": 16,
+      "vertices": 16518,
+      "polygons": 17300,
+      "bones": 32,
       "clips": [
         "idle",
         "walk",
         "attack",
+        "attack_alt",
         "cast",
+        "dodge",
+        "hit",
         "death"
       ],
-      "bytes": 533432
+      "bytes": 1222836
     },
     {
       "id": "oracle",
-      "vertices": 4771,
-      "polygons": 4670,
-      "bones": 16,
+      "vertices": 15377,
+      "polygons": 16059,
+      "bones": 32,
       "clips": [
         "idle",
         "walk",
         "attack",
+        "attack_alt",
         "cast",
+        "dodge",
+        "hit",
         "death"
       ],
-      "bytes": 557000
+      "bytes": 1067484
     },
     {
       "id": "skeleton",
-      "vertices": 4926,
-      "polygons": 4792,
-      "bones": 16,
+      "vertices": 10594,
+      "polygons": 10102,
+      "bones": 32,
       "clips": [
         "idle",
         "walk",
         "attack",
+        "attack_alt",
         "cast",
+        "dodge",
+        "hit",
         "death"
       ],
-      "bytes": 574116
+      "bytes": 842036
     },
     {
       "id": "wraith",
-      "vertices": 4293,
-      "polygons": 4154,
-      "bones": 16,
+      "vertices": 12930,
+      "polygons": 13636,
+      "bones": 32,
       "clips": [
         "idle",
         "walk",
         "attack",
+        "attack_alt",
         "cast",
+        "dodge",
+        "hit",
         "death"
       ],
-      "bytes": 499888
+      "bytes": 939976
     },
     {
       "id": "brute",
-      "vertices": 5371,
-      "polygons": 5240,
-      "bones": 16,
+      "vertices": 15692,
+      "polygons": 16716,
+      "bones": 32,
       "clips": [
         "idle",
         "walk",
         "attack",
+        "attack_alt",
         "cast",
+        "dodge",
+        "hit",
         "death"
       ],
-      "bytes": 590500
+      "bytes": 1214068
     }
   ]
 }

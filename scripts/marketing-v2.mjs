@@ -12,7 +12,11 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const output = resolve(root, 'marketing/v2');
 const rawDirectory = resolve(output, '.recordings');
 const captureQuality = process.env.RUNIC_CAPTURE_QUALITY === 'low' ? 'low' : 'high';
-const capturePixelRatio = 0.8;
+const hardwareCapture = process.env.RUNIC_CAPTURE_GPU === 'hardware';
+const capturePixelRatio = Math.max(
+  0.25,
+  Math.min(1, Number(process.env.RUNIC_CAPTURE_PIXEL_RATIO) || 0.8),
+);
 const mime = {
   '.html': 'text/html',
   '.js': 'text/javascript',
@@ -42,10 +46,12 @@ const gameURL = process.env.RUNIC_GAME_URL || `${base}/dist/?qa=1`;
 const browser = await chromium.launch({
   executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome',
   headless: true,
-  args: ['--no-sandbox', '--enable-unsafe-swiftshader'],
+  args: hardwareCapture
+    ? ['--no-sandbox', '--use-gl=angle', '--use-angle=gl']
+    : ['--no-sandbox', '--enable-unsafe-swiftshader'],
 });
 const manifest = {
-  version: '2.1',
+  version: '2.2',
   createdAt: new Date().toISOString(),
   requirements: 'https://docs.crazygames.com/requirements/game-covers/',
   artwork: {
@@ -58,9 +64,11 @@ const manifest = {
   covers: [],
   videos: [],
   staging:
-    'Preview encounters are staged before recording using the local QA interface: level 8 Rune Arcanist with ordinary level/talent stats, full health and mana, positioned in the floor 6 guardian arena. Recording then uses real keyboard movement, attacks and abilities in the actual game at normal wall-clock speed. No invulnerability, damage override, debug overlay or speed-up is used.',
-  capture: `Game graphics ${captureQuality} setting (${captureQuality === 'high' ? 'dynamic shadows and point lights enabled' : 'performance mode'}). Viewport is rendered at ${capturePixelRatio} internal pixel ratio for software Chromium capture; DOM/UI and output remain full resolution. No audio track or cursor. Each preview begins with its matching static cover for approximately 0.5 seconds.`,
+    'Preview encounters are staged before recording using the local QA interface: level 8 Rune Arcanist with ordinary level/talent stats, full health and mana, positioned in the floor 6 guardian arena. Recording then uses real keyboard movement, attacks and abilities without time scaling. No invulnerability, damage override, debug overlay or speed-up is used. Software rendering can reduce simulation progress; captureTiming records wall-clock and simulated durations separately.',
+  capture: `Game graphics ${captureQuality} setting (${captureQuality === 'high' ? 'HDR bloom, contact shading, shadows and point lights enabled' : 'performance mode'}). Viewport is rendered at ${capturePixelRatio} internal pixel ratio in Chromium with ${hardwareCapture ? 'hardware ANGLE/OpenGL requested' : 'software rendering'}; actual WebGL renderer is recorded for each take. DOM/UI and output remain full resolution. No audio track or cursor. Each preview begins with its matching static cover for approximately 0.5 seconds.`,
   captureQuality,
+  capturePixelRatio,
+  hardwareCapture,
   buildHashes: Object.fromEntries(
     await Promise.all(
       [
@@ -70,6 +78,7 @@ const manifest = {
         'assets/models/manifest.json',
         'assets/textures/manifest.json',
         'assets/props/manifest.json',
+        'assets/audio/manifest.json',
       ].map(async (name) => [
         name,
         createHash('sha256')
@@ -84,6 +93,9 @@ async function cover(name, width, height) {
   const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
   await page.goto(`${base}/marketing/v2/cover.html`);
   await page.waitForFunction(() => window.coverReady);
+  await page.evaluate(
+    () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+  );
   await page.screenshot({ path: resolve(output, name), animations: 'disabled' });
   await page.close();
   manifest.covers.push({
@@ -144,6 +156,8 @@ async function preview(name, width, height, openingCover) {
       game.hero.invulnerable = 0;
       qa.renderer.setQuality(captureQuality);
       qa.renderer.renderer.setPixelRatio(capturePixelRatio);
+      const bounds = qa.renderer.canvas.getBoundingClientRect();
+      qa.renderer.pipeline.resize(bounds.width, bounds.height, capturePixelRatio);
       qa.renderer.build(game);
       qa.renderer.render(game, 0.016);
       document.querySelector('#onboarding').hidden = true;
@@ -173,6 +187,18 @@ async function preview(name, width, height, openingCover) {
   await page.evaluate(() => {
     document.querySelector('#marketing-opening').remove();
     window.__RUNIC.game.mode = 'playing';
+    window.__marketingTiming = {
+      started: performance.now(),
+      gameTime: window.__RUNIC.game.time,
+      frames: 0,
+      active: true,
+    };
+    const countFrame = () => {
+      if (!window.__marketingTiming.active) return;
+      window.__marketingTiming.frames++;
+      requestAnimationFrame(countFrame);
+    };
+    requestAnimationFrame(countFrame);
   });
   const started = Date.now();
   const timeline = [
@@ -215,14 +241,29 @@ async function preview(name, width, height, openingCover) {
   }
   const remaining = 17500 - (Date.now() - started);
   if (remaining > 0) await page.waitForTimeout(remaining);
-  const snapshot = await page.evaluate(() => ({
-    mode: __RUNIC.game.mode,
-    hp: __RUNIC.game.hero.hp,
-    kills: __RUNIC.game.floorKills,
-    bossAlive: __RUNIC.game.enemies.some((e) => e.boss && !e.dead),
-    graphics: __RUNIC.renderer.getGraphicsStatus(),
-    shadowMapEnabled: __RUNIC.renderer.renderer.shadowMap.enabled,
-  }));
+  const snapshot = await page.evaluate(() => {
+    const timing = window.__marketingTiming;
+    timing.active = false;
+    const wallSeconds = (performance.now() - timing.started) / 1000;
+    const gl = __RUNIC.renderer.renderer.getContext();
+    const debug = gl.getExtension('WEBGL_debug_renderer_info');
+    return {
+      mode: __RUNIC.game.mode,
+      hp: __RUNIC.game.hero.hp,
+      kills: __RUNIC.game.floorKills,
+      bossAlive: __RUNIC.game.enemies.some((e) => e.boss && !e.dead),
+      graphics: __RUNIC.renderer.getGraphicsStatus(),
+      shadowMapEnabled: __RUNIC.renderer.renderer.shadowMap.enabled,
+      webglRenderer: debug ? gl.getParameter(debug.UNMASKED_RENDERER_WEBGL) : 'unavailable',
+      captureTiming: {
+        browserAnimationFrames: timing.frames,
+        averageAnimationFps: timing.frames / wallSeconds,
+        wallSeconds,
+        simulatedSeconds: __RUNIC.game.time - timing.gameTime,
+        scope: 'This Chromium capture session only; not a representative low-end-device benchmark.',
+      },
+    };
+  });
   const video = page.video();
   await context.close();
   const raw = await video.path();
@@ -324,10 +365,19 @@ async function preview(name, width, height, openingCover) {
   ]);
   const metadata = JSON.parse(probe),
     streams = metadata.streams;
+  const videoStream = streams.find((stream) => stream.codec_type === 'video');
+  if (videoStream?.width !== width || videoStream?.height !== height)
+    throw new Error(`Preview has unexpected dimensions: ${JSON.stringify(videoStream)}`);
+  if (Number(metadata.format.duration) < 15 || Number(metadata.format.duration) > 20)
+    throw new Error(
+      `Preview duration is outside the 15–20 second requirement: ${metadata.format.duration}`,
+    );
   if (streams.some((stream) => stream.codec_type === 'audio'))
     throw new Error('Preview unexpectedly contains audio');
   if (Number(metadata.format.size) > 50 * 1024 * 1024) throw new Error('Preview exceeds 50 MB');
   if (snapshot.mode !== 'playing') throw new Error(`Preview interrupted by ${snapshot.mode} panel`);
+  if (hardwareCapture && /swiftshader|llvmpipe|unavailable/i.test(snapshot.webglRenderer))
+    throw new Error(`Hardware capture unexpectedly used ${snapshot.webglRenderer}`);
   if (errors.length) throw new Error(`Preview browser errors: ${errors.join('; ')}`);
   if (snapshot.graphics.surfaces.loaded !== 15 || snapshot.graphics.props.loaded !== 2)
     throw new Error('Preview used incomplete surface/prop assets');
@@ -356,6 +406,12 @@ try {
   if (!process.argv.includes('--covers-only')) {
     await preview('video-landscape.mp4', 1920, 1080, 'cover-16x9.png');
     await preview('video-portrait.mp4', 720, 1080, 'cover-2x3.png');
+  }
+  for (const [name, expected] of Object.entries(manifest.buildHashes)) {
+    const actual = createHash('sha256')
+      .update(await readFile(resolve(root, 'dist', name)))
+      .digest('hex');
+    if (actual !== expected) throw new Error(`Build changed during capture: ${name}`);
   }
   await writeFile(resolve(output, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 } finally {

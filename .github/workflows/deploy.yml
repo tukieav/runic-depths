@@ -11,7 +11,45 @@ concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
+  browser-checks:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: graphics
+            command: node tests/graphics-assets.mjs
+            evidence: qa/graphics
+          - suite: cinematic
+            command: node tests/cinematic-browser.mjs
+            evidence: qa/cinematic
+          - suite: gameplay
+            command: node tests/arpg-browser.mjs
+            evidence: qa/arpg
+          - suite: platform-audio
+            command: node tests/platform-browser.mjs && node tests/audio-browser.mjs
+            evidence: qa/arpg/platform-results.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Install test browser
+        run: npx playwright install --with-deps chromium
+      - name: Test ${{ matrix.suite }}
+        run: |
+          export CHROME_BIN="$(node --input-type=module -e 'import {chromium} from "playwright"; process.stdout.write(chromium.executablePath())')"
+          ${{ matrix.command }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qa-${{ matrix.suite }}
+          path: ${{ matrix.evidence }}
   build-deploy:
+    needs: browser-checks
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -26,24 +64,11 @@ jobs:
       - run: npm test
       - run: npm run test:campaign
       - run: npm run build
-      - name: Install test browser
-        run: npx playwright install --with-deps chromium
-      - name: Test gameplay, touch, platform lifecycle and audio
-        run: |
-          export CHROME_BIN="$(node --input-type=module -e 'import {chromium} from "playwright"; process.stdout.write(chromium.executablePath())')"
-          node tests/graphics-assets.mjs
-          node tests/arpg-browser.mjs
-          node tests/platform-browser.mjs
-          node tests/audio-browser.mjs
       - run: node scripts/release.mjs
       - uses: actions/upload-artifact@v4
-        if: always()
         with:
-          name: runic-depths-qa-and-package
-          path: |
-            qa/arpg
-            qa/graphics
-            releases
+          name: runic-depths-package
+          path: releases
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

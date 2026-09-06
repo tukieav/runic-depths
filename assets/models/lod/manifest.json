@@ -1,0 +1,169 @@
+{
+  "generator": "Blender 4.5 LTS / scripts/build-character-lods.py",
+  "license": "CC0-1.0",
+  "original": true,
+  "purpose": "Performance mode only",
+  "coordinates": "+Y up, +Z forward, feet at Y=0",
+  "assets": [
+    {
+      "id": "warden",
+      "source": "source-art/characters/warden.blend",
+      "vertices": 2040,
+      "triangles": 3500,
+      "originalTriangles": 26458,
+      "bones": 32,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ],
+      "textureSize": 256,
+      "bytes": 295592
+    },
+    {
+      "id": "ranger",
+      "source": "source-art/characters/ranger.blend",
+      "vertices": 2057,
+      "triangles": 3498,
+      "originalTriangles": 29064,
+      "bones": 32,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ],
+      "textureSize": 256,
+      "bytes": 278796
+    },
+    {
+      "id": "arcanist",
+      "source": "source-art/characters/arcanist.blend",
+      "vertices": 2061,
+      "triangles": 3498,
+      "originalTriangles": 29734,
+      "bones": 32,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ],
+      "textureSize": 256,
+      "bytes": 277480
+    },
+    {
+      "id": "reaver",
+      "source": "source-art/characters/reaver.blend",
+      "vertices": 2056,
+      "triangles": 3498,
+      "originalTriangles": 32418,
+      "bones": 32,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ],
+      "textureSize": 256,
+      "bytes": 305256
+    },
+    {
+      "id": "oracle",
+      "source": "source-art/characters/oracle.blend",
+      "vertices": 2075,
+      "triangles": 3498,
+      "originalTriangles": 30090,
+      "bones": 32,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ],
+      "textureSize": 256,
+      "bytes": 274916
+    },
+    {
+      "id": "skeleton",
+      "source": "source-art/characters/skeleton.blend",
+      "vertices": 1984,
+      "triangles": 3500,
+      "originalTriangles": 20720,
+      "bones": 32,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ],
+      "textureSize": 256,
+      "bytes": 273032
+    },
+    {
+      "id": "wraith",
+      "source": "source-art/characters/wraith.blend",
+      "vertices": 2022,
+      "triangles": 3498,
+      "originalTriangles": 25298,
+      "bones": 32,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ],
+      "textureSize": 256,
+      "bytes": 273936
+    },
+    {
+      "id": "brute",
+      "source": "source-art/characters/brute.blend",
+      "vertices": 2032,
+      "triangles": 3498,
+      "originalTriangles": 30814,
+      "bones": 32,
+      "clips": [
+        "attack",
+        "attack_alt",
+        "cast",
+        "death",
+        "dodge",
+        "hit",
+        "idle",
+        "walk"
+      ],
+      "textureSize": 256,
+      "bytes": 303600
+    }
+  ]
+}

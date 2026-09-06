@@ -1,6 +1,6 @@
 {
-  "version": "2.1",
-  "createdAt": "2026-09-06T03:28:42.456Z",
+  "version": "2.2",
+  "createdAt": "2026-09-06T07:34:26.145Z",
   "requirements": "https://docs.crazygames.com/requirements/game-covers/",
   "artwork": {
     "source": "../../assets/hero-atlas.png",
@@ -13,19 +13,19 @@
       "file": "cover-16x9.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 3020237
+      "bytes": 3031814
     },
     {
       "file": "cover-1x1.png",
       "width": 800,
       "height": 800,
-      "bytes": 934985
+      "bytes": 944571
     },
     {
       "file": "cover-2x3.png",
       "width": 800,
       "height": 1200,
-      "bytes": 1268795
+      "bytes": 1283587
     }
   ],
   "videos": [
@@ -46,147 +46,181 @@
       ],
       "format": {
         "duration": "17.966667",
-        "size": "4463690"
+        "size": "8835699"
       },
       "openingCover": "cover-16x9.png",
       "openingCoverSeconds": 0.5,
       "errors": [],
       "endState": {
         "mode": "playing",
-        "hp": 203,
-        "kills": 6,
-        "bossAlive": true,
+        "hp": 230,
+        "kills": 9,
+        "bossAlive": false,
         "graphics": {
           "characters": {
             "loaded": [
+              "skeleton",
               "warden",
               "ranger",
               "oracle",
               "reaver",
-              "wraith",
               "arcanist",
-              "skeleton",
+              "wraith",
               "brute"
             ],
+            "lodLoaded": [],
+            "lodFailed": {},
             "failed": {},
             "ready": true,
             "assets": {
-              "warden": {
-                "id": "warden",
+              "skeleton": {
+                "id": "skeleton",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 6071,
-                "triangles": 8916,
-                "bytes": 529332,
+                "bones": 32,
+                "vertices": 17200,
+                "triangles": 20720,
+                "bytes": 842036,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
+                  "dodge",
+                  "hit",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "warden": {
+                "id": "warden",
+                "detail": "high",
+                "meshes": 1,
+                "bones": 32,
+                "vertices": 23234,
+                "triangles": 26458,
+                "bytes": 1061568,
+                "clips": [
+                  "attack",
+                  "attack_alt",
+                  "cast",
+                  "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
               "ranger": {
                 "id": "ranger",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 6373,
-                "triangles": 9230,
-                "bytes": 555344,
+                "bones": 32,
+                "vertices": 21496,
+                "triangles": 29064,
+                "bytes": 1045316,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
               "oracle": {
                 "id": "oracle",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 6324,
-                "triangles": 9236,
-                "bytes": 557000,
+                "bones": 32,
+                "vertices": 22051,
+                "triangles": 30090,
+                "bytes": 1067484,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
               "reaver": {
                 "id": "reaver",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 6260,
-                "triangles": 9112,
-                "bytes": 533432,
+                "bones": 32,
+                "vertices": 27319,
+                "triangles": 32418,
+                "bytes": 1222836,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
-                  "idle",
-                  "walk"
-                ]
-              },
-              "wraith": {
-                "id": "wraith",
-                "meshes": 1,
-                "bones": 16,
-                "vertices": 5630,
-                "triangles": 8316,
-                "bytes": 499888,
-                "clips": [
-                  "attack",
-                  "cast",
-                  "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
               "arcanist": {
                 "id": "arcanist",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 5904,
-                "triangles": 8704,
-                "bytes": 517880,
+                "bones": 32,
+                "vertices": 21774,
+                "triangles": 29734,
+                "bytes": 1056516,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
-              "skeleton": {
-                "id": "skeleton",
+              "wraith": {
+                "id": "wraith",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 6702,
-                "triangles": 9608,
-                "bytes": 574116,
+                "bones": 32,
+                "vertices": 18539,
+                "triangles": 25298,
+                "bytes": 939976,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
               "brute": {
                 "id": "brute",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 7232,
-                "triangles": 10432,
-                "bytes": 590500,
+                "bones": 32,
+                "vertices": 27460,
+                "triangles": 30814,
+                "bytes": 1214068,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
@@ -207,10 +241,18 @@
             "ready": true
           },
           "shadows": true,
-          "drawCalls": 114,
-          "triangles": 297460
+          "drawCalls": 284,
+          "triangles": 344481
         },
-        "shadowMapEnabled": true
+        "shadowMapEnabled": true,
+        "webglRenderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 4090/PCIe/SSE2, OpenGL ES 3.2)",
+        "captureTiming": {
+          "browserAnimationFrames": 1037,
+          "averageAnimationFps": 59.24597075980967,
+          "wallSeconds": 17.50329999999702,
+          "simulatedSeconds": 17.46589999999987,
+          "scope": "This Chromium capture session only; not a representative low-end-device benchmark."
+        }
       }
     },
     {
@@ -230,147 +272,181 @@
       ],
       "format": {
         "duration": "17.966667",
-        "size": "2806556"
+        "size": "5007107"
       },
       "openingCover": "cover-2x3.png",
       "openingCoverSeconds": 0.5,
       "errors": [],
       "endState": {
         "mode": "playing",
-        "hp": 194,
-        "kills": 5,
-        "bossAlive": true,
+        "hp": 221,
+        "kills": 8,
+        "bossAlive": false,
         "graphics": {
           "characters": {
             "loaded": [
-              "arcanist",
               "warden",
+              "arcanist",
+              "reaver",
+              "skeleton",
               "ranger",
               "oracle",
-              "reaver",
               "wraith",
-              "skeleton",
               "brute"
             ],
+            "lodLoaded": [],
+            "lodFailed": {},
             "failed": {},
             "ready": true,
             "assets": {
-              "arcanist": {
-                "id": "arcanist",
-                "meshes": 1,
-                "bones": 16,
-                "vertices": 5904,
-                "triangles": 8704,
-                "bytes": 517880,
-                "clips": [
-                  "attack",
-                  "cast",
-                  "death",
-                  "idle",
-                  "walk"
-                ]
-              },
               "warden": {
                 "id": "warden",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 6071,
-                "triangles": 8916,
-                "bytes": 529332,
+                "bones": 32,
+                "vertices": 23234,
+                "triangles": 26458,
+                "bytes": 1061568,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
-              "ranger": {
-                "id": "ranger",
+              "arcanist": {
+                "id": "arcanist",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 6373,
-                "triangles": 9230,
-                "bytes": 555344,
+                "bones": 32,
+                "vertices": 21774,
+                "triangles": 29734,
+                "bytes": 1056516,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
-                  "idle",
-                  "walk"
-                ]
-              },
-              "oracle": {
-                "id": "oracle",
-                "meshes": 1,
-                "bones": 16,
-                "vertices": 6324,
-                "triangles": 9236,
-                "bytes": 557000,
-                "clips": [
-                  "attack",
-                  "cast",
-                  "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
               "reaver": {
                 "id": "reaver",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 6260,
-                "triangles": 9112,
-                "bytes": 533432,
+                "bones": 32,
+                "vertices": 27319,
+                "triangles": 32418,
+                "bytes": 1222836,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
-                  "idle",
-                  "walk"
-                ]
-              },
-              "wraith": {
-                "id": "wraith",
-                "meshes": 1,
-                "bones": 16,
-                "vertices": 5630,
-                "triangles": 8316,
-                "bytes": 499888,
-                "clips": [
-                  "attack",
-                  "cast",
-                  "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
               "skeleton": {
                 "id": "skeleton",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 6702,
-                "triangles": 9608,
-                "bytes": 574116,
+                "bones": 32,
+                "vertices": 17200,
+                "triangles": 20720,
+                "bytes": 842036,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
+                  "dodge",
+                  "hit",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "ranger": {
+                "id": "ranger",
+                "detail": "high",
+                "meshes": 1,
+                "bones": 32,
+                "vertices": 21496,
+                "triangles": 29064,
+                "bytes": 1045316,
+                "clips": [
+                  "attack",
+                  "attack_alt",
+                  "cast",
+                  "death",
+                  "dodge",
+                  "hit",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "oracle": {
+                "id": "oracle",
+                "detail": "high",
+                "meshes": 1,
+                "bones": 32,
+                "vertices": 22051,
+                "triangles": 30090,
+                "bytes": 1067484,
+                "clips": [
+                  "attack",
+                  "attack_alt",
+                  "cast",
+                  "death",
+                  "dodge",
+                  "hit",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "wraith": {
+                "id": "wraith",
+                "detail": "high",
+                "meshes": 1,
+                "bones": 32,
+                "vertices": 18539,
+                "triangles": 25298,
+                "bytes": 939976,
+                "clips": [
+                  "attack",
+                  "attack_alt",
+                  "cast",
+                  "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
               },
               "brute": {
                 "id": "brute",
+                "detail": "high",
                 "meshes": 1,
-                "bones": 16,
-                "vertices": 7232,
-                "triangles": 10432,
-                "bytes": 590500,
+                "bones": 32,
+                "vertices": 27460,
+                "triangles": 30814,
+                "bytes": 1214068,
                 "clips": [
                   "attack",
+                  "attack_alt",
                   "cast",
                   "death",
+                  "dodge",
+                  "hit",
                   "idle",
                   "walk"
                 ]
@@ -391,22 +467,33 @@
             "ready": true
           },
           "shadows": true,
-          "drawCalls": 136,
-          "triangles": 326312
+          "drawCalls": 269,
+          "triangles": 325032
         },
-        "shadowMapEnabled": true
+        "shadowMapEnabled": true,
+        "webglRenderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 4090/PCIe/SSE2, OpenGL ES 3.2)",
+        "captureTiming": {
+          "browserAnimationFrames": 1048,
+          "averageAnimationFps": 59.85698293393658,
+          "wallSeconds": 17.50839999999106,
+          "simulatedSeconds": 17.51599999999986,
+          "scope": "This Chromium capture session only; not a representative low-end-device benchmark."
+        }
       }
     }
   ],
-  "staging": "Preview encounters are staged before recording using the local QA interface: level 8 Rune Arcanist with ordinary level/talent stats, full health and mana, positioned in the floor 6 guardian arena. Recording then uses real keyboard movement, attacks and abilities in the actual game at normal wall-clock speed. No invulnerability, damage override, debug overlay or speed-up is used.",
-  "capture": "Game graphics high setting (dynamic shadows and point lights enabled). Viewport is rendered at 0.8 internal pixel ratio for software Chromium capture; DOM/UI and output remain full resolution. No audio track or cursor. Each preview begins with its matching static cover for approximately 0.5 seconds.",
+  "staging": "Preview encounters are staged before recording using the local QA interface: level 8 Rune Arcanist with ordinary level/talent stats, full health and mana, positioned in the floor 6 guardian arena. Recording then uses real keyboard movement, attacks and abilities without time scaling. No invulnerability, damage override, debug overlay or speed-up is used. Software rendering can reduce simulation progress; captureTiming records wall-clock and simulated durations separately.",
+  "capture": "Game graphics high setting (HDR bloom, contact shading, shadows and point lights enabled). Viewport is rendered at 1 internal pixel ratio in Chromium with hardware ANGLE/OpenGL requested; actual WebGL renderer is recorded for each take. DOM/UI and output remain full resolution. No audio track or cursor. Each preview begins with its matching static cover for approximately 0.5 seconds.",
   "captureQuality": "high",
+  "capturePixelRatio": 1,
+  "hardwareCapture": true,
   "buildHashes": {
-    "bundle.js": "484b97e2464832ab07874b41ad3680efce092b6e8c7cfefa63d713daf162c31e",
+    "bundle.js": "7d1bc25bf4bad2084324cecdd4b3afbe37833a6c783540160aceb875b689a32c",
     "bundle.css": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5",
     "index.html": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685",
-    "assets/models/manifest.json": "5b02f7947e42ca45aeaaa558aae03399cb0131ee7f641fd0555b6ff42e154fda",
+    "assets/models/manifest.json": "13f573dd02d173b17e1051d799dacb0ffe674eb730ae20e0cc74d5399ae97046",
     "assets/textures/manifest.json": "d673eb80b31fa21470fb78ae1473c77b609215142a6e3a1fe110b62d00d80cb5",
-    "assets/props/manifest.json": "24f8fb5bf7cd5def2b35ffe6aef7e48ec0a7e3a2c7a0360a0ca512e715ca93de"
+    "assets/props/manifest.json": "24f8fb5bf7cd5def2b35ffe6aef7e48ec0a7e3a2c7a0360a0ca512e715ca93de",
+    "assets/audio/manifest.json": "79d6cebc55095e716dec19f911a5800bd936cbafd91b50730ca2f955e55267c1"
   }
 }

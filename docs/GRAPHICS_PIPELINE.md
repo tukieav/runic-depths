@@ -56,7 +56,9 @@ The original character workshop is `scripts/build-character-assets.py`, run with
 Blender in background mode. It saves editable Blender scenes separately from the
 browser payload and exports GLB files into `assets/models/`. The five playable
 classes and the skeleton, wraith and brute families have UV-mapped meshes, weighted
-skeletons and idle, walk, attack, cast and death clips. The manifest records each
+32-joint skeletons and idle, walk, two attack variants, cast, dodge, hit and death clips.
+Each model uses four 512px PBR maps and standard KHR_mesh_quantization for
+compact UVs, normals and weights; no runtime geometry decoder is required. The manifest records each
 export's mesh, skeleton, clip and byte counts; the runtime audit inspects the actual
 files and live skinning independently.
 
@@ -88,3 +90,49 @@ case holds transfers open to verify that asset deadlines bound startup time.
 The generated report records the exact bundle and asset hashes. Headless Chromium
 with software WebGL provides integration evidence; its frame rate is not a
 physical mobile/Chromebook benchmark and it does not constitute portal approval.
+
+## Version 2.2 presentation
+
+The high setting renders an HDR scene through depth-based contact occlusion,
+thresholded bloom, color grading, tone mapping and FXAA. This is a compact screen
+space approximation of contact shading, not ray tracing or a full ambient
+occlusion solution. `renderer.postprocessingStatus()` exposes the active chain.
+Lost-context render targets and environment probes are retired during context
+loss, then recreated after restoration without deleting obsolete GPU handles.
+Performance mode and devices without floating-point color buffers use direct
+rendering; the latter also skips the HDR environment probe.
+
+Original radial stone reliefs replace the flat archive and void floor markers.
+Exploration masks shade unseen dungeon surfaces. Static geometry is grouped by
+material and spatial cell so offscreen geometry can be culled. Nearest torch
+selection updates at four Hz. Camera zoom is adjustable from 0.8 to 1.35; the
+reduced-motion preference suppresses impact shake and optional effects.
+
+`src/combat-presentation.js` provides tapered blade ribbons and ballistic sparks.
+Hit and dodge animation clips are connected to real damage and dodge state, with
+animation recovery independent of gameplay damage calculations. New original
+sampled chapter music and combat effects are authored by
+`scripts/build-audio-assets.py`; audio loads after a user gesture and retains a
+procedural fallback. All these features are verified against the built game;
+they do not establish AAA production quality or portal acceptance.
+
+## Performance models and materials
+
+High quality retains the full authored models and PBR lighting. Performance mode
+selects separate original 3,498–3,500-triangle GLBs with the same 32-joint rig and
+eight clips. Their 256px atlases and quantized attributes total about 2.18 MiB for
+all eight models. `scripts/build-character-lods.py` derives these optional assets
+from the editable high-detail scenes; the full exports are not overwritten.
+
+Performance materials retain color textures and emissive detail with vertex-lit
+Lambert shading. They avoid normal/roughness/environment fragment calculations,
+dynamic shadows and postprocessing. Missing LOD assets fall back to the full
+model. Switching quality reloads presentation while preserving the game state.
+The browser tests verify that real scene geometry and materials change with the
+setting. Hardware and software rendering measurements must be labelled separately.
+
+The character instance owns its cloned skeleton and GPU bone texture. Removing an
+actor disposes that skeleton while preserving shared mesh and surface resources.
+The animated portal owns its final displayed material in both quality settings,
+so unlocking updates the rendered color and glow. Browser regressions inspect
+GPU texture counts across rebuilds and actual locked/unlocked portal materials.
