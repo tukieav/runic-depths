@@ -18,6 +18,7 @@ const report = {
   frames: [],
   motion: [],
   characters: [],
+  diagnostics: [],
   filter: process.env.CINEMATIC_FILTER || null,
 };
 await mkdir(output, { recursive: true });
@@ -78,6 +79,51 @@ const frames = (page) =>
   page.evaluate(
     () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
   );
+
+async function graphicsDiagnostic(page) {
+  return page.evaluate(() => {
+    const runic = window.__RUNIC;
+    const renderer = runic?.renderer;
+    const actor = renderer?.actors.get('$hero');
+    const characters = renderer?.getGraphicsStatus().characters;
+    const materials = new Set();
+    actor?.visual?.root.traverse((node) => {
+      if (node.isSkinnedMesh)
+        for (const material of [].concat(node.material)) materials.add(material.type);
+    });
+    return {
+      mode: runic?.game.mode,
+      classId: runic?.game.hero.classId,
+      quality: renderer?.quality,
+      heroDetail: actor?.visual?.stats.detail,
+      heroTriangles: actor?.visual?.stats.triangles,
+      heroMaterials: [...materials],
+      loaded: characters?.loaded,
+      failed: characters?.failed,
+      lodLoaded: characters?.lodLoaded,
+      lodFailed: characters?.lodFailed,
+      postprocessing: renderer?.postprocessingStatus(),
+      contextLost: renderer?.renderer.getContext().isContextLost(),
+    };
+  });
+}
+async function waitForDetail(page, expected, label) {
+  try {
+    await page.waitForFunction(
+      (value) => window.__RUNIC.renderer.actors.get('$hero')?.visual?.stats.detail === value,
+      expected,
+      { timeout: 20000 },
+    );
+  } catch (error) {
+    const diagnostic = await graphicsDiagnostic(page).catch((reason) => ({
+      unavailable: String(reason),
+    }));
+    report.diagnostics.push({ label, expected, ...diagnostic });
+    throw new Error(
+      `${label}: detail did not become ${expected}. Actual graphics state: ${JSON.stringify(diagnostic)}\n${error.message}`,
+    );
+  }
+}
 
 async function inspectFrame(page, label) {
   const result = await page.evaluate(() => {
@@ -331,12 +377,7 @@ try {
     ]) {
       await page.setViewportSize({ width, height });
       await page.evaluate((value) => window.__RUNIC.renderer.setQuality(value), quality);
-      await page.waitForFunction(
-        (expected) =>
-          window.__RUNIC.renderer.actors.get('$hero')?.visual?.stats.detail === expected,
-        quality,
-        { timeout: 20000 },
-      );
+      await waitForDetail(page, quality, `quality switch to ${quality}`);
       await frames(page);
       const frame = await inspectFrame(page, `quality-${quality}-${width}x${height}`);
       assert.equal(frame.quality, quality);
@@ -485,11 +526,7 @@ try {
     async () => {
       await start(page, 'warden');
       await page.evaluate(() => window.__RUNIC.renderer.setQuality('low'));
-      await page.waitForFunction(
-        () => window.__RUNIC.renderer.actors.get('$hero')?.visual?.stats.detail === 'low',
-        null,
-        { timeout: 20000 },
-      );
+      await waitForDetail(page, 'low', 'performance portal model');
       await page.evaluate(() => {
         const { game, renderer } = window.__RUNIC;
         const portal = game.objects.find((object) => object.type === 'portal');
@@ -583,6 +620,107 @@ try {
     },
   );
   await page.close();
+  await check(
+    'delayed optional LOD transfers do not delay Performance materials or gameplay',
+    async () => {
+      const delayed = await browser.newPage({
+        viewport: { width: 907, height: 510 },
+        deviceScaleFactor: 1,
+      });
+      const pending = [];
+      delayed.on('pageerror', (error) => report.errors.push(error.message));
+      delayed.on('console', (message) => {
+        if (message.type() === 'error') report.errors.push(message.text());
+      });
+      await delayed.route(/\/assets\/models\/lod\//, (route) => {
+        pending.push(route);
+      });
+      try {
+        await delayed.goto(`${base}/?qa=1`);
+        await delayed.waitForFunction(() => window.__RUNIC?.game, null, { timeout: 30000 });
+        await start(delayed, 'warden');
+        const initial = await graphicsDiagnostic(delayed);
+        assert.equal(initial.heroDetail, 'high', 'fixture starts with a full-quality loaded model');
+        await delayed.evaluate(() => {
+          window.__RUNIC.game.gold = 137;
+        });
+        await delayed.locator('#pause-button').click();
+        const switchedAt = Date.now();
+        await delayed.locator('#setting-quality').selectOption('low');
+        await delayed.waitForFunction(
+          () => {
+            const visual = window.__RUNIC.renderer.actors.get('$hero')?.visual;
+            const materials = [];
+            visual?.root.traverse((node) => {
+              if (node.isSkinnedMesh) materials.push(...[].concat(node.material));
+            });
+            return (
+              materials.length > 0 && materials.every((material) => material.isMeshLambertMaterial)
+            );
+          },
+          null,
+          { timeout: 10000 },
+        );
+        const whileHeld = await graphicsDiagnostic(delayed);
+        assert.ok(pending.length > 0, 'actual LOD requests are being held');
+        assert.equal(
+          whileHeld.heroDetail,
+          'high',
+          'existing geometry remains usable before optional files arrive',
+        );
+        assert.equal(whileHeld.quality, 'low');
+        assert.deepEqual(
+          whileHeld.heroMaterials,
+          ['MeshLambertMaterial'],
+          'lighter materials apply while LOD transfer is still pending',
+        );
+        assert.equal(whileHeld.lodLoaded.length, 0);
+        await delayed.keyboard.press('Escape');
+        assert.equal(await delayed.evaluate(() => window.__RUNIC.game.mode), 'playing');
+        const beforeClock = await delayed.evaluate(() => window.__RUNIC.game.time);
+        await delayed.waitForFunction(
+          (time) => window.__RUNIC.game.time > time + 0.1,
+          beforeClock,
+          { timeout: 10000 },
+        );
+        // This exceeds the former 4.5-second asset deadline. Keep files pending
+        // through the check, then release real responses rather than mocking GLBs.
+        await delayed.waitForTimeout(Math.max(0, 5600 - (Date.now() - switchedAt)));
+        const releaseAt = Date.now();
+        await Promise.all(pending.splice(0).map((route) => route.continue()));
+        await waitForDetail(delayed, 'low', 'late optional LOD arrival');
+        const afterArrival = await graphicsDiagnostic(delayed);
+        assert.ok(afterArrival.heroTriangles < 5000);
+        assert.deepEqual(afterArrival.lodFailed, {});
+        assert.equal(
+          await delayed.evaluate(() => window.__RUNIC.game.gold),
+          137,
+          'late visual refresh preserves the current journey',
+        );
+        report.delayedLods = {
+          heldMilliseconds: releaseAt - switchedAt,
+          simulationAdvancedWhilePending: true,
+          initial,
+          whileHeld,
+          afterArrival,
+        };
+        await inspectFrame(delayed, 'delayed-lod-performance-arrived');
+      } catch (error) {
+        const diagnostic = await graphicsDiagnostic(delayed).catch((reason) => ({
+          unavailable: String(reason),
+        }));
+        report.diagnostics.push({
+          label: 'delayed LOD fixture',
+          pendingRequests: pending.length,
+          ...diagnostic,
+        });
+        throw error;
+      } finally {
+        await Promise.allSettled(pending.map((route) => route.abort('failed')));
+        await delayed.close();
+      }
+    },
+  );
   await check(
     'touch landscape and portrait preserve scene and combat control visibility',
     async () => {

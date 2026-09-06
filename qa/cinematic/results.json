@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T07:40:38.722Z",
+  "generatedAt": "2026-09-06T08:05:33.139Z",
   "scope": "Built game, Chromium software WebGL, scripted visual fixtures. No physical-device performance or AAA/portal certification.",
   "buildHashes": {
     "THREE-LICENSE.txt": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
@@ -75,7 +75,7 @@
     "assets/textures/runestone-normal.webp": "49cde2a4770d3f6f9570b256ed4dad07a2aafbd3bfb8229a825ee938b85be882",
     "assets/textures/runestone-roughness.webp": "bd82af98e274b6201908edd8ca5a2669df179abd25eba5ca140d96630ff470c3",
     "bundle.css": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5",
-    "bundle.js": "7d1bc25bf4bad2084324cecdd4b3afbe37833a6c783540160aceb875b689a32c",
+    "bundle.js": "273c6d408f2d57f9173877c62e854cbf248250540332ca257d476892ca923477",
     "index.html": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685"
   },
   "passed": [
@@ -86,6 +86,7 @@
     "postprocessed scene survives WebGL context restoration",
     "performance portal visibly changes from locked to unlocked after real kill events",
     "rebuilding a warmed character and NPC scene does not accumulate GPU textures",
+    "delayed optional LOD transfers do not delay Performance materials or gameplay",
     "touch landscape and portrait preserve scene and combat control visibility",
     "missing floating-point color targets keeps direct-render gameplay visible"
   ],
@@ -107,9 +108,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 69.54302238281777,
-      "luminanceDeviation": 33.73686846423962,
-      "heroPixels": 92.65122677605984,
+      "meanLuminance": 70.925148856773,
+      "luminanceDeviation": 35.30122636639928,
+      "heroPixels": 92.65122677605973,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -117,8 +118,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 240,
-      "triangles": 281583,
+      "drawCalls": 225,
+      "triangles": 262805,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -171,8 +172,8 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 71.79971111718883,
-      "luminanceDeviation": 41.5225176465864,
+      "meanLuminance": 74.09945478645501,
+      "luminanceDeviation": 42.698455198473695,
       "heroPixels": 92.65122677605967,
       "heroVisible": true,
       "animation": "idle",
@@ -181,8 +182,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 237,
-      "triangles": 253318,
+      "drawCalls": 240,
+      "triangles": 265243,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -235,8 +236,8 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 68.14525826041681,
-      "luminanceDeviation": 36.28936820494405,
+      "meanLuminance": 67.07966247395619,
+      "luminanceDeviation": 36.48977425961983,
       "heroPixels": 92.65122677605967,
       "heroVisible": true,
       "animation": "idle",
@@ -245,8 +246,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 230,
-      "triangles": 250371,
+      "drawCalls": 214,
+      "triangles": 261743,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -299,8 +300,8 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 64.88894701302364,
-      "luminanceDeviation": 44.68372763099717,
+      "meanLuminance": 61.943134848959524,
+      "luminanceDeviation": 39.89740943292449,
       "heroPixels": 92.65122677605967,
       "heroVisible": true,
       "animation": "idle",
@@ -309,8 +310,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 198,
-      "triangles": 241512,
+      "drawCalls": 203,
+      "triangles": 248741,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -363,9 +364,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 68.19918085937441,
-      "luminanceDeviation": 39.38878693919953,
-      "heroPixels": 92.65122677605967,
+      "meanLuminance": 68.5262603359367,
+      "luminanceDeviation": 38.717315125587646,
+      "heroPixels": 92.65122677605979,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -374,7 +375,7 @@
         "MeshStandardMaterial"
       ],
       "drawCalls": 211,
-      "triangles": 251136,
+      "triangles": 252831,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -427,8 +428,8 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 60.687834765624686,
-      "luminanceDeviation": 33.64846857380777,
+      "meanLuminance": 60.77747040885594,
+      "luminanceDeviation": 33.3943610718032,
       "heroPixels": 92.65122677605967,
       "heroVisible": true,
       "animation": "idle",
@@ -437,8 +438,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 230,
-      "triangles": 249758,
+      "drawCalls": 225,
+      "triangles": 245844,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -491,9 +492,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 65.7615572708344,
-      "luminanceDeviation": 33.61977064497185,
-      "heroPixels": 74.12098142084778,
+      "meanLuminance": 65.02227062239857,
+      "luminanceDeviation": 33.17678977311179,
+      "heroPixels": 74.12098142084784,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -501,8 +502,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 236,
-      "triangles": 284924,
+      "drawCalls": 224,
+      "triangles": 272767,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -553,11 +554,11 @@
         "left": -10.225980392156861,
         "right": 10.225980392156861
       },
-      "visibleFraction": 0.9855729166666667,
+      "visibleFraction": 0.9881380208333334,
       "clippedFraction": 0,
-      "meanLuminance": 37.44685553385387,
-      "luminanceDeviation": 34.120124075113466,
-      "heroPixels": 52.50236183976716,
+      "meanLuminance": 37.85300489322958,
+      "luminanceDeviation": 33.97631760825733,
+      "heroPixels": 52.50236183976722,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -565,8 +566,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 120,
-      "triangles": 128664,
+      "drawCalls": 117,
+      "triangles": 122496,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -614,9 +615,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0.000013020833333333334,
-      "meanLuminance": 73.58908275521199,
-      "luminanceDeviation": 36.84518086157755,
-      "heroPixels": 92.65122677605967,
+      "meanLuminance": 73.1202473932334,
+      "luminanceDeviation": 37.4422864972849,
+      "heroPixels": 92.65122677605979,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -624,8 +625,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 226,
-      "triangles": 266064,
+      "drawCalls": 213,
+      "triangles": 259509,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -678,8 +679,8 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0,
-      "meanLuminance": 70.56990837760452,
-      "luminanceDeviation": 34.696802595536234,
+      "meanLuminance": 70.53481635416706,
+      "luminanceDeviation": 34.706248516026214,
       "heroPixels": 92.65122677605967,
       "heroVisible": true,
       "animation": "idle",
@@ -688,8 +689,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 228,
-      "triangles": 269549,
+      "drawCalls": 223,
+      "triangles": 270072,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -742,9 +743,9 @@
       },
       "visibleFraction": 1,
       "clippedFraction": 0.000013020833333333334,
-      "meanLuminance": 73.34472771875747,
-      "luminanceDeviation": 36.83465249540788,
-      "heroPixels": 92.65122677605967,
+      "meanLuminance": 72.99506680209089,
+      "luminanceDeviation": 36.87968879199728,
+      "heroPixels": 92.65122677605984,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -752,8 +753,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 227,
-      "triangles": 257493,
+      "drawCalls": 239,
+      "triangles": 266580,
       "postprocessing": {
         "enabled": true,
         "quality": "high",
@@ -804,11 +805,11 @@
         "left": -9.200000000000001,
         "right": 9.200000000000001
       },
-      "visibleFraction": 0.9842708333333333,
+      "visibleFraction": 0.984453125,
       "clippedFraction": 0,
-      "meanLuminance": 43.473918390625904,
-      "luminanceDeviation": 47.651356254900094,
-      "heroPixels": 92.65122677605967,
+      "meanLuminance": 42.929335440105696,
+      "luminanceDeviation": 47.68813361345369,
+      "heroPixels": 92.65122677605979,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -816,8 +817,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 130,
-      "triangles": 70633,
+      "drawCalls": 120,
+      "triangles": 75979,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -863,11 +864,11 @@
         "left": -9.200000000000001,
         "right": 9.200000000000001
       },
-      "visibleFraction": 0.9845963541666667,
-      "clippedFraction": 0.0009114583333333333,
-      "meanLuminance": 49.50168247916861,
-      "luminanceDeviation": 56.771964722272884,
-      "heroPixels": 92.65122677605967,
+      "visibleFraction": 0.9848697916666667,
+      "clippedFraction": 0.0006901041666666667,
+      "meanLuminance": 49.157558098960415,
+      "luminanceDeviation": 56.7874038345553,
+      "heroPixels": 92.65122677605979,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -875,8 +876,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 161,
-      "triangles": 70409,
+      "drawCalls": 172,
+      "triangles": 76627,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -909,6 +910,65 @@
       "glError": 0
     },
     {
+      "label": "delayed-lod-performance-arrived",
+      "floor": 1,
+      "quality": "low",
+      "framebuffer": [
+        907,
+        510
+      ],
+      "camera": {
+        "top": 5.75,
+        "bottom": -5.75,
+        "left": -10.225980392156861,
+        "right": 10.225980392156861
+      },
+      "visibleFraction": 0.9869791666666666,
+      "clippedFraction": 0,
+      "meanLuminance": 37.59306154166646,
+      "luminanceDeviation": 33.56355789788603,
+      "heroPixels": 52.50236183976716,
+      "heroVisible": true,
+      "animation": "idle",
+      "characterDetail": "low",
+      "characterTriangles": 3500,
+      "heroMaterials": [
+        "MeshLambertMaterial"
+      ],
+      "drawCalls": 110,
+      "triangles": 119751,
+      "postprocessing": {
+        "enabled": false,
+        "quality": "low",
+        "passes": [
+          "scene"
+        ],
+        "width": 907,
+        "height": 510,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "audio": {
+        "available": true,
+        "state": "running",
+        "muted": false,
+        "platformMuted": false,
+        "paused": false,
+        "volume": 0.72,
+        "musicVolume": 0.32,
+        "sfxVolume": 0.65,
+        "chapter": 0,
+        "voices": 2,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 0,
+        "sampleFailures": 0,
+        "fallback": false
+      },
+      "priorGlErrors": [],
+      "glError": 0
+    },
+    {
       "label": "touch-844x390",
       "floor": 1,
       "quality": "low",
@@ -922,11 +982,11 @@
         "left": -12.659999999999998,
         "right": 12.659999999999998
       },
-      "visibleFraction": 0.9865625,
+      "visibleFraction": 0.9850651041666667,
       "clippedFraction": 0,
-      "meanLuminance": 33.74920281770946,
-      "luminanceDeviation": 26.90190305545578,
-      "heroPixels": 39.46255955276621,
+      "meanLuminance": 31.776118164062748,
+      "luminanceDeviation": 25.332758535992276,
+      "heroPixels": 39.46255955276618,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -934,8 +994,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 124,
-      "triangles": 124590,
+      "drawCalls": 139,
+      "triangles": 131985,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -957,12 +1017,12 @@
         "musicVolume": 0.32,
         "sfxVolume": 0.65,
         "chapter": 0,
-        "voices": 6,
-        "loadedClips": 19,
-        "playingTracks": 0,
-        "loading": 2,
+        "voices": 8,
+        "loadedClips": 21,
+        "playingTracks": 2,
+        "loading": 0,
         "sampleFailures": 0,
-        "fallback": true
+        "fallback": false
       },
       "priorGlErrors": [],
       "glError": 0
@@ -981,11 +1041,11 @@
         "left": -3.3501184834123223,
         "right": 3.3501184834123223
       },
-      "visibleFraction": 0.9888020833333333,
+      "visibleFraction": 0.987734375,
       "clippedFraction": 0,
-      "meanLuminance": 44.86829419010308,
-      "luminanceDeviation": 37.36769939053367,
-      "heroPixels": 68.90979364662354,
+      "meanLuminance": 45.3624424114576,
+      "luminanceDeviation": 37.850349280059376,
+      "heroPixels": 68.90979364662343,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "low",
@@ -993,8 +1053,8 @@
       "heroMaterials": [
         "MeshLambertMaterial"
       ],
-      "drawCalls": 82,
-      "triangles": 80720,
+      "drawCalls": 87,
+      "triangles": 86662,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -1016,7 +1076,7 @@
         "musicVolume": 0.32,
         "sfxVolume": 0.65,
         "chapter": 0,
-        "voices": 7,
+        "voices": 5,
         "loadedClips": 21,
         "playingTracks": 2,
         "loading": 0,
@@ -1040,11 +1100,11 @@
         "left": -10.225980392156861,
         "right": 10.225980392156861
       },
-      "visibleFraction": 0.9786979166666666,
+      "visibleFraction": 0.9795442708333333,
       "clippedFraction": 0,
-      "meanLuminance": 40.86530394531184,
-      "luminanceDeviation": 25.59372507153844,
-      "heroPixels": 52.50236183976725,
+      "meanLuminance": 41.19347523437486,
+      "luminanceDeviation": 25.57471996801661,
+      "heroPixels": 52.50236183976719,
       "heroVisible": true,
       "animation": "idle",
       "characterDetail": "high",
@@ -1052,8 +1112,8 @@
       "heroMaterials": [
         "MeshStandardMaterial"
       ],
-      "drawCalls": 208,
-      "triangles": 269369,
+      "drawCalls": 219,
+      "triangles": 271624,
       "postprocessing": {
         "enabled": false,
         "quality": "low",
@@ -1096,19 +1156,19 @@
     {
       "clip": "cast",
       "input": "1",
-      "boneRotationChange": 0.16585054650334613,
+      "boneRotationChange": 0.06604784858984432,
       "bones": 32
     },
     {
       "clip": "dodge",
       "input": "Space",
-      "boneRotationChange": 0.5804061375684392,
+      "boneRotationChange": 0.5803704226764487,
       "bones": 32
     },
     {
       "clip": "hit",
       "input": "scripted real damage event",
-      "boneRotationChange": 0.035351939747731556,
+      "boneRotationChange": 0.03513971213651457,
       "bones": 32
     }
   ],
@@ -1229,6 +1289,7 @@
       ]
     }
   ],
+  "diagnostics": [],
   "filter": null,
   "browser": "152.0.7977.75",
   "lods": [
@@ -1318,15 +1379,138 @@
     "scope": "Scripted kills exercise normal engine accounting; actual displayed ring material is inspected."
   },
   "textureLifetime": {
-    "baseline": 53,
+    "baseline": 55,
     "repeatedSceneTextures": [
-      53,
-      53,
-      53,
-      53,
-      53,
-      53
+      55,
+      55,
+      55,
+      55,
+      55,
+      55
     ],
     "tolerance": 2
+  },
+  "delayedLods": {
+    "heldMilliseconds": 5601,
+    "simulationAdvancedWhilePending": true,
+    "initial": {
+      "mode": "playing",
+      "classId": "warden",
+      "quality": "high",
+      "heroDetail": "high",
+      "heroTriangles": 26458,
+      "heroMaterials": [
+        "MeshStandardMaterial"
+      ],
+      "loaded": [
+        "warden",
+        "ranger",
+        "arcanist",
+        "oracle",
+        "skeleton",
+        "reaver",
+        "wraith",
+        "brute"
+      ],
+      "failed": {},
+      "lodLoaded": [],
+      "lodFailed": {},
+      "postprocessing": {
+        "enabled": true,
+        "quality": "high",
+        "passes": [
+          "scene",
+          "contact-occlusion",
+          "hdr-bloom",
+          "color-grade",
+          "tone-map",
+          "fxaa"
+        ],
+        "width": 907,
+        "height": 510,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "contextLost": false
+    },
+    "whileHeld": {
+      "mode": "paused",
+      "classId": "warden",
+      "quality": "low",
+      "heroDetail": "high",
+      "heroTriangles": 26458,
+      "heroMaterials": [
+        "MeshLambertMaterial"
+      ],
+      "loaded": [
+        "warden",
+        "ranger",
+        "arcanist",
+        "oracle",
+        "skeleton",
+        "reaver",
+        "wraith",
+        "brute"
+      ],
+      "failed": {},
+      "lodLoaded": [],
+      "lodFailed": {},
+      "postprocessing": {
+        "enabled": false,
+        "quality": "low",
+        "passes": [
+          "scene"
+        ],
+        "width": 907,
+        "height": 510,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "contextLost": false
+    },
+    "afterArrival": {
+      "mode": "playing",
+      "classId": "warden",
+      "quality": "low",
+      "heroDetail": "low",
+      "heroTriangles": 3500,
+      "heroMaterials": [
+        "MeshLambertMaterial"
+      ],
+      "loaded": [
+        "warden",
+        "ranger",
+        "arcanist",
+        "oracle",
+        "skeleton",
+        "reaver",
+        "wraith",
+        "brute"
+      ],
+      "failed": {},
+      "lodLoaded": [
+        "skeleton",
+        "ranger",
+        "warden",
+        "wraith",
+        "arcanist",
+        "reaver",
+        "oracle",
+        "brute"
+      ],
+      "lodFailed": {},
+      "postprocessing": {
+        "enabled": false,
+        "quality": "low",
+        "passes": [
+          "scene"
+        ],
+        "width": 907,
+        "height": 510,
+        "pixelRatio": 1,
+        "fallbackReason": ""
+      },
+      "contextLost": false
+    }
   }
 }

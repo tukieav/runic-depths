@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T07:36:04.592Z",
+  "generatedAt": "2026-09-06T08:08:41.275Z",
   "scope": "Built game in headless Chromium software WebGL; scripted rendering fixtures, not a physical device benchmark or portal approval",
   "buildHashes": {
     "THREE-LICENSE.txt": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
@@ -75,7 +75,7 @@
     "assets/textures/runestone-normal.webp": "49cde2a4770d3f6f9570b256ed4dad07a2aafbd3bfb8229a825ee938b85be882",
     "assets/textures/runestone-roughness.webp": "bd82af98e274b6201908edd8ca5a2669df179abd25eba5ca140d96630ff470c3",
     "bundle.css": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5",
-    "bundle.js": "7d1bc25bf4bad2084324cecdd4b3afbe37833a6c783540160aceb875b689a32c",
+    "bundle.js": "273c6d408f2d57f9173877c62e854cbf248250540332ca257d476892ca923477",
     "index.html": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685"
   },
   "results": [
@@ -331,62 +331,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -429,35 +373,56 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -576,244 +541,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -870,35 +597,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -989,6 +688,55 @@
             "roughness": 512
           },
           {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -997,6 +745,111 @@
           },
           {
             "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -1073,6 +926,27 @@
             "roughness": 512
           },
           {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -1094,13 +968,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -1116,125 +983,6 @@
           },
           {
             "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -1249,6 +997,342 @@
           },
           {
             "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -1297,6 +1381,13 @@
             "roughness": 512
           },
           {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-cloth-albedo",
             "width": 512,
             "height": 512,
@@ -1305,6 +1396,41 @@
           },
           {
             "name": "runic-cloth-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-cloth-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-cloth-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -1340,41 +1466,6 @@
           },
           {
             "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-cloth-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-cloth-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -1395,8 +1486,8 @@
             "roughness": 512
           }
         ],
-        "drawCalls": 238,
-        "triangles": 286003,
+        "drawCalls": 218,
+        "triangles": 260692,
         "props": [
           "sarcophagus",
           "sarcophagus",
@@ -1477,34 +1568,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
@@ -1575,111 +1638,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -1695,132 +1653,6 @@
           },
           {
             "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -1939,6 +1771,76 @@
             "roughness": 512
           },
           {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -1961,6 +1863,440 @@
           },
           {
             "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -2100,70 +2436,28 @@
             "roughness": 512
           },
           {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -2205,20 +2499,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -2226,112 +2506,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
+            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -2352,91 +2527,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
+            "name": "runic-cloth-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -2506,15 +2597,15 @@
             "roughness": 512
           }
         ],
-        "drawCalls": 229,
-        "triangles": 260179,
+        "drawCalls": 226,
+        "triangles": 260647,
         "props": [
           "shrine",
           "shrine"
         ],
         "enemyAssets": [
-          "brute",
-          "skeleton"
+          "skeleton",
+          "brute"
         ]
       },
       {
@@ -2542,41 +2633,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
@@ -2626,34 +2682,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -2669,293 +2697,6 @@
           },
           {
             "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3032,6 +2773,76 @@
             "roughness": 512
           },
           {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -3075,20 +2886,6 @@
           },
           {
             "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3144,6 +2941,27 @@
             "roughness": 512
           },
           {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -3165,7 +2983,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
+            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3200,7 +3018,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
+            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3222,6 +3040,20 @@
           },
           {
             "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3326,14 +3158,21 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3390,41 +3229,6 @@
           },
           {
             "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3494,6 +3298,104 @@
             "roughness": 512
           },
           {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -3502,6 +3404,167 @@
           },
           {
             "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3711,7 +3774,14 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-cloth-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3774,7 +3844,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-metal-albedo",
+            "name": "runic-cloth-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -3795,8 +3865,8 @@
             "roughness": 512
           }
         ],
-        "drawCalls": 228,
-        "triangles": 259878,
+        "drawCalls": 227,
+        "triangles": 259105,
         "props": [
           "shrine",
           "shrine"
@@ -3894,6 +3964,34 @@
             "roughness": 512
           },
           {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -4006,6 +4104,55 @@
             "roughness": 512
           },
           {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -4021,6 +4168,76 @@
           },
           {
             "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4076,118 +4293,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -4209,34 +4314,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -4245,174 +4322,6 @@
           },
           {
             "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4433,6 +4342,90 @@
             "roughness": 512
           },
           {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -4447,7 +4440,21 @@
             "roughness": 512
           },
           {
-            "name": "runic-metal-albedo",
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4468,7 +4475,14 @@
             "roughness": 512
           },
           {
-            "name": "runic-metal-albedo",
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4524,49 +4538,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4594,7 +4566,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4616,6 +4588,13 @@
           },
           {
             "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4637,6 +4616,48 @@
           },
           {
             "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4727,6 +4748,13 @@
             "roughness": 512
           },
           {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -4749,6 +4777,55 @@
           },
           {
             "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4790,6 +4867,13 @@
             "roughness": 512
           },
           {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -4797,7 +4881,21 @@
             "roughness": 512
           },
           {
-            "name": "runic-metal-albedo",
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -4853,6 +4951,13 @@
             "roughness": 512
           },
           {
+            "name": "runic-cloth-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
@@ -4861,14 +4966,28 @@
           },
           {
             "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-cloth-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
             "roughness": 512
           }
         ],
-        "drawCalls": 202,
-        "triangles": 260835,
+        "drawCalls": 189,
+        "triangles": 249598,
         "props": [
           "shrine",
           "shrine"
@@ -4917,293 +5036,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -5267,34 +5099,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -5330,7 +5134,28 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -5414,6 +5239,118 @@
             "roughness": 512
           },
           {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -5477,6 +5414,118 @@
             "roughness": 512
           },
           {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -5520,13 +5569,6 @@
           },
           {
             "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -5638,6 +5680,27 @@
             "roughness": 512
           },
           {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -5645,20 +5708,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -5666,35 +5715,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
+            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -5764,7 +5785,105 @@
             "roughness": 512
           },
           {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -5834,6 +5953,20 @@
             "roughness": 512
           },
           {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -5869,13 +6002,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-metal-albedo",
             "width": 512,
             "height": 512,
@@ -5884,20 +6010,6 @@
           },
           {
             "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -5939,42 +6051,7 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-cloth-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -6058,8 +6135,8 @@
             "roughness": 512
           }
         ],
-        "drawCalls": 223,
-        "triangles": 246398,
+        "drawCalls": 229,
+        "triangles": 269850,
         "props": [
           "shrine",
           "shrine"
@@ -6157,34 +6234,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -6200,314 +6249,6 @@
           },
           {
             "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -6612,6 +6353,398 @@
             "roughness": 512
           },
           {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -6717,6 +6850,62 @@
             "roughness": 512
           },
           {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-metal-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -6732,6 +6921,62 @@
           },
           {
             "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-flagstone-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
+            "width": 512,
+            "height": 512,
+            "normal": 512,
+            "roughness": 512
+          },
+          {
+            "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -6808,76 +7053,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
@@ -6927,20 +7102,6 @@
             "roughness": 512
           },
           {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
             "name": "runic-masonry-albedo",
             "width": 512,
             "height": 512,
@@ -6956,167 +7117,6 @@
           },
           {
             "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-flagstone-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -7306,27 +7306,6 @@
           },
           {
             "name": "runic-flagstone-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-metal-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-masonry-albedo",
-            "width": 512,
-            "height": 512,
-            "normal": 512,
-            "roughness": 512
-          },
-          {
-            "name": "runic-cloth-albedo",
             "width": 512,
             "height": 512,
             "normal": 512,
@@ -7396,15 +7375,15 @@
             "roughness": 512
           }
         ],
-        "drawCalls": 227,
-        "triangles": 251110,
+        "drawCalls": 220,
+        "triangles": 237293,
         "props": [
           "shrine",
           "shrine"
         ],
         "enemyAssets": [
-          "wraith",
-          "skeleton"
+          "skeleton",
+          "wraith"
         ]
       }
     ],
@@ -7412,7 +7391,7 @@
       {
         "classId": "warden",
         "distance": 0.4499999999999991,
-        "boneRotationChange": 3.7922166687688375,
+        "boneRotationChange": 3.7924547969643108,
         "skinnedMeshes": 1,
         "textureImages": [
           {
@@ -7425,8 +7404,8 @@
       },
       {
         "classId": "ranger",
-        "distance": 0.570000000000001,
-        "boneRotationChange": 3.7806284561906893,
+        "distance": 0.5699999999999996,
+        "boneRotationChange": 3.780645712696587,
         "skinnedMeshes": 1,
         "textureImages": [
           {
@@ -7454,7 +7433,7 @@
       {
         "classId": "reaver",
         "distance": 0.49999999999999906,
-        "boneRotationChange": 3.794301220440212,
+        "boneRotationChange": 3.794538823060332,
         "skinnedMeshes": 1,
         "textureImages": [
           {
@@ -7467,8 +7446,8 @@
       },
       {
         "classId": "oracle",
-        "distance": 0.4799999999999996,
-        "boneRotationChange": 3.7202651831305653,
+        "distance": 0.4800000000000008,
+        "boneRotationChange": 3.7200456566956106,
         "skinnedMeshes": 1,
         "textureImages": [
           {
@@ -7482,7 +7461,7 @@
       {
         "input": "Enter",
         "clip": "attack",
-        "boneRotationChange": 3.9468687829121403
+        "boneRotationChange": 3.9475107342335987
       },
       {
         "input": "1",
@@ -7520,14 +7499,14 @@
       ],
       "render": {
         "meshes": 17,
-        "calls": 257,
+        "calls": 238,
         "mode": "playing"
       },
       "uncaughtErrors": []
     },
     "stalledTransfers": {
       "requests": 25,
-      "bootMilliseconds": 7192,
+      "bootMilliseconds": 6704,
       "uncaughtErrors": []
     }
   }

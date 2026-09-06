@@ -1,6 +1,6 @@
 {
   "version": "2.2",
-  "createdAt": "2026-09-06T07:34:26.145Z",
+  "createdAt": "2026-09-06T08:02:40.197Z",
   "requirements": "https://docs.crazygames.com/requirements/game-covers/",
   "artwork": {
     "source": "../../assets/hero-atlas.png",
@@ -46,24 +46,24 @@
       ],
       "format": {
         "duration": "17.966667",
-        "size": "8835699"
+        "size": "8655664"
       },
       "openingCover": "cover-16x9.png",
       "openingCoverSeconds": 0.5,
       "errors": [],
       "endState": {
         "mode": "playing",
-        "hp": 230,
-        "kills": 9,
+        "hp": 221,
+        "kills": 7,
         "bossAlive": false,
         "graphics": {
           "characters": {
             "loaded": [
-              "skeleton",
-              "warden",
               "ranger",
+              "warden",
               "oracle",
               "reaver",
+              "skeleton",
               "arcanist",
               "wraith",
               "brute"
@@ -73,14 +73,14 @@
             "failed": {},
             "ready": true,
             "assets": {
-              "skeleton": {
-                "id": "skeleton",
+              "ranger": {
+                "id": "ranger",
                 "detail": "high",
                 "meshes": 1,
                 "bones": 32,
-                "vertices": 17200,
-                "triangles": 20720,
-                "bytes": 842036,
+                "vertices": 21496,
+                "triangles": 29064,
+                "bytes": 1045316,
                 "clips": [
                   "attack",
                   "attack_alt",
@@ -100,25 +100,6 @@
                 "vertices": 23234,
                 "triangles": 26458,
                 "bytes": 1061568,
-                "clips": [
-                  "attack",
-                  "attack_alt",
-                  "cast",
-                  "death",
-                  "dodge",
-                  "hit",
-                  "idle",
-                  "walk"
-                ]
-              },
-              "ranger": {
-                "id": "ranger",
-                "detail": "high",
-                "meshes": 1,
-                "bones": 32,
-                "vertices": 21496,
-                "triangles": 29064,
-                "bytes": 1045316,
                 "clips": [
                   "attack",
                   "attack_alt",
@@ -157,6 +138,25 @@
                 "vertices": 27319,
                 "triangles": 32418,
                 "bytes": 1222836,
+                "clips": [
+                  "attack",
+                  "attack_alt",
+                  "cast",
+                  "death",
+                  "dodge",
+                  "hit",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "skeleton": {
+                "id": "skeleton",
+                "detail": "high",
+                "meshes": 1,
+                "bones": 32,
+                "vertices": 17200,
+                "triangles": 20720,
+                "bytes": 842036,
                 "clips": [
                   "attack",
                   "attack_alt",
@@ -241,16 +241,16 @@
             "ready": true
           },
           "shadows": true,
-          "drawCalls": 284,
-          "triangles": 344481
+          "drawCalls": 250,
+          "triangles": 227843
         },
         "shadowMapEnabled": true,
         "webglRenderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 4090/PCIe/SSE2, OpenGL ES 3.2)",
         "captureTiming": {
-          "browserAnimationFrames": 1037,
-          "averageAnimationFps": 59.24597075980967,
-          "wallSeconds": 17.50329999999702,
-          "simulatedSeconds": 17.46589999999987,
+          "browserAnimationFrames": 1049,
+          "averageAnimationFps": 59.92573550414168,
+          "wallSeconds": 17.505,
+          "simulatedSeconds": 17.499299999999895,
           "scope": "This Chromium capture session only; not a representative low-end-device benchmark."
         }
       }
@@ -272,7 +272,7 @@
       ],
       "format": {
         "duration": "17.966667",
-        "size": "5007107"
+        "size": "5169431"
       },
       "openingCover": "cover-2x3.png",
       "openingCoverSeconds": 0.5,
@@ -280,17 +280,17 @@
       "endState": {
         "mode": "playing",
         "hp": 221,
-        "kills": 8,
+        "kills": 7,
         "bossAlive": false,
         "graphics": {
           "characters": {
             "loaded": [
-              "warden",
-              "arcanist",
-              "reaver",
-              "skeleton",
               "ranger",
               "oracle",
+              "warden",
+              "arcanist",
+              "skeleton",
+              "reaver",
               "wraith",
               "brute"
             ],
@@ -299,6 +299,44 @@
             "failed": {},
             "ready": true,
             "assets": {
+              "ranger": {
+                "id": "ranger",
+                "detail": "high",
+                "meshes": 1,
+                "bones": 32,
+                "vertices": 21496,
+                "triangles": 29064,
+                "bytes": 1045316,
+                "clips": [
+                  "attack",
+                  "attack_alt",
+                  "cast",
+                  "death",
+                  "dodge",
+                  "hit",
+                  "idle",
+                  "walk"
+                ]
+              },
+              "oracle": {
+                "id": "oracle",
+                "detail": "high",
+                "meshes": 1,
+                "bones": 32,
+                "vertices": 22051,
+                "triangles": 30090,
+                "bytes": 1067484,
+                "clips": [
+                  "attack",
+                  "attack_alt",
+                  "cast",
+                  "death",
+                  "dodge",
+                  "hit",
+                  "idle",
+                  "walk"
+                ]
+              },
               "warden": {
                 "id": "warden",
                 "detail": "high",
@@ -337,25 +375,6 @@
                   "walk"
                 ]
               },
-              "reaver": {
-                "id": "reaver",
-                "detail": "high",
-                "meshes": 1,
-                "bones": 32,
-                "vertices": 27319,
-                "triangles": 32418,
-                "bytes": 1222836,
-                "clips": [
-                  "attack",
-                  "attack_alt",
-                  "cast",
-                  "death",
-                  "dodge",
-                  "hit",
-                  "idle",
-                  "walk"
-                ]
-              },
               "skeleton": {
                 "id": "skeleton",
                 "detail": "high",
@@ -375,33 +394,14 @@
                   "walk"
                 ]
               },
-              "ranger": {
-                "id": "ranger",
+              "reaver": {
+                "id": "reaver",
                 "detail": "high",
                 "meshes": 1,
                 "bones": 32,
-                "vertices": 21496,
-                "triangles": 29064,
-                "bytes": 1045316,
-                "clips": [
-                  "attack",
-                  "attack_alt",
-                  "cast",
-                  "death",
-                  "dodge",
-                  "hit",
-                  "idle",
-                  "walk"
-                ]
-              },
-              "oracle": {
-                "id": "oracle",
-                "detail": "high",
-                "meshes": 1,
-                "bones": 32,
-                "vertices": 22051,
-                "triangles": 30090,
-                "bytes": 1067484,
+                "vertices": 27319,
+                "triangles": 32418,
+                "bytes": 1222836,
                 "clips": [
                   "attack",
                   "attack_alt",
@@ -467,16 +467,16 @@
             "ready": true
           },
           "shadows": true,
-          "drawCalls": 269,
-          "triangles": 325032
+          "drawCalls": 250,
+          "triangles": 229374
         },
         "shadowMapEnabled": true,
         "webglRenderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 4090/PCIe/SSE2, OpenGL ES 3.2)",
         "captureTiming": {
-          "browserAnimationFrames": 1048,
-          "averageAnimationFps": 59.85698293393658,
-          "wallSeconds": 17.50839999999106,
-          "simulatedSeconds": 17.51599999999986,
+          "browserAnimationFrames": 1050,
+          "averageAnimationFps": 59.99348642145381,
+          "wallSeconds": 17.50190000000596,
+          "simulatedSeconds": 17.499199999999853,
           "scope": "This Chromium capture session only; not a representative low-end-device benchmark."
         }
       }
@@ -488,7 +488,7 @@
   "capturePixelRatio": 1,
   "hardwareCapture": true,
   "buildHashes": {
-    "bundle.js": "7d1bc25bf4bad2084324cecdd4b3afbe37833a6c783540160aceb875b689a32c",
+    "bundle.js": "273c6d408f2d57f9173877c62e854cbf248250540332ca257d476892ca923477",
     "bundle.css": "f67bbbe533539c080591774849d8e505fbf79c34fc7ec4ee0b51ee89e44f65c5",
     "index.html": "6540482d85b535a905286d216bfec8c6bfad4e6b4e545899d0efd23b451b4685",
     "assets/models/manifest.json": "13f573dd02d173b17e1051d799dacb0ffe674eb730ae20e0cc74d5399ae97046",

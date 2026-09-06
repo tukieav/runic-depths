@@ -314,13 +314,21 @@ export class DungeonRenderer {
         this.surfaces.ready,
         loadCharacterAssets(),
         loadPropAssets(this.surfaces),
-        this.quality === 'low' ? loadCharacterLODs() : Promise.resolve(),
+        this.quality === 'low' ? this.refreshPerformanceAssets() : Promise.resolve(),
       ]),
       new Promise((resolve) => {
         timer = setTimeout(resolve, 6000);
       }),
     ]);
     clearTimeout(timer);
+  }
+
+  refreshPerformanceAssets() {
+    return loadCharacterLODs().then(() => {
+      // Optional detail can arrive after the bounded initial loading screen.
+      if (!this.disposed && this.initialized && this.quality === 'low' && this.world)
+        this.build(this.world);
+    });
   }
 
   prepareCharacterVisual(visual, tint = null) {
@@ -421,11 +429,11 @@ export class DungeonRenderer {
     });
     this.resize();
     if (previous !== this.quality && this.initialized) {
-      if (this.quality === 'low')
-        loadCharacterLODs().then(() => {
-          if (!this.disposed && this.quality === 'low' && this.world) this.build(this.world);
-        });
-      else if (this.world) this.build(this.world);
+      // Switch expensive surface shading immediately, even while optional LOD
+      // transfers are pending or have failed. The game remains interactive.
+      if (this.world) this.build(this.world);
+      if (this.quality === 'low' && getCharacterAssetStatus().lodLoaded.length < 8)
+        this.refreshPerformanceAssets();
     }
   }
 

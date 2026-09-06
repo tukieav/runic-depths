@@ -26,7 +26,7 @@ CrazyGames acceptance. See [art direction review](../docs/ART_DIRECTION.md).
 
 The final 2.2 marketing encounters were captured in headless Chrome using actual
 ANGLE/OpenGL on NVIDIA GeForce RTX 4090, High quality, internal pixel ratio 1.
-The landscape and portrait takes measured 59.25 and 59.86 animation frames per
+The landscape and portrait takes measured 59.93 and 59.99 animation frames per
 second; approximately 17.5 seconds of simulation elapsed in 17.5 seconds of wall
 time. These are two scripted combat encounters on this powerful desktop GPU,
 not mobile/Chromebook acceptance or whole-campaign performance certification.
@@ -36,6 +36,8 @@ because it advanced the simulation much more slowly than real time.
 
 Performance mode now selects 3,500-triangle LODs and textured vertex-lit materials.
 It retains full-detail models as the fallback when optional LOD downloads fail.
+Vertex-lit shading applies immediately while these optional models load; late
+arrivals replace geometry without blocking gameplay or resetting progress.
 High quality retains PBR shading, full models and the postprocessing chain.
 
 ## Repeatable local checks
@@ -52,7 +54,7 @@ BALANCE_SOAK=1 node --test --test-name-pattern='^combat soak:' tests/engine.test
 
 The browser test hosts the built `dist` directory on a temporary loopback port and closes its own server and Chrome instance. It uses `/usr/bin/google-chrome`, overridable through `CHROME_BIN`. WebGL rendering uses SwiftShader in headless Chrome. That proves browser functionality, not a physical mobile or Chromebook frame-rate target.
 
-Observed locally on 2026-09-06: **54/54 engine/content/SDK/audio tests**, **13/13 browser integration groups**, **9/9 graphics groups**, **9/9 cinematic groups**, **8/8 platform groups**, the separate real Chrome audio regression, and **5/5 autonomous combat campaigns** passed. Browser evidence uses Chrome 152.0.7977.75 and recorded zero runtime/console errors. Each later shipping rebuild must rerun the browser suite; `browser-results.json` binds the result to SHA-256 hashes of its actual bundle, stylesheet and HTML.
+Observed locally on 2026-09-06: **54/54 engine/content/SDK/audio tests**, **13/13 browser integration groups**, **9/9 graphics groups**, **10/10 cinematic groups**, **8/8 platform groups**, the separate real Chrome audio regression, and **5/5 autonomous combat campaigns** passed. Browser evidence uses Chrome 152.0.7977.75 and recorded zero runtime/console errors. Each later shipping rebuild must rerun the browser suite; `browser-results.json` binds the result to SHA-256 hashes of its actual bundle, stylesheet and HTML.
 
 ## Engine checks
 

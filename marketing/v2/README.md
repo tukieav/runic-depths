@@ -23,7 +23,7 @@ each take. This is an
 actual game capture, not an offline renderer or a representative performance
 benchmark for low-end devices.
 
-The final landscape and portrait takes averaged 59.25 and 59.86 browser animation
+The final landscape and portrait takes averaged 59.93 and 59.99 browser animation
 frames per second. Each captured approximately 17.5 seconds of simulation in
 17.5 seconds of wall-clock time; the encoded previews include the opening cover.
 

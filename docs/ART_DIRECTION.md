@@ -127,7 +127,7 @@ the actual loaded geometry/materials after an asynchronous quality change, not
 just the selected option text. The camera zoom control is also checked through
 the compact pause menu and across a page reload.
 
-Final local run: all nine cinematic test groups passed, with 16 inspected final
+Final local run: all ten cinematic test groups passed, with 17 inspected final
 frames and no JavaScript, console or sampled WebGL errors. The report hashes all
 75 shipping files. The Warden switched from 26,458 triangles with a standard PBR
 material to 3,500 triangles with a Lambert material and back. In the compact menu,
@@ -139,7 +139,16 @@ bundle hashes, action-pose observations, fallback case and capture inventory.
 
 Two additional regressions cover resource lifetime and gameplay feedback. After
 two warm-up scene rebuilds, six further rebuilds kept GPU texture allocation
-constant at 53 textures. This protects against leaking each cloned skeleton’s
+constant at 55 textures. This protects against leaking each cloned skeleton’s
 bone texture. In Performance mode, normal kill accounting unlocked the portal;
 the material on the actually displayed ring changed from teal to gold and its
 emissive intensity increased from 0.55 to 1.8. Both states have captured frames.
+
+A delayed-download regression holds all optional LOD transfers for 5.6 seconds.
+Selecting Performance immediately applies Lambert materials to the existing
+full-detail model and disables postprocessing; gameplay continues while the
+files remain pending. When the real responses arrive, the current journey
+updates to the 3,500-triangle model without losing progress. This test exceeds
+the former 4.5-second optional-asset deadline. Failed detail transitions now
+record loaded and failed model IDs, LOD errors, actual material types, geometry
+detail, quality and WebGL state rather than reporting only a generic timeout.

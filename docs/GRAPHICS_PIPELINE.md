@@ -128,6 +128,9 @@ Performance materials retain color textures and emissive detail with vertex-lit
 Lambert shading. They avoid normal/roughness/environment fragment calculations,
 dynamic shadows and postprocessing. Missing LOD assets fall back to the full
 model. Switching quality reloads presentation while preserving the game state.
+The cheaper materials apply immediately, independently of optional model
+transfers. LOD transfers may finish after the bounded startup screen; completed
+assets then replace the geometry, and a later quality switch can retry failures.
 The browser tests verify that real scene geometry and materials change with the
 setting. Hardware and software rendering measurements must be labelled separately.
 

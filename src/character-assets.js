@@ -18,8 +18,12 @@ export function loadCharacterAssets({ timeout = 4500 } = {}) {
   return loading;
 }
 
-export function loadCharacterLODs({ timeout = 4500 } = {}) {
-  if (!lodLoading) lodLoading = loadLibrary(lodCache, lodFailures, 'lod/', timeout);
+export function loadCharacterLODs({ timeout = 15000 } = {}) {
+  if (lodCache.size === IDS.length) return Promise.resolve();
+  if (!lodLoading)
+    lodLoading = loadLibrary(lodCache, lodFailures, 'lod/', timeout).finally(() => {
+      lodLoading = undefined;
+    });
   return lodLoading;
 }
 
@@ -27,6 +31,7 @@ function loadLibrary(targetCache, targetFailures, directory, timeout) {
   const loader = new GLTFLoader();
   return Promise.allSettled(
     IDS.map(async (id) => {
+      if (targetCache.has(id)) return;
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeout);
       try {
@@ -55,6 +60,7 @@ function loadLibrary(targetCache, targetFailures, directory, timeout) {
             material.shadowSide = THREE.FrontSide;
           }
         });
+        targetFailures.delete(id);
         targetCache.set(id, {
           gltf,
           stats: {
